@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OOO치과 2025-11 월간 분석 보고서 - 마케팅 분석 리포트</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <style>
+        body {
+            font-family: 'Nunito', 'Pretendard', sans-serif;
+        }
+
+        #report-printable-area {
+            font-family: 'Pretendard', sans-serif;
+            color: #334155;
+            max-width: 1280px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .report-slide {
+            background-color: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #report-printable-area .report-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            text-align: center;
+            color: #1e293b;
+            margin-bottom: 1rem;
+            letter-spacing: -0.025em;
+        }
+
+        #report-printable-area .report-subtitle {
+            font-size: 1.1rem;
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 4rem;
+        }
+
+        #report-printable-area .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-top: 4rem;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid #3b82f6;
+        }
+
+        #report-printable-area .subsection-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        #report-printable-area .subsection-title .circle-icon {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background-color: #3b82f6;
+            color: white;
+            text-align: center;
+            line-height: 28px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-right: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        #report-printable-area .analysis-text {
+            background-color: #f8fafc;
+            border-left: 5px solid #60a5fa;
+            padding: 1.5rem 1.75rem;
+            border-radius: 0.25rem;
+            margin-top: 1.25rem;
+            margin-bottom: 1.25rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        #report-printable-area table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1.05rem;
+        }
+
+        #report-printable-area th,
+        #report-printable-area td {
+            border: 1px solid #e2e8f0;
+            padding: 1.25rem 1.5rem;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        #report-printable-area th {
+            background-color: #f1f5f9;
+            font-weight: 700;
+        }
+
+        #report-printable-area .summary-table td:nth-child(1) {
+            font-weight: 700;
+            width: 25%;
+        }
+
+        #report-printable-area .summary-table .kpi-value {
+            font-size: 2.25rem;
+            font-weight: 800;
+        }
+
+        #report-printable-area .one-line-summary {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: #f1f5f9;
+            border-radius: 0.5rem;
+            margin-top: 2.5rem;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .report-charts-container {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .report-charts-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-slate-100 p-8">
+    <div id="report-printable-area">
+        <div class="report-slide flex-col justify-center items-center text-center">
+            <div>
+                <p class="report-subtitle">Marketing Performance &amp; Analysis Report</p>
+                <h1 class="group relative report-title">OOO치과 2025-11 월간 분석 보고서</h1>
+                <div class="my-12 h-1.5 w-24 bg-blue-500 mx-auto rounded-full"></div>
+                <p class="text-2xl font-bold text-slate-700">OOO치과</p>
+                <p class="text-slate-500 mt-2">2025년 12월 3일 발행</p>
+            </div>
+        </div>
+        <div class="report-slide">
+            <h2 class="section-title">예약 퍼널 분석</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800 text-center mb-6">2025-10</h3>
+                    <div class="flex flex-col gap-8">
+                        <div>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <div class="bg-white p-5 rounded-2xl shadow-sm flex items-center gap-4">
+                                    <div
+                                        class="w-12 h-12 rounded-lg flex items-center justify-center text-white shrink-0 bg-blue-500">
+                                        <i class="fas fa-file-alt text-xl"></i></div>
+                                    <div>
+                                        <p class="font-semibold text-slate-500">총 신청</p>
+                                        <p class="text-3xl font-bold text-slate-800">392<span
+                                                class="text-xl font-semibold text-slate-500 ml-1.5">건</span></p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-5 rounded-2xl shadow-sm flex items-center gap-4">
+                                    <div
+                                        class="w-12 h-12 rounded-lg flex items-center justify-center text-white shrink-0 bg-green-500">
+                                        <i class="fas fa-check-circle text-xl"></i></div>
+                                    <div>
+                                        <p class="font-semibold text-slate-500">내원 확정</p>
+                                        <p class="text-3xl font-bold text-slate-800">261<span
+                                                class="text-xl font-semibold text-slate-500 ml-1.5">건</span></p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-5 rounded-2xl shadow-sm flex items-center gap-4">
+                                    <div
+                                        class="w-12 h-12 rounded-lg flex items-center justify-center text-white shrink-0 bg-red-500">
+                                        <i class="fas fa-times-circle text-xl"></i></div>
+                                    <div>
+                                        <p class="font-semibold text-slate-500">취소/노쇼</p>
+                                        <p class="text-3xl font-bold text-slate-800">131<span
+                                                class="text-xl font-semibold text-slate-500 ml-1.5">건</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800 text-center mb-6">2025-11</h3>
+                    <div class="flex flex-col gap-8">
+                        <div>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <div class="bg-white p-5 rounded-2xl shadow-sm flex items-center gap-4">
+                                    <div
+                                        class="w-12 h-12 rounded-lg flex items-center justify-center text-white shrink-0 bg-blue-500">
+                                        <i class="fas fa-file-alt text-xl"></i></div>
+                                    <div>
+                                        <p class="font-semibold text-slate-500">총 신청</p>
+                                        <p class="text-3xl font-bold text-slate-800">347<span
+                                                class="text-xl font-semibold text-slate-500 ml-1.5">건</span></p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-5 rounded-2xl shadow-sm flex items-center gap-4">
+                                    <div
+                                        class="w-12 h-12 rounded-lg flex items-center justify-center text-white shrink-0 bg-green-500">
+                                        <i class="fas fa-check-circle text-xl"></i></div>
+                                    <div>
+                                        <p class="font-semibold text-slate-500">내원 확정</p>
+                                        <p class="text-3xl font-bold text-slate-800">238<span
+                                                class="text-xl font-semibold text-slate-500 ml-1.5">건</span></p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-5 rounded-2xl shadow-sm flex items-center gap-4">
+                                    <div
+                                        class="w-12 h-12 rounded-lg flex items-center justify-center text-white shrink-0 bg-red-500">
+                                        <i class="fas fa-times-circle text-xl"></i></div>
+                                    <div>
+                                        <p class="font-semibold text-slate-500">취소/노쇼</p>
+                                        <p class="text-3xl font-bold text-slate-800">108<span
+                                                class="text-xl font-semibold text-slate-500 ml-1.5">건</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="report-slide">
+            <h2 class="section-title">블로그 성과 분석</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800 text-center mb-6">2025-10</h3>
+                    <div class="mt-4 bg-white p-5 rounded-2xl border">
+                        <h4 class="text-lg font-bold text-slate-800 mb-4">핵심 인사이트</h4>
+                        <ul class="space-y-4">
+                            <li class="flex items-start gap-4">
+                                <div
+                                    class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center bg-purple-100 text-purple-600 mt-1">
+                                    <i class="fas fa-trophy text-xl"></i></div>
+                                <p class="text-slate-700 text-base leading-relaxed pt-1">이번 달 가장 인기 있었던 포스팅은 <strong
+                                        class="text-purple-700">"OO역 치과 오래된 앞니 레진 변색 및 착색되어 재치료 필요하다면?"</strong>(으)로, 총
+                                    <strong class="text-purple-700">190회</strong>의 조회수를 기록했습니다.</p>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div
+                                    class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center bg-blue-100 text-blue-600 mt-1">
+                                    <i class="fas fa-key text-xl"></i></div>
+                                <p class="text-slate-700 text-base leading-relaxed pt-1">주요 검색 유입 키워드는 <strong
+                                        class="text-blue-700">"앞니 레진 변색"</strong>(이)이며, 전체 검색 유입의 <strong
+                                        class="text-blue-700">1.7%</strong>를 차지했습니다.</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800 text-center mb-6">2025-11</h3>
+                    <div class="mt-4 bg-white p-5 rounded-2xl border">
+                        <h4 class="text-lg font-bold text-slate-800 mb-4">핵심 인사이트</h4>
+                        <ul class="space-y-4">
+                            <li class="flex items-start gap-4">
+                                <div
+                                    class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center bg-purple-100 text-purple-600 mt-1">
+                                    <i class="fas fa-trophy text-xl"></i></div>
+                                <p class="text-slate-700 text-base leading-relaxed pt-1">이번 달 가장 인기 있었던 포스팅은 <strong
+                                        class="text-purple-700">"혀가 짧다? 설소대 절제술로 해결할 수 있습니다. OO동 치과"</strong>(으)로, 총
+                                    <strong class="text-purple-700">291회</strong>의 조회수를 기록했습니다.</p>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div
+                                    class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center bg-blue-100 text-blue-600 mt-1">
+                                    <i class="fas fa-key text-xl"></i></div>
+                                <p class="text-slate-700 text-base leading-relaxed pt-1">주요 검색 유입 키워드는 <strong
+                                        class="text-blue-700">"설소대"</strong>(이)이며, 전체 검색 유입의 <strong
+                                        class="text-blue-700">4.7%</strong>를 차지했습니다.</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl border mt-4">
+                        <h3 class="text-lg font-bold text-slate-800 mb-2 flex items-center gap-2"><i
+                                class="fas fa-list-alt text-green-500"></i><span>발행 완료 포스팅 목록 (3건)</span></h3>
+                        <div class="max-h-80 overflow-y-auto pr-2">
+                            <div class="divide-y divide-slate-100">
+                                <div class="flex justify-between items-center py-2.5">
+                                    <p class="font-semibold text-slate-700 truncate pr-3 flex-1 min-w-0">OO 치과 벌어진 앞니
+                                        정중이개 다이아스태마 레진 당일 충전 치료</p>
+                                    <div class="flex-shrink-0 ml-3 flex items-center gap-4 text-sm"><span
+                                            class="text-xs text-slate-500 w-20 text-right">2025-11-13</span></div>
+                                </div>
+                                <div class="flex justify-between items-center py-2.5">
+                                    <p class="font-semibold text-slate-700 truncate pr-3 flex-1 min-w-0">잇몸뼈 녹아버린 치아, 발치
+                                        후 그다음은? OO역 치과 임플란트</p>
+                                    <div class="flex-shrink-0 ml-3 flex items-center gap-4 text-sm"><span
+                                            class="text-xs text-slate-500 w-20 text-right">2025-11-10</span></div>
+                                </div>
+                                <div class="flex justify-between items-center py-2.5">
+                                    <p class="font-semibold text-slate-700 truncate pr-3 flex-1 min-w-0">OOO 치과 신경치료 치아
+                                        부러짐, 당일 발치 즉시 임플란트 동시 식립(Simple case)</p>
+                                    <div class="flex-shrink-0 ml-3 flex items-center gap-4 text-sm"><span
+                                            class="text-xs text-slate-500 w-20 text-right">2025-11-04</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="report-slide">
+            <h2 class="section-title">종합 분석 및 실행 계획</h2>
+            <div class="space-y-8">
+                <div class="one-line-summary"><strong>종합 요약: </strong>
+                    <div class="text-slate-800 text-base leading-relaxed">
+                        <p class="mb-2 last:mb-0">광고 중단 상황 속에서 블로그를 통한 유기적 유입은 안정적이나, 높은 예약 취소율 문제 개선과 함께 치과 확장 이슈를 활용한
+                            마케팅 전략이 시급합니다.</p>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="subsection-title"><span class="circle-icon">1</span>상세 분석</h3>
+                    <div class="mb-4 relative group">
+                        <p class="font-bold text-lg text-slate-700">예약 추세 분석</p>
+                        <div class="analysis-text relative">
+                            <div class="">
+                                <p class="mb-2 last:mb-0">10월 총 111건의 예약 중 내원 확정은 62건(55.9%)에 그쳐, 44.1%라는 높은 취소/노쇼 비율을
+                                    기록했습니다. 유입된 예약을 놓치지 않는 것이 중요합니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="subsection-title"><span class="circle-icon">2</span>핵심 진단 및 전략</h3>
+                    <div
+                        class="mb-6 relative group border border-transparent hover:border-slate-200 rounded-lg p-2 -m-2 transition-colors">
+                        <p class="font-bold text-lg text-slate-700">진단 1</p>
+                        <div class="analysis-text relative">
+                            <div class="">
+                                <p class="mb-2 last:mb-0">예약 관리 시스템 부재 및 운영 미숙으로 인한 높은 취소율 발생</p>
+                            </div>
+                        </div>
+                        <p class="font-bold text-lg text-slate-700 mt-4">전략 1</p>
+                        <div class="analysis-text relative">
+                            <div class="">
+                                <p class="mb-2 last:mb-0">네이버 예약 실시간 확정 프로세스 수립 및 리마인드 시스템 도입을 통한 예약 이탈률 최소화</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

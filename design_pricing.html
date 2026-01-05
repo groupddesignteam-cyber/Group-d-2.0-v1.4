@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Pricing Plan - GROUP D 2.0</title>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Pretendard', sans-serif; word-break: keep-all; }
+
+        /* 배경: 깊이감 있는 다크 네이비 */
+        .bg-deep-dark {
+            background-color: #0B0C15;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(96, 165, 250, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(167, 139, 250, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 50% 0%, #1a1b2e 0%, #0B0C15 80%);
+            min-height: 100vh;
+        }
+
+        /* 텍스트 그라데이션 */
+        .text-gradient-title {
+            background: linear-gradient(to right, #60A5FA, #A78BFA, #F472B6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: gradientMove 5s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 펄스 애니메이션 */
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4); transform: scale(1); }
+            50% { box-shadow: 0 0 0 10px rgba(139, 92, 246, 0); transform: scale(1.05); }
+        }
+        .animate-pulse-glow { animation: pulse-glow 2s infinite; }
+
+        /* 카드 스타일 */
+        .card-dark {
+            background-color: rgba(19, 20, 31, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-hover-blue:hover { border-color: rgba(96, 165, 250, 0.8); transform: translateY(-10px); box-shadow: 0 20px 40px -10px rgba(96, 165, 250, 0.2); }
+        .card-hover-green:hover { border-color: rgba(52, 211, 153, 0.8); transform: translateY(-10px); box-shadow: 0 20px 40px -10px rgba(52, 211, 153, 0.2); }
+        
+        /* 하이라이트 카드 */
+        .card-highlight-standard {
+            border: 1px solid rgba(139, 92, 246, 0.5);
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.1);
+        }
+        .card-highlight-standard:hover {
+            border-color: #A78BFA;
+            box-shadow: 0 0 50px rgba(139, 92, 246, 0.3);
+            transform: translateY(-10px);
+        }
+
+        .card-highlight-premium {
+            border: 1px solid rgba(244, 114, 182, 0.5);
+            box-shadow: 0 0 30px rgba(244, 114, 182, 0.1);
+        }
+        .card-highlight-premium:hover {
+            border-color: #F472B6;
+            box-shadow: 0 0 50px rgba(244, 114, 182, 0.3);
+            transform: translateY(-10px);
+        }
+
+        /* 아이콘 박스 */
+        .icon-box-blue { background: rgba(96, 165, 250, 0.1); border: 1px solid rgba(96, 165, 250, 0.2); color: #60A5FA; }
+        .icon-box-green { background: rgba(52, 211, 153, 0.1); border: 1px solid rgba(52, 211, 153, 0.2); color: #34D399; }
+        .icon-box-purple { background: rgba(167, 139, 250, 0.1); border: 1px solid rgba(167, 139, 250, 0.2); color: #A78BFA; }
+
+        .divider { border-top: 1px solid rgba(255, 255, 255, 0.1); }
+
+        /* 아코디언 스타일 */
+        details > summary {
+            list-style: none;
+            cursor: pointer;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
+        details[open] summary ~ * {
+            animation: sweep .3s ease-in-out;
+        }
+        @keyframes sweep {
+            0%    {opacity: 0; transform: translateY(-10px)}
+            100%  {opacity: 1; transform: translateY(0)}
+        }
+    </style>
+</head>
+<body class="bg-deep-dark text-slate-200 overflow-x-hidden">
+
+    <header class="text-center pt-24 pb-16 px-4" data-aos="zoom-in">
+        <div class="inline-block border border-blue-500/30 bg-blue-900/10 rounded-full px-5 py-2 mb-6 backdrop-blur-md">
+             <span class="text-xs font-bold text-blue-400 tracking-[0.2em] uppercase">GROUP D 2.0 Design Solution</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-extrabold mb-6 text-gradient-title tracking-tight leading-tight">
+            Design Pricing Plan
+        </h1>
+        <p class="text-slate-400 font-light text-lg md:text-xl leading-relaxed max-w-3xl mx-auto">
+            "디자인만 바꿔도 병원의 <b class="text-white font-bold">격(格)</b>이 달라집니다."<br>
+            성공적인 개원부터 매출을 견인하는 월간 케어까지, 최적의 솔루션을 확인하세요.
+        </p>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 pb-32">
+        
+        <div class="flex items-center gap-3 mb-10 pl-3 border-l-4 border-blue-500" data-aos="fade-right">
+            <h2 class="text-3xl font-bold text-white">Web & Landing Page</h2>
+            <p class="text-sm text-slate-500 mt-2 hidden md:block tracking-wide">환자를 설득하고 내원하게 만드는 '영업 사원'</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-28">
+            <div class="card-dark card-hover-blue rounded-[2rem] p-8 flex flex-col justify-between h-full" data-aos="fade-up" data-aos-delay="100">
+                <div>
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-12 h-12 icon-box-blue rounded-2xl flex items-center justify-center text-xl">📄</div>
+                        <span class="text-[10px] bg-slate-800 text-slate-400 px-2 py-1 rounded border border-slate-700">PROMOTION</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-2">이벤트 랜딩 (1P)</h3>
+                    <p class="text-sm text-slate-400 mb-8">신청 버튼을 누르게 만드는 집중형 페이지</p>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start gap-3">
+                            <span class="text-blue-500 text-lg">✔</span>
+                            <div>
+                                <span class="block text-slate-200 font-bold text-sm">전환율 중심 기획</span>
+                                <span class="block text-xs text-slate-500 mt-1">이탈 없이 상담 신청까지 유도</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-blue-500 text-lg">✔</span>
+                            <div>
+                                <span class="block text-slate-200 font-bold text-sm">DB 자동 수집 연동</span>
+                                <span class="block text-xs text-slate-500 mt-1">환자 문의가 관리자로 직행</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="divider pt-6 flex items-end justify-between">
+                    <span class="text-sm text-slate-500">Starting at</span>
+                    <div>
+                        <span class="text-3xl font-extrabold text-white">500,000</span> <span class="text-sm text-slate-400">원</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-dark card-hover-blue rounded-[2rem] p-8 flex flex-col justify-between h-full relative border-blue-500/30 shadow-lg shadow-blue-900/20" data-aos="fade-up" data-aos-delay="200">
+                <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 animate-pulse-glow bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-lg z-10">
+                    BEST CHOICE
+                </div>
+                <div>
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-12 h-12 icon-box-blue rounded-2xl flex items-center justify-center text-xl bg-blue-500/20 text-blue-300">📑</div>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-2">핵심 랜딩 (4P)</h3>
+                    <p class="text-sm text-slate-400 mb-8">임시 홈페이지 역할을 완벽하게 수행</p>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start gap-3">
+                            <span class="text-blue-400 text-lg">✔</span>
+                            <div>
+                                <span class="block text-white font-bold text-sm">메인+서브3페이지 구성</span>
+                                <span class="block text-xs text-slate-400 mt-1">병원 소개부터 진료 과목까지 한눈에</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-blue-400 text-lg">✔</span>
+                            <div>
+                                <span class="block text-white font-bold text-sm">PC/Mobile 반응형</span>
+                                <span class="block text-xs text-slate-400 mt-1">어떤 기기에서도 깨지지 않는 디자인</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="divider pt-6 flex items-end justify-between">
+                    <span class="text-xs text-blue-400 font-bold bg-blue-900/30 px-2 py-1 rounded">가성비 최강</span>
+                    <div>
+                        <span class="text-3xl font-extrabold text-white">1,500,000</span> <span class="text-sm text-slate-400">원</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-dark card-hover-blue rounded-[2rem] p-8 flex flex-col justify-between h-full" data-aos="fade-up" data-aos-delay="300">
+                <div>
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-12 h-12 icon-box-blue rounded-2xl flex items-center justify-center text-xl">🌐</div>
+                        <span class="text-[10px] bg-slate-800 text-slate-400 px-2 py-1 rounded border border-slate-700">OFFICIAL</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-2">공식 홈페이지</h3>
+                    <p class="text-sm text-slate-400 mb-8">"이 병원 믿을만하다"는 신뢰감 구축</p>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start gap-3">
+                            <span class="text-blue-500 text-lg">✔</span>
+                            <div>
+                                <span class="block text-slate-200 font-bold text-sm">브랜드 맞춤형 기획</span>
+                                <span class="block text-xs text-slate-500 mt-1">공장형 템플릿 NO, 우리 병원만의 색깔</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-blue-500 text-lg">✔</span>
+                            <div>
+                                <span class="block text-slate-200 font-bold text-sm">SEO(검색엔진) 최적화</span>
+                                <span class="block text-xs text-slate-500 mt-1">네이버 검색 시 최상단 노출 세팅</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="divider pt-6 flex items-end justify-between">
+                    <span class="text-sm text-slate-500">Customize</span>
+                    <div>
+                        <span class="text-3xl font-extrabold text-white">6,500,000</span> <span class="text-sm text-slate-400">원~</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-3 mb-10 pl-3 border-l-4 border-emerald-500" data-aos="fade-right">
+            <h2 class="text-3xl font-bold text-white">Initial Package</h2>
+            <p class="text-sm text-slate-500 mt-2 hidden md:block tracking-wide">첫 시작을 완벽하게 준비하는 올인원 세팅</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-28">
+            <div class="card-dark card-hover-green rounded-[2rem] p-8 flex items-center gap-6 group" data-aos="fade-up">
+                <div class="w-16 h-16 icon-box-green rounded-2xl flex items-center justify-center text-2xl group-hover:bg-emerald-500 group-hover:text-white transition-colors duration-300">
+                    🔄
+                </div>
+                <div class="flex-1">
+                    <h3 class="text-xl font-bold text-white mb-1">기개원 리뉴얼 패키지</h3>
+                    <p class="text-xs text-slate-400 mb-4">기존 병원 디자인 쇄신 (거래처 전용)</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="text-[10px] bg-white/5 px-2 py-1 rounded text-emerald-200">목록이미지</span>
+                        <span class="text-[10px] bg-white/5 px-2 py-1 rounded text-emerald-200">플레이스/블로그</span>
+                        <span class="text-[10px] bg-white/5 px-2 py-1 rounded text-emerald-200">의료법 포스팅</span>
+                    </div>
+                </div>
+                <div class="text-emerald-500">➔</div>
+            </div>
+
+            <div class="card-dark card-hover-green rounded-[2rem] p-8 flex items-center gap-6 group" data-aos="fade-up" data-aos-delay="100">
+                 <div class="w-16 h-16 icon-box-green rounded-2xl flex items-center justify-center text-2xl group-hover:bg-emerald-500 group-hover:text-white transition-colors duration-300">
+                    🏥
+                </div>
+                <div class="flex-1">
+                    <h3 class="text-xl font-bold text-white mb-1">신규 개원 패키지</h3>
+                    <p class="text-xs text-slate-400 mb-4">개원에 필요한 온/오프라인 통합 디자인</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="text-[10px] bg-white/5 px-2 py-1 rounded text-emerald-200">로고/명함</span>
+                        <span class="text-[10px] bg-white/5 px-2 py-1 rounded text-emerald-200">원내서식</span>
+                        <span class="text-[10px] bg-white/5 px-2 py-1 rounded text-emerald-200">블로그 풀세팅</span>
+                    </div>
+                </div>
+                <div class="text-emerald-500">➔</div>
+            </div>
+        </div>
+
+
+        <div class="flex items-center gap-3 mb-10 pl-3 border-l-4 border-purple-500" data-aos="fade-right">
+            <h2 class="text-3xl font-bold text-white">Monthly Design Care</h2>
+            <p class="text-sm text-slate-500 mt-2 hidden md:block tracking-wide">마케팅 패키지 등급별 맞춤형 디자인 지원 (가장 많이 찾는 서비스)</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-20">
+            
+            <div class="card-dark rounded-2xl p-6 opacity-60 hover:opacity-100 transition-opacity" data-aos="fade-up">
+                <div class="text-xs font-bold text-slate-500 mb-2">Economy</div>
+                <h3 class="text-lg font-bold text-white mb-4">이코노미</h3>
+                <div class="h-px bg-white/10 w-full mb-4"></div>
+                <ul class="space-y-3 text-sm text-slate-400">
+                    <li class="flex items-start gap-2"><span class="text-slate-600">▪</span> 월 1건 제작 (간단)</li>
+                    <li class="flex items-start gap-2"><span class="text-slate-600">▪</span> 리사이징 미지원</li>
+                </ul>
+                <div class="mt-8 pt-4 border-t border-white/5">
+                    <span class="text-[10px] text-slate-500 block mb-1">마케팅 결합 시</span>
+                    <div class="text-base font-bold text-slate-300">포함</div>
+                </div>
+            </div>
+
+            <div class="card-dark rounded-2xl p-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="text-xs font-bold text-slate-400 mb-2">Basic</div>
+                <h3 class="text-lg font-bold text-white mb-4">베이직</h3>
+                <div class="h-px bg-white/10 w-full mb-4"></div>
+                <ul class="space-y-3 text-sm text-slate-300">
+                    <li class="flex items-start gap-2"><span class="text-purple-400">▪</span> <b class="text-white">월 2건</b> 무상 제작</li>
+                    <li class="flex items-start gap-2"><span class="text-slate-500">▪</span> 건당 리사이징 1장</li>
+                </ul>
+
+                <div class="mt-4 bg-white/5 rounded-lg p-2.5 border border-white/10">
+                    <p class="text-[10px] text-slate-300 leading-snug">
+                        <span class="text-purple-400 font-bold">💡 FLEX Benefit</span><br>
+                        아래 추가 옵션 항목 치환 가능<br>
+                        <span class="text-slate-500">(추가 제작건 옵션가 발생)</span>
+                    </p>
+                </div>
+
+                <div class="mt-4 pt-4 border-t border-white/5">
+                    <span class="text-[10px] text-slate-500 block mb-1">마케팅 결합 시</span>
+                    <div class="text-lg font-bold text-purple-300">포함</div>
+                </div>
+            </div>
+
+            <div class="card-dark card-highlight-standard rounded-2xl p-6 relative bg-[#1c1c2e]" data-aos="fade-up" data-aos-delay="200">
+                <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-purple-600 text-[10px] font-bold px-3 py-1 rounded-full text-white shadow-lg animate-pulse">
+                    RECOMMENDED
+                </div>
+                <div class="text-xs font-bold text-purple-400 mb-2 mt-2">Standard</div>
+                <h3 class="text-xl font-bold text-white mb-4">스탠다드</h3>
+                <div class="h-px bg-gradient-to-r from-purple-500/50 to-transparent w-full mb-4"></div>
+                <ul class="space-y-3 text-sm text-slate-200">
+                    <li class="flex items-start gap-2"><span class="text-purple-400">⚡</span> <b class="text-white">월 3건</b> 무상 제작</li>
+                    <li class="flex items-start gap-2"><span class="text-purple-400">⚡</span> 건당 리사이징 <b class="text-white">2장</b></li>
+                    <li class="flex items-start gap-2"><span class="text-purple-400">⚡</span> 초기 필수 세팅 지원</li>
+                </ul>
+
+                <div class="mt-4 bg-purple-500/10 rounded-lg p-2.5 border border-purple-500/20">
+                    <p class="text-[10px] text-purple-100 leading-snug">
+                        <span class="text-purple-400 font-bold">💡 FLEX Benefit</span><br>
+                        아래 추가 옵션 항목으로 치환 가능<br>
+                        <span class="text-slate-400">(스탠다드 등급 이상 가능)</span>
+                    </p>
+                </div>
+
+                <div class="mt-4 pt-4 border-t border-white/10">
+                    <span class="text-[10px] text-purple-300 block mb-1">스탠다드 마케팅 결합 시</span>
+                    <div class="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+                        전액 지원 (SAVE)
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-dark card-highlight-premium rounded-2xl p-6 relative bg-[#1c1c2e]" data-aos="fade-up" data-aos-delay="300">
+                <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-pink-600 text-[10px] font-bold px-3 py-1 rounded-full text-white shadow-lg">
+                    VIP ONLY
+                </div>
+                <div class="text-xs font-bold text-pink-400 mb-2 mt-2">Premium</div>
+                <h3 class="text-xl font-bold text-white mb-4">프리미엄</h3>
+                <div class="h-px bg-gradient-to-r from-pink-500/50 to-transparent w-full mb-4"></div>
+                <ul class="space-y-3 text-sm text-slate-200">
+                    <li class="flex items-start gap-2"><span class="text-pink-400">★</span> <b class="text-white">월 4건</b> 무상 제작</li>
+                    <li class="flex items-start gap-2"><span class="text-pink-400">★</span> 건당 리사이징 <b class="text-white">3장</b></li>
+                    <li class="flex items-start gap-2"><span class="text-pink-400">★</span> 오프라인 시안 지원</li>
+                </ul>
+
+                <div class="mt-4 bg-pink-500/10 rounded-lg p-2.5 border border-pink-500/20">
+                    <p class="text-[10px] text-pink-100 leading-snug">
+                        <span class="text-pink-400 font-bold">💡 FLEX Benefit</span><br>
+                        아래 추가 옵션 항목으로 치환 가능<br>
+                        <span class="text-slate-400">(프리미엄 등급 이상 가능)</span>
+                    </p>
+                </div>
+
+                <div class="mt-4 pt-4 border-t border-white/10">
+                    <span class="text-[10px] text-pink-300 block mb-1">프리미엄 마케팅 결합 시</span>
+                    <div class="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-yellow-400">
+                        VIP 혜택 적용
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="policy-box rounded-2xl p-8 mb-16 shadow-2xl" data-aos="fade-in">
+            <h4 class="text-blue-400 font-bold text-lg mb-4 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                합리적인 서비스 이용 팁 (TIP)
+            </h4>
+            <div class="space-y-4 text-sm text-slate-300 leading-relaxed">
+                <div class="flex items-start gap-3">
+                    <span class="bg-blue-600 text-white text-[10px] px-2 py-0.5 rounded mt-0.5 whitespace-nowrap">치환 가능</span>
+                    <p>
+                        "이번 달은 배너가 필요 없는데..." 걱정하지 마세요.<br>
+                        월 제공 건수 중 <b class="text-white underline decoration-blue-500 decoration-2">2건은 아래 추가 옵션 항목(20만원 이하)으로 변경해서 제작</b>해 드립니다. <span class="text-slate-500">(홈페이지/상세페이지 등 고관여 제외)</span>
+                    </p>
+                </div>
+                <div class="h-px bg-white/10 w-full"></div>
+                <div class="flex items-start gap-3">
+                    <span class="bg-slate-600 text-white text-[10px] px-2 py-0.5 rounded mt-0.5 whitespace-nowrap">유효 기간</span>
+                    <p>
+                        디자인 퀄리티 유지를 위해 제공된 건수는 <b class="text-white">계약일 기준 3개월 내에 자유롭게 사용</b>하시면 됩니다. (이월 불가)
+                    </p>
+                </div>
+                <div class="h-px bg-white/10 w-full"></div>
+                <div class="flex items-start gap-3">
+                    <span class="bg-slate-600 text-white text-[10px] px-2 py-0.5 rounded mt-0.5 whitespace-nowrap">추가 비용</span>
+                    <p>
+                        3개월 이후 또는 무상 건수 초과 시에는 하단의 옵션 단가를 적용하여 별도의 비용이 발생됩니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-5xl mx-auto border-t border-slate-800 pt-10">
+            <details class="group bg-[#1c1c2e] rounded-xl border border-white/5 overflow-hidden transition-all duration-300">
+                <summary class="flex items-center justify-between p-4 cursor-pointer hover:bg-white/5 transition-colors">
+                    <div class="flex items-center gap-3">
+                        <span class="text-blue-500 font-bold text-lg">▼</span>
+                        <span class="text-slate-300 font-bold">추가 제작 옵션 및 단가표 전체 보기</span>
+                    </div>
+                    <span class="text-xs text-slate-500">(클릭하여 펼치기)</span>
+                </summary>
+                
+                <div class="p-6 bg-[#13141f] border-t border-white/5">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                         <div>
+                            <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-blue-500"></span> 브랜딩 & 인쇄물
+                            </h3>
+                            <div class="space-y-2 text-sm text-slate-400">
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>간단 로고 시안</span> <span class="text-blue-400">100,000</span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>고급 로고 시안</span> <span class="text-blue-400">500,000</span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>일반 명함 시안</span> <span class="text-blue-400">50,000</span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>고급 명함 시안</span> <span class="text-blue-400">100,000</span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>명찰 시안</span> <span class="text-blue-400">10,000</span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>대/소봉투</span> <span class="text-blue-400">30,000</span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>원내 서식류 (진료의뢰서 등)</span> <span class="text-blue-400">50,000</span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>주의사항 / 동의서 시안</span> <span class="text-blue-400">50,000</span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>X배너 / 현수막</span> <span class="text-blue-400">30,000</span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>리플렛 / 팜플렛 (접지)</span> <span class="text-blue-400">100,000~ (상이)</span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>쇼핑백 / 종이컵 / 부채</span> <span class="text-blue-400">100,000</span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>판촉물 (물티슈/라벨/스티커)</span> <span class="text-blue-400">30,000~50,000</span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>양력/약력/액자 시안</span> <span class="text-blue-400">100,000</span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>차트 시안</span> <span class="text-blue-400">100,000</span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>오프라인 달력 시안</span> <span class="text-blue-400">금액 상이</span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>옥외광고 (버스/지하철)</span> <span class="text-blue-400">200,000</span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>엘리베이터 디스플레이 시안</span> <span class="text-blue-400">100,000</span></div>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-purple-500"></span> 온라인 & 콘텐츠
+                            </h3>
+                            <div class="space-y-2 text-sm text-slate-400">
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>상세페이지 (Standard/5섹션)</span> <span class="text-purple-400">1,000,000</span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>상세페이지 (Deluxe/10섹션)</span> <span class="text-purple-400">1,500,000</span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>상세페이지 (Premium/기획포함)</span> <span class="text-purple-400">2,000,000</span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>블로그 스킨 시안 (PC/MB)</span> <span class="text-purple-400">150,000</span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>플레이스 세팅 시안</span> <span class="text-purple-400">100,000</span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>유튜브 세팅 (채널아트)</span> <span class="text-purple-400">100,000</span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>팝업 / 배너 / 섬네일</span> <span class="text-purple-400">20,000~</span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>카드뉴스 (슬라이드형)</span> <span class="text-purple-400">50,000</span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>치료 전후 케이스 (템플릿)</span> <span class="text-purple-400">10,000</span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>채용공고 시안</span> <span class="text-purple-400">100,000</span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>원내 사이니지 (DID) 1개</span> <span class="text-purple-400">20,000</span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>리사이징 추가 제작</span> <span class="text-purple-400">10,000</span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>시안 수정 (1회당)</span> <span class="text-purple-400">5,000</span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>인스타 피드 세팅</span> <span class="text-purple-400">100,000</span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>네이버 예약 시안</span> <span class="text-purple-400">10,000</span></div>
+                                <div class="flex justify-between border-b border-white/5 pb-2"><span>포스팅 의료법 시안</span> <span class="text-purple-400">5,000</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </details>
+            
+            <p class="text-[10px] text-slate-700 mt-8 mb-12">© 2025 GROUP-D. All rights reserved. (VAT 별도)</p>
+        </div>
+
+    </main>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 800, once: true, offset: 50, easing: 'ease-out-cubic' });
+    </script>
+</body>
+</html>

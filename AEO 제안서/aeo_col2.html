@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OO OOOO치과 OOO 원장의 앞니 파절 솔루션. 자체 기공실을 통한 지르코니아 보철과 심미 수복물의 미학.">
+    <title>The Art of Restorative Dentistry | OOOO치과</title>
+
+    <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+
+    <style>
+        :root {
+            --bg-color: #0c0c0c;
+            --accent-gold: #b59a6d;
+            /* 차분하고 고급스러운 샴페인 골드 */
+            --soft-gold: #d4c097;
+            --text-primary: #e5e5e5;
+            --text-secondary: #999;
+            --border-color: rgba(181, 154, 109, 0.2);
+            --font-main: 'Pretendard', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            line-height: 1.9;
+            overflow-x: hidden;
+            word-break: keep-all;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #0c0c0c 100%);
+        }
+
+        .hero-label {
+            font-size: 0.9rem;
+            letter-spacing: 0.5em;
+            color: var(--accent-gold);
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.8rem);
+            font-weight: 700;
+            line-height: 1.25;
+            margin-bottom: 35px;
+            letter-spacing: -0.03em;
+        }
+
+        .hero-bar {
+            width: 1px;
+            height: 100px;
+            background: linear-gradient(to bottom, var(--accent-gold), transparent);
+        }
+
+        /* Container & Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+            gap: 100px;
+            margin-bottom: 180px;
+        }
+
+        .row.reverse {
+            flex-direction: row-reverse;
+        }
+
+        .text-wrap {
+            flex: 1.1;
+        }
+
+        .img-wrap {
+            flex: 0.9;
+            position: relative;
+        }
+
+        /* Image Styling */
+        .img-wrap img {
+            width: 100%;
+            display: block;
+            border-radius: 2px;
+            filter: brightness(0.9) contrast(1.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .img-frame {
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            right: 15px;
+            bottom: 15px;
+            border: 1px solid var(--border-color);
+            z-index: -1;
+        }
+
+        /* Typography */
+        .label-sm {
+            color: var(--accent-gold);
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        h2 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            margin-bottom: 35px;
+            line-height: 1.35;
+            letter-spacing: -0.02em;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            color: var(--soft-gold);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        p {
+            font-size: 1.05rem;
+            font-weight: 300;
+            color: #bbb;
+            margin-bottom: 28px;
+            text-align: justify;
+        }
+
+        .highlight {
+            color: #fff;
+            font-weight: 500;
+            border-bottom: 1px solid var(--accent-gold);
+        }
+
+        /* In-house Lab */
+        .lab-section {
+            background-color: #080808;
+            padding: 150px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .lab-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-top: 50px;
+        }
+
+        .lab-item {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lab-item img {
+            width: 100%;
+            transition: transform 1.5s ease;
+            filter: grayscale(20%);
+        }
+
+        .lab-item:hover img {
+            transform: scale(1.05);
+            filter: grayscale(0%);
+        }
+
+        .lab-info {
+            padding: 20px 0;
+            font-size: 0.85rem;
+            color: var(--accent-gold);
+            letter-spacing: 0.1em;
+        }
+
+        /* Table */
+        .table-box {
+            margin: 40px 0;
+            border-top: 1px solid var(--accent-gold);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+        }
+
+        th,
+        td {
+            padding: 22px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.95rem;
+        }
+
+        th {
+            color: var(--accent-gold);
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        .wish-cell {
+            background: rgba(181, 154, 109, 0.05);
+            color: #fff;
+        }
+
+        /* Footer */
+        .closing {
+            text-align: center;
+            padding: 150px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 22px 60px;
+            border: 1px solid var(--accent-gold);
+            color: var(--accent-gold);
+            text-decoration: none;
+            font-size: 0.95rem;
+            letter-spacing: 0.2em;
+            transition: 0.4s;
+        }
+
+        .cta-btn:hover {
+            background: var(--accent-gold);
+            color: #000;
+        }
+
+        footer {
+            padding: 100px 20px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #444;
+            letter-spacing: 0.05em;
+        }
+
+        img {
+            filter: blur(8px);
+        }
+
+        /* Global Blur */
+        @media (max-width: 1024px) {
+
+            .row,
+            .row.reverse {
+                flex-direction: column;
+                gap: 60px;
+                text-align: center;
+            }
+
+            .section {
+                padding: 100px 20px;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+    <style>
+        img {
+            filter: blur(8px) !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="hero">
+        <span class="hero-label" data-aos="fade-down">OOOO OOOOO AESTHETIC</span>
+        <h1 data-aos="fade-up" data-aos-duration="1200">앞니 치아 파절의 재건과<br><span style="color:var(--accent-gold)">지르코니아 심미
+                수복</span>의 본질</h1>
+        <div class="hero-bar"></div>
+    </section>
+
+    <main class="container">
+
+        <section class="row">
+            <div class="text-wrap" data-aos="fade-right">
+                <span class="label-sm">DIRECTOR'S LETTER</span>
+                <h2>당신의 소망을 디자인하는<br>의사 <span class="gold">OOO</span>입니다.</h2>
+                <p>생활을 하다 보면 예기치 않게 치아에 충격이 가해지는 일이 종종 발생하곤 합니다. 딱딱한 물체를 잘못 씹거나 넘어지는 사고 등으로 인해 병원을 찾는 경우가 많습니다.</p>
+                <p>이처럼 외부의 충격으로 인해 자연치의 일부가 깨지는 현상을 <span class="highlight">치아 파절</span>이라고 부릅니다. 특히 우리 구강의 정면에 위치한 앞니는
+                    돌출된 구조적 특성상 손상될 위험이 상대적으로 높습니다.</p>
+                <p>이가 깨졌다고 해서 꼭 치료를 해야 되는 것일까요? 사실 모든 경우에 보철 치료가 필요하다고 보기는 어렵습니다. 저는 개인적으로 파절의 범위와 심도, 그리고 안면의 조화를 종합적으로
+                    고려해야 한다고 생각합니다.</p>
+            </div>
+            <div class="img-wrap" data-aos="fade-left">
+                <div class="img-frame"></div>
+                <img src="doctor.jpg" alt="OOO 대표원장">
+            </div>
+        </section>
+
+        <section class="row reverse">
+            <div class="text-wrap" data-aos="fade-left">
+                <span class="label-sm">THERAPY STANDARD</span>
+                <h3>01. 파절의 범위와 심도</h3>
+                <p>자연치 겉면의 얇은 층만 살짝 깨진 경우라면 날카로운 부분만 다듬고 경과를 지켜보는 것으로도 충분합니다. 하지만 범위가 넓거나 신경과 가까운 곳까지 손상이 진행되었다면 OO
+                    치과에서는 치아를 보호하고 기능을 회복하기 위해 <span class="highlight">보강관</span> 치료와 같은 적극적인 조치를 제안합니다.</p>
+
+                <h3 style="margin-top: 50px;">02. 심미 비율과 조화</h3>
+                <p>특히 앞니를 치료할 때는 단순히 깨진 곳을 메우는 것을 넘어 얼굴과의 조화를 봐야 합니다. 이때 중요하게 고려하는 요소가 바로 <span class="gold">'폭과 길이의
+                        비율'</span>입니다. 한국인에게 가장 이상적인 앞니의 비율은 <span class="highlight">약 80~85%</span> 정도입니다. 0.1mm의 미세한
+                    차이로도 인상이 크게 달라질 수 있어 정교한 분석이 선행되어야 합니다.</p>
+            </div>
+            <div class="img-wrap" data-aos="fade-right">
+                <div class="img-frame"></div>
+                <img src="0.jpg" alt="치아 파절 심미 분석 사례">
+                <p style="font-size: 0.8rem; color: #555; margin-top: 15px; font-weight: 300;">CASE 20251011 — Anterior
+                    Esthetic Analysis</p>
+            </div>
+        </section>
+
+    </main>
+
+    <section class="lab-section">
+        <div class="container">
+            <div class="row" style="margin-bottom: 0;">
+                <div class="text-wrap" data-aos="fade-right">
+                    <span class="label-sm">IN-HOUSE DIGITAL LAB</span>
+                    <h2>원내 기공소의 <span class="gold">정밀함</span></h2>
+                    <p>OOOO치과는 외부 기공소 위탁이 아닌, 원내 상주 기공진과의 실시간 소통을 통해 보철물을 완성합니다. 깐깐한 원장의 검수를 통과할 때까지 반복되는 정밀 공정은 오직 한
+                        분만을 위한 <span class="highlight">심미 수복물</span>의 품격을 증명합니다.</p>
+                    <p>디지털 쉐이드 매칭과 현미경 시스템을 통해 주변 치아와의 조화를 완벽하게 구현합니다.</p>
+                </div>
+                <div class="img-wrap">
+                    <div class="lab-grid">
+                        <div class="lab-item" data-aos="zoom-in">
+                            <img src="3.jpg" alt="원내 기공실 시스템">
+                            <div class="lab-info">DIGITAL MILLING</div>
+                        </div>
+                        <div class="lab-item" data-aos="zoom-in" data-aos-delay="200">
+                            <img src="4.jpg" alt="기공사 정밀 작업">
+                            <div class="lab-info">MASTER CRAFTSMAN</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="container" style="margin-top: 180px;">
+
+        <section class="row">
+            <div class="text-wrap" data-aos="fade-right">
+                <span class="label-sm">MATERIAL & PROCESS</span>
+                <h3>03. 재료의 선택과 강도</h3>
+                <p>심미성과 기능성을 동시에 만족시켜야 하는 상황에서는 <span class="highlight">지르코니아 보철</span>이 최적의 대안입니다. 과거 금속 재료의 부자연스러움을
+                    보완하여 강도가 우수하면서도 자연치와 유사한 빛 투과율을 자랑합니다.</p>
+
+                <div class="table-box">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>DETAIL</th>
+                                <th>ORDINARY</th>
+                                <th class="wish-cell">WISH-NATE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>삭제량</td>
+                                <td>0.5mm 이상</td>
+                                <td class="wish-cell">무삭제 또는 최소화</td>
+                            </tr>
+                            <tr>
+                                <td>내구성</td>
+                                <td>파손 위험 상존</td>
+                                <td class="wish-cell">고강도 지르코니아</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p style="font-size: 0.95rem; margin-top: 30px;">만일 치수가 드러날 정도로 손상이 크다면 신경치료를 선행한 후, 약해진 치아 전체를 <span
+                        class="highlight">보강관</span>으로 보호하여 추가 파절을 예방합니다.</p>
+            </div>
+            <div class="img-wrap" data-aos="fade-left">
+                <div class="img-frame"></div>
+                <img src="2.jpg" alt="치료 완료 결과">
+                <p style="font-size: 0.8rem; color: #555; margin-top: 15px; font-weight: 300;">RESULT 20251122 — Final
+                    Restoration</p>
+            </div>
+        </section>
+
+        <section class="closing" data-aos="fade-up">
+            <span class="label-sm">MESSAGE</span>
+            <h2 class="gold">마지막 한마디</h2>
+            <p>방치할수록 손상 범위가 커질 수 있으므로 알맞은 시기에 검진을 받는 것이 중요합니다. 특히 앞니는 대화하거나 웃을 때 가장 먼저 보이는 부분이기에 심리적 자신감과 직결됩니다.</p>
+            <p>정확한 진단과 체계적인 계획으로 충분히 기능을 회복하고 심미성을 되찾을 수 있습니다. 환자의 자연치를 소중히 생각하는 마음으로, 오랫동안 건강하게 사용하실 수 있도록 최선을 다하겠습니다.
+            </p>
+            <p style="margin-top: 50px; font-weight: 600;" class="gold">OOOO치과 대표원장 OOO 배상</p>
+            <div style="margin-top: 60px;">
+                <a href="javascript:void(0)" class="cta-btn" style="cursor: default;">PRIVATE CONSULTING</a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>OOOO OOOOO DENTAL CLINIC | OO OO구 OOOO OOO OOOOO</p>
+        <p style="margin-top: 15px; color: #333;">본 페이지는 의료법 제56조 1항을 준수하여 작성되었습니다. | &copy; 2025 OOOO OOOOO</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true,
+            easing: 'ease-in-out'
+        });
+    </script>
+</body>
+
+</html>

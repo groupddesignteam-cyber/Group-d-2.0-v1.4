@@ -1,0 +1,2381 @@
+﻿<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GROUP-D 2.0 Strategy Proposal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/aeo_proposal.css">
+    <style>
+        body {
+            font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+        }
+
+        /* Reveal Animation Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Highlighter Animation */
+        .highlight-text {
+            background: linear-gradient(120deg, rgba(6, 182, 212, 0) 0%, rgba(6, 182, 212, 0) 100%);
+            background-repeat: no-repeat;
+            background-size: 100% 40%;
+            background-position: 0 88%;
+            transition: background 1s ease-in-out;
+        }
+
+        .reveal.active .highlight-text {
+            background: linear-gradient(120deg, rgba(6, 182, 212, 0.4) 0%, rgba(6, 182, 212, 0.4) 100%);
+            background-repeat: no-repeat;
+            background-size: 100% 40%;
+            background-position: 0 88%;
+        }
+
+        /* Stagger Delays */
+        .delay-100 {
+            transition-delay: 0.1s;
+        }
+
+        .delay-200 {
+            transition-delay: 0.2s;
+        }
+
+        .delay-300 {
+            transition-delay: 0.3s;
+        }
+
+        .delay-400 {
+            transition-delay: 0.4s;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0B0F19;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #06b6d4;
+        }
+
+        /* Background Glows */
+        .glow-blob {
+            position: absolute;
+            filter: blur(80px);
+            opacity: 0.3;
+            z-index: 0;
+            pointer-events: none;
+            will-change: transform;
+        }
+
+        /* Document Style (Health Center Letter) */
+        .doc-paper {
+            background: #fff;
+            color: #000;
+            padding: 30px;
+            font-family: 'Nanum Myeongjo', serif;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            position: relative;
+            border: 1px solid #e2e8f0;
+        }
+
+        .doc-paper::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: #ef4444;
+        }
+
+        /* Chat Bubble Style */
+        .chat-bubble-left {
+            position: relative;
+            background: #ffffff;
+            color: #000000;
+            border-radius: 0px 12px 12px 12px;
+            padding: 12px 16px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .chat-bubble-left::before {
+            content: "";
+            position: absolute;
+            left: -8px;
+            top: 0;
+            width: 8px;
+            height: 12px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 12'%3E%3Cpath d='M8 0v12L0 0h8z' fill='%23ffffff'/%3E%3C/svg%3E") no-repeat;
+        }
+
+        .chat-profile {
+            width: 40px;
+            height: 40px;
+            border-radius: 14px;
+            background-color: #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #475569;
+            font-size: 0.8rem;
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Report Specific Styles */
+        .bar-bg {
+            background-color: #f1f5f9;
+            border-radius: 9999px;
+            height: 0.5rem;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 9999px;
+            transition: width 1s ease-in-out;
+        }
+
+        /* Chat Sequence Animation */
+        .chat-box .space-y-6>div {
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active.chat-box .space-y-6>div {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .reveal.active.chat-box .space-y-6>div:nth-child(1) {
+            transition-delay: 0.3s;
+        }
+
+        .reveal.active.chat-box .space-y-6>div:nth-child(2) {
+            transition-delay: 0.8s;
+        }
+
+        .reveal.active.chat-box .space-y-6>div:nth-child(3) {
+            transition-delay: 1.3s;
+        }
+
+        .reveal.active.chat-box .space-y-6>div:nth-child(4) {
+            transition-delay: 1.8s;
+        }
+
+        /* Report 2.0 Styles */
+        .report-slide {
+            background-color: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Pretendard', sans-serif;
+            color: #334155;
+        }
+
+        .report-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 0.75rem;
+        }
+
+        .report-title-lg {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #1e293b;
+            letter-spacing: -0.025em;
+        }
+
+        .report-card {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            padding: 0.75rem;
+        }
+
+        /* Context7 Design System */
+        /* 배경: 다크 네이비 통합 배경 */
+        .bg-deep-dark {
+            background-color: #0B0C15;
+            background-image:
+                radial-gradient(circle at 15% 20%, rgba(16, 185, 129, 0.04) 0%, transparent 40%),
+                radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.04) 0%, transparent 40%),
+                radial-gradient(circle at 50% 80%, rgba(168, 85, 247, 0.04) 0%, transparent 40%),
+                radial-gradient(circle at 50% 0%, #1a1b2e 0%, #0B0C15 80%);
+            min-height: 100vh;
+        }
+
+        /* 텍스트 그라데이션 */
+        .text-gradient-main {
+            background: linear-gradient(to right, #34D399, #3B82F6, #A78BFA);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* 공통 카드 스타일 (Glassmorphism) */
+        .card-dark {
+            background-color: rgba(19, 20, 31, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-dark:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* 호버 컬러 베리에이션 */
+        .hover-blue:hover {
+            border-color: rgba(96, 165, 250, 0.6);
+            box-shadow: 0 10px 30px -10px rgba(59, 130, 246, 0.3);
+        }
+
+        .hover-green:hover {
+            border-color: rgba(52, 211, 153, 0.6);
+            box-shadow: 0 10px 30px -10px rgba(16, 185, 129, 0.3);
+        }
+
+        .hover-purple:hover {
+            border-color: rgba(168, 85, 247, 0.6);
+            box-shadow: 0 10px 30px -10px rgba(168, 85, 247, 0.3);
+        }
+
+        .hover-cyan:hover {
+            border-color: rgba(34, 211, 238, 0.6);
+            box-shadow: 0 10px 30px -10px rgba(34, 211, 238, 0.3);
+        }
+
+        /* 섹션 구분선 */
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
+            margin: 80px 0;
+        }
+
+        /* 펄스 애니메이션 */
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+            }
+        }
+
+        .animate-pulse-glow {
+            animation: pulse-glow 2s infinite;
+        }
+    </style>
+</head>
+
+<body class="bg-deep-dark text-white overflow-x-hidden selection:bg-cyan-500 selection:text-white">
+
+    <nav class="fixed top-0 w-full z-50 bg-[#0B0F19]/80 backdrop-blur-lg border-b border-white/5 transition-all duration-300"
+        id="navbar">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="text-xl font-black tracking-tighter cursor-pointer" onclick="window.scrollTo(0,0)">GROUP-D<span
+                    class="text-cyan-400">2.0</span></div>
+            <div class="hidden md:flex gap-6 text-sm font-medium text-slate-400 overflow-x-auto">
+                <a href="#intro" class="hover:text-white transition-colors whitespace-nowrap">Intro</a>
+                <a href="#system" class="hover:text-white transition-colors whitespace-nowrap">System</a>
+                <a href="#content-direction"
+                    class="hover:text-white transition-colors text-cyan-400 whitespace-nowrap font-bold">BLOG</a>
+                <a href="#design-voc"
+                    class="hover:text-white transition-colors text-pink-400 whitespace-nowrap font-bold">DESIGN</a>
+                <a href="#video-voc"
+                    class="hover:text-white transition-colors text-purple-400 whitespace-nowrap font-bold">VIDEO</a>
+                <a href="#ad-shift" class="hover:text-white transition-colors text-red-400 whitespace-nowrap">Ads</a>
+                <a href="#policy" class="hover:text-white transition-colors whitespace-nowrap">Policy</a>
+                <a href="#contact"
+                    class="px-4 py-2 bg-cyan-600 rounded-full text-white hover:bg-cyan-500 transition-all font-bold tracking-wider whitespace-nowrap">CONTACT</a>
+            </div>
+        </div>
+    </nav>
+
+
+
+    <section id="intro" class="min-h-screen flex flex-col justify-center items-center relative pt-20 overflow-hidden">
+        <div class="glow-blob bg-blue-600 w-96 h-96 rounded-full top-0 left-[-100px] animate-pulse"></div>
+        <div class="glow-blob bg-cyan-500 w-[500px] h-[500px] rounded-full bottom-[-100px] right-[-100px] opacity-20">
+        </div>
+
+        <div class="relative z-10 text-center px-4 max-w-6xl mx-auto flex flex-col items-center">
+
+            <div class="reveal mb-6">
+                <span
+                    class="px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-slate-300 text-sm font-bold tracking-[0.2em] uppercase backdrop-blur-md">Next
+                    Generation Marketing</span>
+            </div>
+
+            <div class="reveal delay-100 relative">
+                <h1 class="text-6xl md:text-9xl font-black mb-4 leading-none tracking-tighter relative z-10">
+                    <span
+                        class="block text-slate-600 text-4xl md:text-6xl mb-2 opacity-50 tracking-normal">EVOLUTION</span>
+                    GROUP-D <span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 animate-float inline-block">2.0</span>
+                </h1>
+            </div>
+
+            <p
+                class="reveal delay-200 text-xl md:text-3xl text-slate-300 font-light mt-8 mb-12 max-w-3xl mx-auto leading-relaxed">
+                지시받던 대행사에서,<br>
+                <span class="font-bold text-white border-b-2 border-cyan-500">먼저 제안하는 파트너</span>로 진화합니다.
+            </p>
+
+            <div class="reveal delay-300 flex items-center justify-center gap-2 text-sm text-slate-500 mb-8">
+                <span class="w-1.5 h-1.5 bg-cyan-500 rounded-full animate-ping"></span>
+                <span>2025 Strategy Upgrade Completed</span>
+            </div>
+
+            <div class="reveal delay-400 text-xs text-slate-500 font-medium tracking-wider uppercase opacity-60">
+                Trusted by 50+ Premium Clinics
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-[#0B0F19] relative z-20 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <span class="text-cyan-500 font-bold tracking-widest text-sm uppercase mb-2 block">GROUP D 2.0</span>
+                <h2 class="text-3xl md:text-4xl font-black text-white">"병원 마케팅의 <span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">3대 핵심
+                        경쟁력</span>"</h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <a href="#core-pm"
+                    class="group reveal card-dark rounded-3xl p-8 hover-cyan flex flex-col justify-between h-full">
+                    <div>
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-3xl mb-6 group-hover:bg-cyan-500/20 group-hover:text-cyan-400 transition-colors">
+                            🤝
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">1. PM 전담 체제</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                            "여기저기 전화하지 마세요."<br>
+                            기획자(PM) 1명이 모든 소통을 전담하여<br>병원 히스토리와 브랜드톤을 완벽히 관리합니다.
+                        </p>
+                    </div>
+                    <span
+                        class="text-cyan-500 text-xs font-bold flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">
+                        자세히 보기 <i class="fas fa-arrow-right"></i>
+                    </span>
+                </a>
+
+                <a href="#core-report"
+                    class="group reveal delay-100 card-dark rounded-3xl p-8 hover-blue flex flex-col justify-between h-full">
+                    <div>
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-3xl mb-6 group-hover:bg-blue-500/20 group-hover:text-blue-400 transition-colors">
+                            📈
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">2. 종합 성과 리포트</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                            "단순 영수증이 아닙니다."<br>
+                            매출 기여도, 예약 전환율, 브랜드 성장 지표를<br>한눈에 파악하는 '경영 전략 리포트'입니다.
+                        </p>
+                    </div>
+                    <span
+                        class="text-blue-500 text-xs font-bold flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">
+                        자세히 보기 <i class="fas fa-arrow-right"></i>
+                    </span>
+                </a>
+
+                <a href="#core-aeo"
+                    class="group reveal delay-200 card-dark rounded-3xl p-8 hover-purple flex flex-col justify-between h-full">
+                    <div>
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-3xl mb-6 group-hover:bg-purple-500/20 group-hover:text-purple-400 transition-colors">
+                            🤖
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">3. AEO 콘텐츠</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                            "상위노출 그 이상을 봅니다."<br>
+                            AI(ChatGPT, Cue:)가 답변하기 좋은 구조로<br>환자의 질문을 선점하는 차세대 콘텐츠입니다.
+                        </p>
+                    </div>
+                    <span
+                        class="text-purple-500 text-xs font-bold flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">
+                        자세히 보기 <i class="fas fa-arrow-right"></i>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="core-pm" class="py-32 relative flex flex-col items-center justify-center overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 relative z-10 w-full flex flex-col items-center">
+
+            <div class="text-center mb-16 relative z-10 reveal">
+                <span
+                    class="inline-block px-3 py-1 rounded-full border border-cyan-500/30 bg-cyan-900/20 text-cyan-400 text-xs font-bold tracking-widest mb-4">CORE
+                    01. CONTROL TOWER</span>
+                <h3 class="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter">
+                    PM 전담 체제
+                </h3>
+                <p class="text-slate-300 font-medium text-lg md:text-xl leading-relaxed max-w-3xl mx-auto">
+                    "담당자가 바뀌어서 처음부터 다시 설명하셨나요?"<br>
+                    <span class="text-cyan-400 font-bold">전담 PM</span>이 병원의 히스토리를 아카이빙하고,<br>
+                    브랜드 톤앤매너가 흔들리지 않도록 <span class="text-white border-b border-cyan-500">중심을 잡습니다.</span>
+                </p>
+            </div>
+
+            <div
+                class="reveal mb-24 bg-gradient-to-r from-blue-900/40 to-slate-900/40 rounded-2xl p-8 border border-blue-500/30 max-w-4xl mx-auto text-center backdrop-blur-md">
+                <h3 class="text-xl md:text-2xl font-bold text-white mb-8">
+                    "복잡한 소통 비용 <span class="text-cyan-400">Zero</span>"
+                </h3>
+                <div class="flex flex-col md:flex-row justify-center items-center gap-6 text-sm md:text-base">
+                    <div
+                        class="flex items-center gap-3 bg-white/5 px-6 py-4 rounded-xl border border-white/10 w-full md:w-auto justify-center">
+                        <span class="text-slate-400">원장님</span>
+                        <i class="fas fa-arrow-right text-slate-600"></i>
+                        <span class="text-white font-bold">전담 PM (1명)</span>
+                        <i class="fas fa-arrow-right text-slate-600"></i>
+                        <span class="text-slate-400">기획/디자인/영상/개발팀</span>
+                    </div>
+                </div>
+            </div>
+            <div class="reveal mt-24 max-w-md mx-auto relative group">
+                <div
+                    class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200">
+                </div>
+                <div class="relative bg-[#0F1522] ring-1 ring-white/10 rounded-2xl p-8 shadow-2xl">
+
+                    <div class="text-center mb-8 pb-8 border-b border-white/5">
+                        <span
+                            class="inline-block px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs font-bold tracking-widest border border-blue-500/20 mb-3">NEW
+                            SYSTEM</span>
+                        <h2 class="text-3xl font-black text-white tracking-tight">GROUP D 2.0</h2>
+                    </div>
+
+                    <div class="space-y-6 text-center">
+                        <h3 class="text-xl font-bold text-cyan-400">PM & CREATIVE</h3>
+                        <p class="text-slate-300 text-lg leading-relaxed">
+                            압도적인 <strong class="text-white bg-blue-600/20 px-1 rounded">퀄리티</strong>를 만듭니다."
+                        </p>
+
+
+                        <details
+                            class="group/details bg-slate-900/50 rounded-xl overflow-hidden border border-white/5 open:bg-slate-900/80 transition-all">
+                            <summary
+                                class="flex items-center justify-center gap-2 p-4 cursor-pointer text-sm font-bold text-slate-400 hover:text-white transition-colors list-none select-none">
+                                <span>더 보기 (System Detail)</span>
+                                <i class="fas fa-chevron-down group-open/details:rotate-180 transition-transform"></i>
+                            </summary>
+                            <ul
+                                class="text-left px-6 pb-6 space-y-4 text-sm text-slate-400 border-t border-white/5 pt-4">
+                                <li class="flex gap-3">
+                                    <div class="mt-0.5 w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0"></div>
+                                    <div>
+                                        <strong class="text-white block mb-0.5">PM Team (Shield)</strong>
+                                        기획 및 커뮤니케이션 전담,<br>불필요한 노이즈 차단
+                                    </div>
+                                </li>
+                                <li class="flex gap-3">
+                                    <div class="mt-0.5 w-1.5 h-1.5 rounded-full bg-cyan-500 shrink-0"></div>
+                                    <div>
+                                        <strong class="text-white block mb-0.5">Creative Team
+                                            (Focus)</strong>
+                                        단순 반복 지양,<br>최대 역량으로 결과물 퀄리티 집중
+                                    </div>
+                                </li>
+                            </ul>
+                        </details>
+                    </div>
+
+                    <div class="mt-8 pt-6 border-t border-white/5 text-center">
+                        <small class="text-slate-500 text-xs font-bold tracking-widest uppercase">Strategy
+                            Planning Division</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="reveal delay-100 flex flex-col items-center justify-center mb-16">
+            <div class="w-px h-16 bg-gradient-to-b from-slate-800 to-cyan-500/50"></div>
+            <div
+                class="w-8 h-8 rounded-full border-2 border-cyan-500/50 flex items-center justify-center text-cyan-400 animate-bounce bg-[#0B0F19] z-10">
+                <i class="fas fa-arrow-down"></i>
+            </div>
+            <div class="w-px h-16 bg-gradient-to-b from-cyan-500/50 to-cyan-500"></div>
+        </div>
+
+        <div class="reveal delay-200 relative w-full max-w-6xl mx-auto">
+            <div
+                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-900/20 rounded-full blur-[100px] animate-pulse">
+            </div>
+
+            <div class="relative z-10 card-dark rounded-[3rem] p-8 md:p-16 overflow-hidden shadow-2xl">
+                <div class="absolute inset-0 opacity-10"
+                    style="background-image: radial-gradient(#22d3ee 1px, transparent 1px); background-size: 30px 30px;">
+                </div>
+
+                <div class="relative flex flex-col md:flex-row items-center justify-center gap-12 md:gap-24 mb-16">
+
+                    <div class="flex flex-col gap-6 w-full md:w-auto z-20">
+                        <div
+                            class="group flex items-center gap-4 bg-slate-900/80 border border-slate-700 p-4 pr-8 rounded-2xl hover:border-cyan-500/50 transition-all hover:translate-x-2 cursor-default backdrop-blur-md shadow-lg">
+                            <div
+                                class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-cyan-400 font-bold text-base border border-slate-700 group-hover:bg-cyan-950 group-hover:text-cyan-300 transition-colors">
+                                01</div>
+                            <span class="font-bold text-slate-200 text-lg">마케팅 기획</span>
+                        </div>
+                        <div
+                            class="group flex items-center gap-4 bg-slate-900/80 border border-slate-700 p-4 pr-8 rounded-2xl hover:border-cyan-500/50 transition-all hover:translate-x-2 cursor-default backdrop-blur-md shadow-lg">
+                            <div
+                                class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-cyan-400 font-bold text-base border border-slate-700 group-hover:bg-cyan-950 group-hover:text-cyan-300 transition-colors">
+                                02</div>
+                            <span class="font-bold text-slate-200 text-lg">데이터 분석</span>
+                        </div>
+                        <div
+                            class="group flex items-center gap-4 bg-slate-900/80 border border-slate-700 p-4 pr-8 rounded-2xl hover:border-cyan-500/50 transition-all hover:translate-x-2 cursor-default backdrop-blur-md shadow-lg">
+                            <div
+                                class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-cyan-400 font-bold text-base border border-slate-700 group-hover:bg-cyan-950 group-hover:text-cyan-300 transition-colors">
+                                03</div>
+                            <span class="font-bold text-slate-200 text-lg">콘텐츠 제작</span>
+                        </div>
+                    </div>
+
+                    <div class="relative z-30 shrink-0">
+                        <div
+                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] border border-cyan-500/10 rounded-full animate-[spin_10s_linear_infinite]">
+                        </div>
+                        <div
+                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[240px] h-[240px] border border-dashed border-cyan-500/20 rounded-full animate-[spin_15s_linear_infinite_reverse]">
+                        </div>
+
+                        <div
+                            class="w-48 h-48 rounded-full bg-slate-900 border-2 border-cyan-400 relative flex flex-col items-center justify-center shadow-[0_0_50px_rgba(34,211,238,0.3)] z-10 group hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-cyan-400/5 rounded-full animate-pulse"></div>
+                            <span class="text-xs font-bold text-cyan-200 uppercase tracking-wider mb-1">Control
+                                Tower</span>
+                            <span
+                                class="text-5xl font-black text-white tracking-tight mb-1 group-hover:text-cyan-300 transition-colors">PM</span>
+                            <span
+                                class="bg-cyan-900/50 text-cyan-300 text-[10px] font-bold px-2 py-0.5 rounded border border-cyan-500/30">총괄
+                                책임자</span>
+                        </div>
+
+                        <div
+                            class="hidden md:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[2px] bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent -z-10">
+                        </div>
+                        <div
+                            class="hidden md:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[2px] h-[400px] bg-gradient-to-b from-transparent via-cyan-500/20 to-transparent -z-10">
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-6 w-full md:w-auto z-20">
+                        <div
+                            class="group flex flex-row-reverse md:flex-row items-center gap-4 bg-slate-900/80 border border-slate-700 p-4 pl-8 md:pl-4 md:pr-8 rounded-2xl hover:border-cyan-500/50 transition-all hover:-translate-x-2 cursor-default backdrop-blur-md shadow-lg">
+                            <div
+                                class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-cyan-400 font-bold text-base border border-slate-700 group-hover:bg-cyan-950 group-hover:text-cyan-300 transition-colors">
+                                04</div>
+                            <span class="font-bold text-slate-200 text-lg">의료법 검수</span>
+                        </div>
+                        <div
+                            class="group flex flex-row-reverse md:flex-row items-center gap-4 bg-slate-900/80 border border-slate-700 p-4 pl-8 md:pl-4 md:pr-8 rounded-2xl hover:border-cyan-500/50 transition-all hover:-translate-x-2 cursor-default backdrop-blur-md shadow-lg">
+                            <div
+                                class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-cyan-400 font-bold text-base border border-slate-700 group-hover:bg-cyan-950 group-hover:text-cyan-300 transition-colors">
+                                05</div>
+                            <span class="font-bold text-slate-200 text-lg">폐쇄몰 운영</span>
+                        </div>
+                        <div
+                            class="group flex flex-row-reverse md:flex-row items-center gap-4 bg-slate-900/80 border border-slate-700 p-4 pl-8 md:pl-4 md:pr-8 rounded-2xl hover:border-cyan-500/50 transition-all hover:-translate-x-2 cursor-default backdrop-blur-md shadow-lg">
+                            <div
+                                class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-cyan-400 font-bold text-base border border-slate-700 group-hover:bg-cyan-950 group-hover:text-cyan-300 transition-colors">
+                                06</div>
+                            <span class="font-bold text-slate-200 text-lg">채널 세팅</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center relative z-10 max-w-3xl mx-auto">
+                    <p class="text-slate-400 text-base md:text-lg leading-relaxed">
+                        <strong class="text-white">PM은 단순 메신저가 아닙니다.</strong><br>
+                        기획, 디자인, 영상, 개발 파트를 조율하며<br>
+                        <span class="text-cyan-400">병원의 성공을 위한 최적의 전략</span>을 실행합니다.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="core-report" class="py-24 relative overflow-hidden border-t border-white/5">
+        <div
+            class="glow-blob bg-blue-900/20 w-[800px] h-[800px] rounded-full top-1/2 left-3/4 -translate-x-1/2 -translate-y-1/2 blur-3xl opacity-50">
+        </div>
+
+        <div class="max-w-[1600px] mx-auto px-6 relative z-10">
+            <div class="text-center mb-16 reveal">
+                <span class="text-cyan-500 font-bold tracking-widest text-sm uppercase mb-4 block">CORE 02. ASSET
+                    VALUE</span>
+                <h2 class="text-3xl md:text-5xl font-black text-white mb-4">"마케팅 비용은 <span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-400">자산</span>으로
+                    남아야 합니다"</h2>
+                <p class="text-slate-400 text-lg max-w-3xl mx-auto">단순히 '얼마 썼다'는 지출 내역서가 아닙니다.<br>우리 병원의 브랜드 가치가 얼마나
+                    성장했는지 증명하는 <strong class="text-white">자산 평가서</strong>입니다.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-stretch">
+                <div class="reveal flex flex-col">
+                    <div class="text-center mb-10">
+                        <span class="text-red-500 font-bold tracking-widest text-sm uppercase mb-2 block">AS-IS :
+                            RISK</span>
+                        <h3 class="text-2xl md:text-3xl font-bold text-slate-400">"돈이 어디로 샜는지 모르는 <span
+                                class="text-red-500 decoration-red-500/30 underline-offset-4 underline">깜깜이 보고서</span>"
+                        </h3>
+                        <p class="text-slate-500 mt-4 leading-relaxed">"광고비 300만원 썼습니다." 끝?<br>단순 지출 내역 통보는 마케팅 보고서가
+                            아닙니다.</p>
+                    </div>
+
+                    <div class="relative max-w-xl mx-auto w-full flex-1 flex flex-col justify-center">
+                        <div
+                            class="relative rounded-2xl overflow-hidden border-2 border-slate-800 bg-slate-900 group shadow-2xl">
+                            <img src="images/old-report.jpg" alt="기존 보고서"
+                                class="w-full opacity-50 grayscale blur-sm group-hover:grayscale-0 group-hover:opacity-80 transition-all duration-700">
+
+                            <div
+                                class="absolute inset-0 flex flex-col items-center justify-center p-6 bg-black/40 backdrop-blur-[2px] group-hover:backdrop-blur-none transition-all duration-500">
+                                <div
+                                    class="bg-red-600/90 text-white px-6 py-3 rounded-full font-bold text-lg shadow-lg mb-4 backdrop-blur-md transform group-hover:scale-110 transition-transform">
+                                    <i class="fas fa-exclamation-triangle mr-2"></i>성과 분석 부재
+                                </div>
+                                <p
+                                    class="text-slate-200 font-medium text-center opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-4 group-hover:translate-y-0 duration-500">
+                                    "어떤 키워드에서 환자가 왔는지,<br>전환율은 얼마인지 알 수 없습니다."
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal delay-200 flex flex-col">
+                    <div class="text-center mb-10">
+                        <span class="text-cyan-500 font-bold tracking-widest text-sm uppercase mb-2 block">CORE 02.
+                            REPORTING</span>
+                        <h3 class="text-2xl md:text-3xl font-bold text-white"><span
+                                class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">종합 마케팅
+                                리포트</span></h3>
+                        <p class="text-slate-400 mt-4 leading-relaxed">
+                            <strong class="text-cyan-400">"단순 통계가 아닌, 자산 가치 평가서"</strong><br>
+                            투입 대비 전환 효율(ROAS)부터 브랜드 성장 추이까지<br>
+                            병원의 마케팅 자산을 종합적으로 분석합니다.
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-white p-6 md:p-8 rounded-[2rem] border border-slate-200 shadow-2xl relative overflow-hidden text-slate-800 report-slide transform hover:scale-[1.01] transition-transform duration-500 w-full">
+
+                        <div class="space-y-8">
+
+                            <div>
+                                <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+                                    <h2 class="text-xl font-bold text-slate-800">예약 퍼널 분석</h2>
+                                    <span
+                                        class="px-2 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-bold rounded-full">Monthly</span>
+                                </div>
+
+                                <div class="grid grid-cols-1 gap-6">
+                                    <div class="relative">
+                                        <h3 class="text-sm font-bold text-blue-600 mb-3 flex items-center gap-2">
+                                            <span class="w-2 h-2 rounded-full bg-blue-500"></span> 2025-11 (Current)
+                                        </h3>
+                                        <div class="grid grid-cols-3 gap-2">
+                                            <div
+                                                class="bg-blue-50/50 p-3 rounded-xl border border-blue-100 flex flex-col items-center justify-center text-center gap-1">
+                                                <div class="text-slate-500 text-xs font-bold">총 신청</div>
+                                                <div class="text-xl font-black text-slate-800">452</div>
+                                            </div>
+                                            <div
+                                                class="bg-blue-50/50 p-3 rounded-xl border border-blue-100 flex flex-col items-center justify-center text-center gap-1 ring-1 ring-blue-500/20">
+                                                <div class="text-blue-600 text-xs font-bold">내원 확정</div>
+                                                <div class="text-xl font-black text-blue-600">398</div>
+                                            </div>
+                                            <div
+                                                class="bg-blue-50/50 p-3 rounded-xl border border-blue-100 flex flex-col items-center justify-center text-center gap-1">
+                                                <div class="text-red-500 text-xs font-bold">No-Show</div>
+                                                <div class="text-xl font-black text-slate-800">20</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex items-center gap-3 mt-8 mb-4 pb-2 border-b border-slate-100">
+                                    <h2 class="text-xl font-bold text-slate-800">전략 변화 분석</h2>
+                                    <span
+                                        class="px-2 py-0.5 bg-teal-50 text-teal-600 text-[10px] font-bold rounded-full">Strategy
+                                        Shift</span>
+                                </div>
+                                <div class="overflow-hidden rounded-xl border border-slate-200">
+                                    <table class="w-full text-left border-collapse text-sm">
+                                        <thead>
+                                            <tr
+                                                class="bg-slate-50 border-b border-slate-200 text-slate-500 text-xs uppercase tracking-wider">
+                                                <th class="p-3 font-bold border-r border-slate-200 w-1/4">Category</th>
+                                                <th
+                                                    class="p-3 font-bold border-r border-slate-200 w-1/3 text-slate-400">
+                                                    2025-10 (Previous)</th>
+                                                <th class="p-3 font-bold text-blue-600 w-1/3">2025-11 (Current)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-slate-100">
+                                            <tr class="hover:bg-slate-50/50">
+                                                <td
+                                                    class="p-3 font-bold text-slate-700 bg-slate-50/30 border-r border-slate-200">
+                                                    <div class="flex items-center gap-2">
+                                                        <i class="fas fa-search text-slate-400 text-xs"></i> Keywords
+                                                    </div>
+                                                </td>
+                                                <td class="p-3 text-slate-500 border-r border-slate-200 text-xs">
+                                                    "강남 치과"<br>"임플란트 가격"<br><span class="text-[10px] text-slate-400">(단순
+                                                        유입 중심)</span>
+                                                </td>
+                                                <td class="p-3 text-slate-800 font-bold text-xs bg-blue-50/20">
+                                                    "강남역 재수술 임플란트"<br>"앞니 교정 후기"<br><span
+                                                        class="text-[10px] text-blue-500">(전환 의도 타겟팅)</span>
+                                                </td>
+                                            </tr>
+                                            <tr class="hover:bg-slate-50/50">
+                                                <td
+                                                    class="p-3 font-bold text-slate-700 bg-slate-50/30 border-r border-slate-200">
+                                                    <div class="flex items-center gap-2">
+                                                        <i class="fas fa-file-alt text-slate-400 text-xs"></i> Content
+                                                    </div>
+                                                </td>
+                                                <td class="p-3 text-slate-500 border-r border-slate-200 text-xs">
+                                                    "임플란트란 무엇인가?"<br><span class="text-[10px] text-slate-400">(단순 정보
+                                                        나열)</span>
+                                                </td>
+                                                <td class="p-3 text-slate-800 font-bold text-xs bg-blue-50/20">
+                                                    "타 병원 실패 사례 분석"<br><span class="text-[10px] text-blue-500">(신뢰 입증 &
+                                                        솔루션)</span>
+                                                </td>
+                                            </tr>
+                                            <tr class="hover:bg-slate-50/50">
+                                                <td
+                                                    class="p-3 font-bold text-slate-700 bg-slate-50/30 border-r border-slate-200">
+                                                    <div class="flex items-center gap-2">
+                                                        <i class="fas fa-palette text-slate-400 text-xs"></i> Design
+                                                    </div>
+                                                </td>
+                                                <td class="p-3 text-slate-500 border-r border-slate-200 text-xs">
+                                                    무료 이미지 사용<br>가독성 낮은 텍스트
+                                                </td>
+                                                <td class="p-3 text-slate-800 font-bold text-xs bg-blue-50/20">
+                                                    실제 사례 포토<br>브랜드 컬러 시스템
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="mt-6 bg-slate-50 rounded-2xl p-5 border border-slate-200">
+                                <h3 class="text-base font-bold text-slate-800 mb-2 flex items-center gap-2">
+                                    <i class="fas fa-chart-line text-blue-500"></i>
+                                    <span>성과 요약</span>
+                                </h3>
+                                <div class="flex justify-between items-center">
+                                    <div class="text-xs text-slate-600">
+                                        <span class="font-bold text-blue-600">내원 확정률 88% 달성</span><br>
+                                        병원 운영 효율 최적화
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-[10px] text-slate-400">매출 기여도</div>
+                                        <div class="text-xl font-black text-slate-800">High<span
+                                                class="text-blue-500">+</span></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="core-aeo" class="py-32 relative border-t border-white/5 bg-[#0B0F19] overflow-hidden">
+        <div class="aeo-proposal-wrapper">
+
+            <!-- ========== PROBLEM SECTION ========== -->
+            <section id="problem">
+                <div class="max-w-7xl mx-auto px-6">
+                    <div class="section-header fade-up">
+                        <span class="section-label">🚨 지금 일어나고 있는 변화</span>
+                        <h2>블로그에 아무리 글을 써도,<br><span class="gradient-text">AI가 읽지 못하면 의미가 없습니다</span></h2>
+                    </div>
+
+                    <div class="problem-grid"
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px;">
+
+                        <!-- 카드 1: AI 이용률 74% -->
+                        <div class="glass-card stat-card fade-up">
+                            <div class="stat-icon">🧠</div>
+                            <div class="stat-number glow-text" data-count="74">0</div>
+                            <div class="stat-label">
+                                <strong>🇰🇷 한국인 4명 중 3명 AI 이용</strong><br><br>
+                                ChatGPT 54% (상반기 대비 7%p↑)<br>
+                                <span class="highlight-strong">Gemini 30% (6개월 만에 16%p↑)</span>
+                            </div>
+                            <a href="https://www.aitimes.com/news/articleView.html?idxno=204915" target="_blank"
+                                class="stat-source">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                    <polyline points="15 3 21 3 21 9"></polyline>
+                                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                                </svg>
+                                AI타임스 2025.12 · Consumer Insight
+                            </a>
+                        </div>
+
+                        <!-- 카드 2: ChatGPT 2,031만명 -->
+                        <div class="glass-card stat-card fade-up fade-up-delay-1">
+                            <div class="stat-icon">📈</div>
+                            <div class="stat-number glow-text" data-count="2031" data-suffix="만">0</div>
+                            <div class="stat-label">
+                                <strong>ChatGPT 월간 사용자 돌파</strong><br><br>
+                                작년 동기(407만) 대비 <span class="highlight-strong">5배 증가</span><br>
+                                스마트폰 사용자의 40%가 이용 중
+                            </div>
+                            <a href="https://www.hankyung.com/article/202509104604g" target="_blank"
+                                class="stat-source">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                    <polyline points="15 3 21 3 21 9"></polyline>
+                                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                                </svg>
+                                한국경제 2025.09 · 와이즈앱
+                            </a>
+                        </div>
+
+                        <!-- 카드 3: AI 검색 20% -->
+                        <div class="glass-card stat-card fade-up fade-up-delay-2">
+                            <div class="stat-icon">🔍</div>
+                            <div class="stat-number glow-text" data-count="20">0</div>
+                            <div class="stat-label">
+                                <strong>"AI가 바로 답해주는 검색"</strong><br><br>
+                                국내 검색 5건 중 1건이<br>
+                                <span class="highlight-strong">AI 직접 응답으로 끝남</span>
+                            </div>
+                            <a href="https://www.kmjournal.net/news/articleView.html?idxno=6310" target="_blank"
+                                class="stat-source">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                    <polyline points="15 3 21 3 21 9"></polyline>
+                                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                                </svg>
+                                한국마케팅저널 2025
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 네이버 크롤링 차단 경고 박스 + 충돌 애니메이션 -->
+                    <div class="glass-card fade-up collision-container"
+                        style="margin-top: 48px; text-align: center; padding: 48px; border: 1px solid rgba(239,68,68,0.3); background: rgba(239,68,68,0.05);">
+                        <h3 style="font-size: 1.5rem; margin-bottom: 20px; color: #F87171;">🚫 그런데 네이버 블로그는?</h3>
+
+                        <!-- 충돌 애니메이션 영역 -->
+                        <div class="collision-animation" id="collisionAnimation">
+                            <div class="flying-logo logo-chatgpt">
+                                <div class="logo-circle chatgpt-bg"><span>GPT</span></div>
+                                <span class="logo-label">ChatGPT</span>
+                            </div>
+
+                            <div class="naver-shield">
+                                <div class="shield-glow"></div>
+                                <div class="logo-circle naver-bg"><span>N</span></div>
+                                <div class="impact-wave"></div>
+                                <span class="blocked-text">차단!</span>
+                            </div>
+
+                            <div class="flying-logo logo-gemini">
+                                <div class="logo-circle gemini-bg"><span>✦</span></div>
+                                <span class="logo-label">Gemini</span>
+                            </div>
+                        </div>
+
+                        <p style="font-size: 1.3rem; color: var(--gray-200); line-height: 1.9; margin-top: 32px;">
+                            네이버는 <strong>외부 AI(ChatGPT, Gemini 등)가<br>블로그 글을 읽지 못하게 차단</strong>했습니다.
+                        </p>
+                        <p style="font-size: 1.1rem; color: var(--gray-400); margin-top: 20px; line-height: 1.8;">
+                            아무리 열심히 블로그에 글을 써도,<br>
+                            <span class="highlight-strong">AI가 읽을 수 없으면 AI가 추천할 수도 없습니다.</span>
+                        </p>
+                        <div
+                            style="display: flex; justify-content: center; gap: 16px; margin-top: 24px; flex-wrap: wrap;">
+                            <a href="https://www.etnews.com/20250716000347" target="_blank" class="stat-source">
+                                📰 전자신문 - 네이버 크롤링 차단
+                            </a>
+                            <a href="https://inblog.ai/ko/blog/naver-blog-robots-txt" target="_blank"
+                                class="stat-source">
+                                📄 robots.txt 기술 분석
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 핵심 결론 박스 -->
+                    <div class="glass-card fade-up"
+                        style="margin-top: 32px; text-align: center; padding: 48px; border: 2px solid rgba(16,185,129,0.4); background: rgba(16,185,129,0.05);">
+                        <h3 style="font-size: 1.8rem; margin-bottom: 20px; color: #34D399;">💡 결론</h3>
+                        <p style="font-size: 1.5rem; color: var(--gray-100); line-height: 1.9; font-weight: 600;">
+                            <span class="highlight-marker">블로그 양을 조금 줄이고,</span><br>
+                            <span class="gradient-text" style="font-size: 1.8rem;">홈페이지(AEO)에 투자하세요!</span>
+                        </p>
+                        <p style="font-size: 1.1rem; color: var(--gray-400); margin-top: 24px; line-height: 1.8;">
+                            블로그 10개 쓸 시간에 홈페이지 1개를 AI 친화적으로 만드는 것이<br>
+                            <strong>더 많은 환자를 AI 추천으로 유입</strong>시킵니다.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== SEO vs AEO COMPARISON ========== -->
+            <section id="solution" class="comparison-section" style="padding-top: 100px;">
+                <div class="max-w-7xl mx-auto px-6">
+                    <div class="section-header fade-up">
+                        <span class="section-label">⚡ 핵심 차이점</span>
+                        <h2>SEO와 AEO, <span class="gradient-text">뭐가 다른가요?</span></h2>
+                        <p style="font-size: 1.3rem;">
+                            📚 <strong>도서관에 책 꽂기</strong> → 👩‍🏫 <strong>사서에게 우리 책을 추천시키기</strong>
+                        </p>
+                    </div>
+
+                    <div class="comparison-wrapper fade-up">
+                        <div class="comparison-card old">
+                            <div class="comparison-badge"
+                                style="display:inline-block; margin-bottom:16px; font-weight:bold; color:var(--gray-400);">
+                                📚 기존 방식</div>
+                            <h3 class="comparison-title" style="font-size:2rem; font-weight:800; margin-bottom:20px;">
+                                SEO<br><span style="font-size: 0.55em; font-weight: 500; opacity: 0.7;">블로그
+                                    마케팅</span></h3>
+                            <div
+                                style="background: rgba(239,68,68,0.1); padding: 16px 20px; border-radius: 12px; margin-bottom: 24px;">
+                                <p style="font-size: 0.95rem; color: var(--gray-300); line-height: 1.7;">
+                                    도서관에 책을 꽂아두고<br>손님이 직접 찾아오길 기다리는 방식
+                                </p>
+                            </div>
+                            <ul class="comparison-list">
+                                <li>
+                                    <div class="comparison-icon">🎯</div>
+                                    <div class="comparison-item-content"><strong>목표</strong><span>검색 1위 노출, 클릭 유도</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="comparison-icon">📝</div>
+                                    <div class="comparison-item-content"><strong>글쓰기</strong><span>키워드 반복, 긴 서론</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="comparison-icon">📊</div>
+                                    <div class="comparison-item-content"><strong>성과 측정</strong><span>순위, 클릭 수</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="comparison-arrow">→</div>
+
+                        <div class="comparison-card new">
+                            <div class="comparison-badge"
+                                style="display:inline-block; margin-bottom:16px; font-weight:bold; color:var(--success);">
+                                👩‍🏫 새로운 방식</div>
+                            <h3 class="comparison-title" style="font-size:2rem; font-weight:800; margin-bottom:20px;">
+                                AEO<br><span style="font-size: 0.55em; font-weight: 500; opacity: 0.7;">AI 답변
+                                    최적화</span></h3>
+                            <div
+                                style="background: rgba(16,185,129,0.1); padding: 16px 20px; border-radius: 12px; margin-bottom: 24px;">
+                                <p style="font-size: 0.95rem; color: var(--gray-200); line-height: 1.7;">
+                                    도서관 사서(AI)에게<br><span class="highlight-strong">"우리 책을 추천해달라"</span>고 교육시키는 방식
+                                </p>
+                            </div>
+                            <ul class="comparison-list">
+                                <li>
+                                    <div class="comparison-icon">🏆</div>
+                                    <div class="comparison-item-content"><strong>목표</strong><span><strong
+                                                style="color: #34D399;">AI가 우리 병원을
+                                                추천</strong></span></div>
+                                </li>
+                                <li>
+                                    <div class="comparison-icon">⚡</div>
+                                    <div class="comparison-item-content"><strong>글쓰기</strong><span><strong
+                                                style="color: #34D399;">첫 문장에 핵심
+                                                답변</strong></span></div>
+                                </li>
+                                <li>
+                                    <div class="comparison-icon">📈</div>
+                                    <div class="comparison-item-content"><strong>성과 측정</strong><span><strong
+                                                style="color: #34D399;">AI 답변에
+                                                얼마나 나오나</strong></span></div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== TECH SOLUTIONS SECTION ========== -->
+            <section id="tech" style="padding-top: 100px;">
+                <div class="max-w-7xl mx-auto px-6">
+                    <div class="section-header fade-up">
+                        <span class="section-label">🛠️ 그룹디만의 기술</span>
+                        <h2>구체적으로 <span class="gradient-text">어떻게</span> 하나요?</h2>
+                        <p style="color:var(--gray-400);">단순 블로그 대행이 아닌, <strong>기술적인 마케팅</strong>입니다</p>
+                    </div>
+
+                    <div class="tech-tabs fade-up">
+                        <button class="tech-tab active" data-tab="llmstxt">① AI 전용 초대장</button>
+                        <button class="tech-tab" data-tab="faq">② FAQ 스키마</button>
+                        <button class="tech-tab" data-tab="smart">③ 스마트블록 & CUE:</button>
+                    </div>
+
+                    <!-- Tab 1: llms.txt -->
+                    <div class="tech-content active" id="tab-llmstxt">
+                        <div class="tech-card glass-card">
+                            <div class="tech-info">
+                                <h3>📄 llms.txt: AI 로봇만을 위한 전용 안내 지도</h3>
+                                <p style="font-size: 1.15rem; line-height: 1.9; color:var(--gray-300);">
+                                    홈페이지에 <span class="highlight-marker">AI 전용 초대장</span>을 심습니다.<br>
+                                    ChatGPT나 Perplexity가 우리 병원의 핵심 정보(원장님 약력, 특화 진료)를<br>
+                                    <strong>우선적으로 학습하여 환각 없이 정확하게 답변</strong>하도록 만듭니다.
+                                </p>
+                                <ul class="tech-benefits" style="margin-top:20px; color:var(--gray-400);">
+                                    <li>AI가 정확한 정보를 답변하도록 유도</li>
+                                    <li>경쟁 병원보다 먼저 선점</li>
+                                    <li>글로벌 AI 표준 규격</li>
+                                </ul>
+                                <a href="https://llmstxt.org/" target="_blank" class="stat-source"
+                                    style="margin-top:20px; display:inline-block;">
+                                    💻 llms.txt 공식 표준 문서 보기 →
+                                </a>
+                            </div>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-dot"></span>
+                                    <span class="code-dot"></span>
+                                    <span class="code-dot"></span>
+                                    <span class="code-title">llms.txt (AI 학습용 파일)</span>
+                                </div>
+                                <div class="code-content">
+                                    <pre><span class="code-comment"># 서울더좋은치과 핵심 정보</span>
+
+<span class="code-keyword">&gt;</span> <span class="code-string">임플란트 전문, 강남역 3분, 야간진료</span>
+
+<span class="code-keyword">## 의료진</span>
+<span class="code-property">- 김서울 대표원장</span>: 보건복지부 인증 전문의
+    임플란트 15년 경력, 오스템 임플란트 자문위원
+
+<span class="code-keyword">## 진료 철학</span>
+<span class="code-property">- 통증 최소화</span>: 무통마취기 보유
+<span class="code-property">- 과잉진료 없는</span>: 양심치과 리스트 등재</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 2: FAQ Schema -->
+                    <div class="tech-content" id="tab-faq">
+                        <div class="tech-card glass-card">
+                            <div class="tech-info">
+                                <h3>🏷️ FAQ 스키마: 질문/답변 꼬리표 달기</h3>
+                                <p style="font-size: 1.15rem; line-height: 1.9; color:var(--gray-300);">
+                                    홈페이지 질문/답변 섹션에 <strong>컴퓨터 언어(JSON-LD)로 꼬리표</strong>를 달아줍니다.<br>
+                                    AI 검색 엔진이 <span class="highlight-strong">"이것이 질문이고, 이것이 정답이구나"</span>라고<br>
+                                    100% 이해하게 만들어, <strong>추천 답변으로 뜰 확률을 30% 이상</strong> 높입니다.
+                                </p>
+                                <ul class="tech-benefits" style="margin-top:20px; color:var(--gray-400);">
+                                    <li>구글/네이버 검색 결과 상위 노출</li>
+                                    <li>AI가 신뢰하는 데이터 구조</li>
+                                    <li>음성 검색(Siri, Bixby) 최적화</li>
+                                </ul>
+                            </div>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-dot"></span>
+                                    <span class="code-dot"></span>
+                                    <span class="code-dot"></span>
+                                    <span class="code-title">JSON-LD (FAQ 스키마)</span>
+                                </div>
+                                <div class="code-content">
+                                    <pre><span class="code-comment">/* AI가 이해하는 질문/답변 코드 */</span>
+{
+    <span class="code-property">"@type"</span>: <span class="code-string">"FAQPage"</span>,
+    <span class="code-property">"mainEntity"</span>: [{
+    <span class="code-property">"@type"</span>: <span class="code-string">"Question"</span>,
+    <span class="code-property">"name"</span>: <span class="code-string">"임플란트 비용은 얼마인가요?"</span>,
+    <span class="code-property">"acceptedAnswer"</span>: {
+        <span class="code-property">"@type"</span>: <span class="code-string">"Answer"</span>,
+        <span class="code-property">"text"</span>: <span class="code-string">"오스템 정품 기준 80만원부터..."</span>
+    }
+    }]
+}</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 3: Smart Block & CUE -->
+                    <div class="tech-content" id="tab-smart">
+                        <div class="tech-card glass-card">
+                            <div class="tech-info">
+                                <h3>🤖 네이버 '스마트 블록' & 'AI 브리핑' 동시 공략</h3>
+                                <p style="font-size: 1.15rem; line-height: 1.9; color:var(--gray-300);">
+                                    네이버와 구글, <strong>두 마리 토끼</strong>를 동시에 잡는 전략입니다.<br>
+                                    네이버 CUE:와 글로벌 AI(ChatGPT) 양쪽에 모두 최적화합니다.
+                                </p>
+                                <div
+                                    style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px;">
+                                    <div style="background: rgba(16,185,129,0.1); padding: 20px; border-radius: 16px;">
+                                        <h4 style="font-size: 1rem; margin-bottom: 10px;">📝 네이버 블로그</h4>
+                                        <p style="font-size: 0.9rem; color: var(--gray-300);"><strong>C-Rank
+                                                강화</strong><br>전문가 칼럼 형식으로<br>네이버
+                                            AI 'CUE:' 최적화</p>
+                                    </div>
+                                    <div style="background: rgba(59,130,246,0.1); padding: 20px; border-radius: 16px;">
+                                        <h4 style="font-size: 1rem; margin-bottom: 10px;">🌐 홈페이지</h4>
+                                        <p style="font-size: 0.9rem; color: var(--gray-300);"><strong>개방형
+                                                구조</strong><br>구글 및 ChatGPT가<br>학습하기
+                                            쉬운 환경 구축</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-dot"></span>
+                                    <span class="code-dot"></span>
+                                    <span class="code-dot"></span>
+                                    <span class="code-title">전천후 최적화 전략</span>
+                                </div>
+                                <div class="code-content">
+                                    <pre><span class="code-comment"># All-in-One AEO Strategy</span>
+
+<span class="code-keyword">[네이버 생태계]</span>
+- 스마트 블록 상위 노출
+- AI 브리핑(CUE:) 답변 채택
+- 공략: <span class="code-string">고밀도 정보성 콘텐츠</span>
+
+<span class="code-keyword">[글로벌 생태계]</span>
+- ChatGPT/Gemini 답변 추천
+- 구글 검색 결과(SGE) 노출
+- 공략: <span class="code-string">기술적 SEO + llms.txt</span></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== CASE STUDY SECTION ========== -->
+            <section id="case-study" style="padding-top: 100px;">
+                <div class="max-w-7xl mx-auto px-6">
+                    <div class="section-header fade-up">
+                        <span class="section-label">📋 실전 사례</span>
+                        <h2>SEO에서 <span class="gradient-text">AEO 리빌딩</span></h2>
+                        <p style="color:var(--gray-400);">원장님 블로그 글을 AI가 좋아하는 형식으로 변환한 시뮬레이션입니다.<br>
+                            이 차이가 <span class="highlight-strong">'AI의 선택'</span>을 결정합니다.</p>
+                    </div>
+
+                    <div class="case-study-grid fade-up">
+
+                        <!-- Case 1 -->
+                        <div class="case-card">
+                            <h4><span class="case-number">1</span> 구조 혁신: 두괄식 답변 (Inverse Pyramid)</h4>
+                            <p style="color: var(--gray-400); margin-bottom: 20px;">
+                                AI는 서론이 긴 글을 싫어합니다. <strong>첫 50자 내에 직접적인 답변</strong>을 배치해야 합니다.
+                            </p>
+                            <table class="comparison-table">
+                                <thead>
+                                    <tr>
+                                        <th class="before-col" style="width: 50%;">❌ Before (기존 블로그)</th>
+                                        <th class="after-col" style="width: 50%;">✅ After (AEO 최적화)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="before-col">
+                                            "안녕하세요, 마곡 수면치과입니다.<br>
+                                            요즘 날씨가 많이 추워졌는데요,<br>
+                                            오늘은 많은 분들이 궁금해하시는..."<br><br>
+                                            → 결론이 글 중반부에 등장
+                                        </td>
+                                        <td class="after-col">
+                                            <strong>"수면 임플란트는 가능합니다.</strong><br>
+                                            의식하진정법을 사용하면 통증 없이<br>
+                                            30분 내 시술이 완료됩니다."<br><br>
+                                            → <strong>첫 문장에 답변 완료</strong>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Case 2 -->
+                        <div class="case-card">
+                            <h4><span class="case-number">2</span> 데이터 구조화: 줄글 대신 '표(Table)' 활용</h4>
+                            <p style="color: var(--gray-400); margin-bottom: 20px;">
+                                AI는 텍스트 나열보다 <strong>구조화된 표나 리스트</strong>를 훨씬 더 잘 이해하고 인용합니다.
+                            </p>
+                            <table class="comparison-table">
+                                <thead>
+                                    <tr>
+                                        <th class="before-col" style="width: 50%;">❌ Before (줄글 설명)</th>
+                                        <th class="after-col" style="width: 50%;">✅ After (표 형식)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="before-col">
+                                            "전신마취는 완전히 의식을 잃고요, 의식하진정법은 반수면 상태입니다. 비용도 차이가 납니다..."
+                                        </td>
+                                        <td class="after-col">
+                                            <table style="width: 100%; font-size: 0.85rem; margin-top: 8px;">
+                                                <tr style="background: rgba(255,255,255,0.05);">
+                                                    <td style="padding: 8px;"></td>
+                                                    <td style="padding: 8px;"><strong>전신마취</strong></td>
+                                                    <td style="padding: 8px;"><strong>의식하진정</strong></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 8px;">의식</td>
+                                                    <td style="padding: 8px;">소실</td>
+                                                    <td style="padding: 8px;">반수면</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 8px;">회복</td>
+                                                    <td style="padding: 8px;">2~3시간</td>
+                                                    <td style="padding: 8px;"><strong>30분</strong></td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AEO Content Showcase (Full Embedded) -->
+            <div class="reveal delay-200 mt-24 mb-24">
+                <div class="text-center mb-12">
+                    <span class="text-purple-400 font-bold tracking-widest text-xs uppercase mb-2 block">CONTENT
+                        SHOWCASE</span>
+                    <h3 class="text-2xl md:text-3xl font-black text-white">"무엇이 다른가? <span
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">AEO 콘텐츠의
+                            표준</span>"</h3>
+                    <p class="text-slate-400 text-sm mt-3">단순한 정보 나열이 아닙니다. AI가 '신뢰할 수 있는 출처'로 판단하는 구조와 깊이를 확인하세요.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8">
+
+                    <!-- Column 1: Medical/Academic (aeo_col1) -->
+                    <div
+                        class="bg-slate-900 rounded-[1.5rem] border border-slate-700/50 overflow-hidden flex flex-col h-[700px]">
+                        <!-- Mockup Header -->
+                        <div class="bg-slate-800 px-4 py-3 flex items-center gap-2 border-b border-slate-700">
+                            <div class="flex gap-1.5">
+                                <div class="w-2.5 h-2.5 rounded-full bg-red-500"></div>
+                                <div class="w-2.5 h-2.5 rounded-full bg-amber-500"></div>
+                                <div class="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>
+                            </div>
+                            <div class="flex-1 text-center">
+                                <span
+                                    class="text-[10px] text-slate-400 bg-slate-700 px-3 py-1 rounded-full font-mono">CASE
+                                    01: 구강외과/교정 AEO</span>
+                            </div>
+                            <div class="w-10"></div>
+                        </div>
+
+                        <!-- Scoped Content: Column 1 -->
+                        <div class="flex-1 overflow-y-auto custom-scrollbar bg-white relative aeo-preview-1">
+                            <style>
+                                .aeo-preview-1 {
+                                    font-family: 'Noto Sans KR', sans-serif;
+                                    color: #334155;
+                                    line-height: 1.8;
+                                    word-break: keep-all;
+                                }
+
+                                .aeo-preview-1 * {
+                                    box-sizing: border-box;
+                                }
+
+                                .aeo-preview-1 :root {
+                                    --navy: #0f172a;
+                                    --gold: #b3925d;
+                                    --soft-bg: #fcfbf9;
+                                }
+
+                                .aeo-preview-1 .hero {
+                                    padding: 40px;
+                                    background: #fcfbf9;
+                                    position: relative;
+                                }
+
+                                .aeo-preview-1 .tag {
+                                    font-weight: 700;
+                                    color: #b3925d;
+                                    letter-spacing: 0.1em;
+                                    display: block;
+                                    margin-bottom: 25px;
+                                    font-size: 0.8rem;
+                                }
+
+                                .aeo-preview-1 h1 {
+                                    font-size: 2.2rem;
+                                    font-weight: 900;
+                                    color: #0f172a;
+                                    line-height: 1.3;
+                                    margin-bottom: 20px;
+                                }
+
+                                .aeo-preview-1 h1 span {
+                                    color: #b3925d;
+                                }
+
+                                .aeo-preview-1 p {
+                                    font-size: 1rem;
+                                    color: #475569;
+                                    line-height: 1.6;
+                                    margin-bottom: 20px;
+                                }
+
+                                .aeo-preview-1 .label {
+                                    font-size: 0.75rem;
+                                    font-weight: 700;
+                                    color: #b3925d;
+                                    letter-spacing: 0.1em;
+                                    margin-bottom: 15px;
+                                    display: block;
+                                }
+
+                                .aeo-preview-1 .sec-title {
+                                    font-size: 1.8rem;
+                                    font-weight: 900;
+                                    color: #0f172a;
+                                    margin-bottom: 40px;
+                                    line-height: 1.4;
+                                }
+
+                                .aeo-preview-1 .sec-title b {
+                                    color: #b3925d;
+                                }
+
+                                .aeo-preview-1 .research-section {
+                                    padding: 60px 20px;
+                                    background: #fff;
+                                    border-bottom: 1px solid #f1f5f9;
+                                }
+
+                                .aeo-preview-1 .thesis-box {
+                                    background: #f8fafc;
+                                    padding: 20px;
+                                    border-radius: 8px;
+                                    margin: 30px 0;
+                                    border: 1px solid #e2e8f0;
+                                }
+
+                                .aeo-preview-1 .thesis-box h4 {
+                                    font-size: 1.1rem;
+                                    color: #0f172a;
+                                    margin-bottom: 10px;
+                                    font-weight: 800;
+                                }
+
+                                .aeo-preview-1 .sol-card {
+                                    background: #fcfbf9;
+                                    padding: 25px;
+                                    border-radius: 4px;
+                                    margin-bottom: 20px;
+                                }
+
+                                .aeo-preview-1 .sol-card h3 {
+                                    font-size: 1.4rem;
+                                    font-weight: 800;
+                                    color: #0f172a;
+                                    margin-bottom: 15px;
+                                }
+
+                                .aeo-preview-1 .faq-section {
+                                    padding: 60px 20px;
+                                    background: #0f172a;
+                                    color: #fff;
+                                }
+
+                                .aeo-preview-1 .faq-q {
+                                    font-size: 1.1rem;
+                                    color: #b3925d;
+                                    font-weight: 700;
+                                    cursor: pointer;
+                                    padding: 10px 0;
+                                }
+
+                                .aeo-preview-1 .faq-a {
+                                    font-size: 1rem;
+                                    color: #cbd5e1;
+                                    font-weight: 300;
+                                    margin-top: 10px;
+                                    padding-left: 20px;
+                                }
+
+                                .aeo-preview-1 img {
+                                    width: 100%;
+                                    border-radius: 4px;
+                                    margin-bottom: 20px;
+                                }
+                            </style>
+
+                            <!-- Content Body -->
+                            <div class="hero">
+                                <span class="tag">ADVANCED ORTHOGNATHIC SOLUTIONS</span>
+                                <h1>턱관절 통증과 주걱턱,<br><span>'비수술 교정'</span>으로 답하다.</h1>
+                                <p style="border-left: 4px solid #b3925d; padding-left: 20px;">OO대 박사 OOO 원장이 SCI급 논문과
+                                    풍부한
+                                    임상으로 증명하는 <br>복합 구강 문제의 해결책.</p>
+                            </div>
+
+                            <div class="research-section">
+                                <span class="label">EVIDENCE-BASED APPROACH</span>
+                                <h2 class="sec-title">논문에서 시작된 <br><b>턱관절 교정의 새로운 기준</b></h2>
+
+                                <div class="mb-10">
+                                    <img src="https://placehold.co/600x400/e2e8f0/64748b?text=Doctor+Presentation"
+                                        alt="Doctor">
+                                    <p>안녕하십니까, OOO치과 OOO점 대표원장 <b>OOO</b>입니다. 주걱턱은 단순히 아래턱이 돌출된 심미적인 문제뿐 아니라, 많은 경우
+                                        <b>턱관절
+                                            통증, 두통</b>을 동반합니다.
+                                    </p>
+                                    <p>저는 <b>OO대학교 치과교정학 박사</b>로서, SCI급 국제학술지에 발표한 논문들을 바탕으로 비수술 교정의 과학적 근거를 제시합니다.</p>
+                                </div>
+
+                                <div class="thesis-box">
+                                    <h4>대표 연구 논문</h4>
+                                    <p class="italic text-slate-500 text-sm">"악안면 비대칭 환자의 턱관절 디스크 변위 및 골격 패턴에 관한 3차원적
+                                        분석" 외
+                                        다수 SCI급 논문 게재</p>
+                                </div>
+                            </div>
+
+                            <div style="background: #fcfbf9; padding: 60px 20px;">
+                                <div class="text-center mb-8">
+                                    <span class="tag">REAL PATIENT JOURNEY</span>
+                                    <h2 class="sec-title" style="margin-bottom: 30px;">오랜 고통,<br><b>잃어버린 미소</b>를 되찾다.
+                                    </h2>
+                                </div>
+                                <h3>"수술만이 답일까요?"</h3>
+                                <p>30대 중반의 박00 환자분은 극심한 <b>턱관절 통증</b>으로 일상생활에 큰 불편을 겪고 계셨습니다. 하지만 저는 <b>서울대 박사</b>로서,
+                                    수술이 아닌
+                                    방법으로 턱관절의 안정성을 확보할 수 있다는 확신을 가졌습니다.</p>
+                                <img src="https://placehold.co/600x400/e2e8f0/64748b?text=Patient+Story" alt="Patient">
+                            </div>
+
+                            <div class="research-section">
+                                <span class="label">DR. LIM'S INNOVATIVE SOLUTION</span>
+                                <h2 class="sec-title"><b>비수술 교정</b>의 핵심 전략</h2>
+
+                                <div class="sol-card">
+                                    <h3>01. <b>정밀 턱관절 기능 진단</b></h3>
+                                    <p>단순 X-ray를 넘어 <b>3차원 CT, MRI 분석</b>을 통해 디스크 상태를 정밀하게 파악합니다.</p>
+                                </div>
+                                <div class="sol-card">
+                                    <h3>02. <b>스플린트 & 교정</b></h3>
+                                    <p>턱관절을 안정화시키는 스플린트 치료 후, 기능적인 교합을 완성합니다.</p>
+                                </div>
+                            </div>
+
+                            <div class="faq-section">
+                                <h2 class="text-center text-2xl font-bold mb-8">Q&A 궁금증 해결</h2>
+                                <details class="mb-4 border-b border-white/10 pb-4">
+                                    <summary class="faq-q">Q. 주걱턱 교정 시 통증이 심해질 수 있나요?</summary>
+                                    <div class="faq-a">A. 턱관절 안정성을 최우선으로 고려한 진단과 치료 계획을 수립하기 때문에 위험을 최소화할 수 있습니다.</div>
+                                </details>
+                                <details class="mb-4 border-b border-white/10 pb-4">
+                                    <summary class="faq-q">Q. 무조건 수술해야 하나요?</summary>
+                                    <div class="faq-a">A. 대부분의 주걱턱은 <b>비수술 교정</b>으로 개선 가능합니다. 성장기 환자는 성장 조절 장치로, 성인은
+                                        미니스크류를
+                                        활용합니다.</div>
+                                </details>
+                            </div>
+
+                            <div style="padding: 60px 20px; text-align: center;">
+                                <h2 style="font-size: 1.8rem; font-weight: 900; color: #0f172a; margin-bottom: 20px;">이제
+                                    OOO에서 시작하세요.</h2>
+                                <a href="javascript:void(0)"
+                                    style="display: inline-block; padding: 15px 50px; background: #0f172a; color: #fff; font-weight: 700; text-decoration: none;">정밀
+                                    진단 예약하기</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Column 2: Aesthetic/Restorative (aeo_col2) -->
+                    <div
+                        class="bg-slate-900 rounded-[1.5rem] border border-slate-700/50 overflow-hidden flex flex-col h-[700px]">
+                        <!-- Mockup Header -->
+                        <div class="bg-slate-800 px-4 py-3 flex items-center gap-2 border-b border-slate-700">
+                            <div class="flex gap-1.5">
+                                <div class="w-2.5 h-2.5 rounded-full bg-red-500"></div>
+                                <div class="w-2.5 h-2.5 rounded-full bg-amber-500"></div>
+                                <div class="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>
+                            </div>
+                            <div class="flex-1 text-center">
+                                <span
+                                    class="text-[10px] text-slate-400 bg-slate-700 px-3 py-1 rounded-full font-mono">CASE
+                                    02: 심미보철/브랜딩 AEO</span>
+                            </div>
+                            <div class="w-10"></div>
+                        </div>
+
+                        <!-- Scoped Content: Column 2 -->
+                        <div class="flex-1 overflow-y-auto custom-scrollbar bg-[#0c0c0c] relative aeo-preview-2">
+                            <style>
+                                .aeo-preview-2 {
+                                    font-family: 'Pretendard', sans-serif;
+                                    color: #e5e5e5;
+                                    line-height: 1.9;
+                                    word-break: keep-all;
+                                    background-color: #0c0c0c;
+                                }
+
+                                .aeo-preview-2 * {
+                                    box-sizing: border-box;
+                                }
+
+                                .aeo-preview-2 :root {
+                                    --accent-gold: #b59a6d;
+                                    --soft-gold: #d4c097;
+                                    --border-color: rgba(181, 154, 109, 0.2);
+                                }
+
+                                .aeo-preview-2 .hero {
+                                    height: 400px;
+                                    display: flex;
+                                    flex-direction: column;
+                                    justify-content: center;
+                                    align-items: center;
+                                    text-align: center;
+                                    padding: 0 20px;
+                                    background: radial-gradient(circle at center, #1a1a1a 0%, #0c0c0c 100%);
+                                }
+
+                                .aeo-preview-2 .hero-label {
+                                    font-size: 0.8rem;
+                                    letter-spacing: 0.5em;
+                                    color: #b59a6d;
+                                    margin-bottom: 20px;
+                                }
+
+                                .aeo-preview-2 h1 {
+                                    font-size: 2rem;
+                                    font-weight: 700;
+                                    line-height: 1.25;
+                                    margin-bottom: 30px;
+                                    letter-spacing: -0.03em;
+                                    color: white;
+                                }
+
+                                .aeo-preview-2 .hero-bar {
+                                    width: 1px;
+                                    height: 80px;
+                                    background: linear-gradient(to bottom, #b59a6d, transparent);
+                                }
+
+                                .aeo-preview-2 .label-sm {
+                                    color: #b59a6d;
+                                    font-size: 0.75rem;
+                                    font-weight: 600;
+                                    letter-spacing: 0.2em;
+                                    display: block;
+                                    margin-bottom: 15px;
+                                }
+
+                                .aeo-preview-2 h2 {
+                                    font-size: 1.8rem;
+                                    font-weight: 700;
+                                    margin-bottom: 30px;
+                                    line-height: 1.35;
+                                    color: white;
+                                }
+
+                                .aeo-preview-2 h3 {
+                                    font-size: 1.2rem;
+                                    color: #d4c097;
+                                    margin-bottom: 15px;
+                                    font-weight: 600;
+                                }
+
+                                .aeo-preview-2 p {
+                                    font-size: 1rem;
+                                    font-weight: 300;
+                                    color: #bbb;
+                                    margin-bottom: 25px;
+                                    text-align: justify;
+                                }
+
+                                .aeo-preview-2 .highlight {
+                                    color: #fff;
+                                    font-weight: 500;
+                                    border-bottom: 1px solid #b59a6d;
+                                }
+
+                                .aeo-preview-2 .lab-section {
+                                    background-color: #080808;
+                                    padding: 60px 20px;
+                                    border-top: 1px solid rgba(255, 255, 255, 0.03);
+                                    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+                                }
+
+                                .aeo-preview-2 table {
+                                    width: 100%;
+                                    border-collapse: collapse;
+                                    text-align: center;
+                                    margin: 30px 0;
+                                    border-top: 1px solid #b59a6d;
+                                }
+
+                                .aeo-preview-2 th,
+                                .aeo-preview-2 td {
+                                    padding: 15px;
+                                    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                                    font-size: 0.9rem;
+                                }
+
+                                .aeo-preview-2 th {
+                                    color: #b59a6d;
+                                }
+
+                                .aeo-preview-2 .wish-cell {
+                                    background: rgba(181, 154, 109, 0.05);
+                                    color: #fff;
+                                }
+
+                                .aeo-preview-2 img {
+                                    width: 100%;
+                                    border-radius: 2px;
+                                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+                                    filter: contrast(1.05);
+                                    margin-bottom: 20px;
+                                }
+
+                                .aeo-preview-2 .cta-btn {
+                                    display: inline-block;
+                                    padding: 15px 40px;
+                                    border: 1px solid #b59a6d;
+                                    color: #b59a6d;
+                                    text-decoration: none;
+                                    font-size: 0.8rem;
+                                    letter-spacing: 0.2em;
+                                    transition: 0.4s;
+                                }
+
+                                .aeo-preview-2 .gold {
+                                    color: #b59a6d;
+                                }
+                            </style>
+
+                            <div class="hero">
+                                <span class="hero-label">OOOO AESTHETIC</span>
+                                <h1>앞니 치아 파절의 재건과<br><span style="color:#b59a6d">지르코니아 심미 수복</span>의 본질</h1>
+                                <div class="hero-bar"></div>
+                            </div>
+
+                            <div style="padding: 40px 20px;">
+                                <div class="mb-12">
+                                    <span class="label-sm">DIRECTOR'S LETTER</span>
+                                    <h2>당신의 소망을 디자인하는<br>의사 <span class="gold">OOO</span>입니다.</h2>
+                                    <p>치아 파절은 예기치 않게 발생합니다. 저는 단순히 기능을 회복하는 것을 넘어, 파절의 범위와 심도, 그리고 안면의 조화를 종합적으로 고려해야
+                                        한다고
+                                        생각합니다.</p>
+                                    <img src="https://placehold.co/600x400/1a1a1a/b59a6d?text=Director+Photo"
+                                        alt="Director">
+                                </div>
+
+                                <div class="mb-12">
+                                    <span class="label-sm">THERAPY STANDARD</span>
+                                    <h3>01. 파절의 범위와 심도</h3>
+                                    <p>자연치 겉면의 손상은 간단히 다듬을 수 있지만, 신경과 가까운 손상은 <span class="highlight">보강관</span> 치료와 같은
+                                        적극적인
+                                        조치를 제안합니다.</p>
+                                    <h3>02. 심미 비율과 조화</h3>
+                                    <p>한국인에게 가장 이상적인 앞니의 비율은 <span class="highlight">약 80~85%</span>입니다. 0.1mm의 미세한 차이로도
+                                        인상이
+                                        달라질 수 있습니다.</p>
+                                    <img src="https://placehold.co/600x400/1a1a1a/b59a6d?text=Analysis" alt="Analysis">
+                                </div>
+                            </div>
+
+                            <div class="lab-section">
+                                <span class="label-sm">IN-HOUSE DIGITAL LAB</span>
+                                <h2>원내 기공소의 <span class="gold">정밀함</span></h2>
+                                <p>외부 위탁이 아닌, 원내 상주 기공진과의 소통으로 완성합니다. 깐깐한 원장의 검수를 통과한 <span class="highlight">심미
+                                        수복물</span>의
+                                    품격을 경험하세요.</p>
+                                <img src="https://placehold.co/600x400/080808/333?text=Lab+Process" alt="Lab">
+                            </div>
+
+                            <div style="padding: 40px 20px;">
+                                <span class="label-sm">MATERIAL & PROCESS</span>
+                                <h3>03. 재료의 선택 (지르코니아)</h3>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>DETAIL</th>
+                                            <th>ORDINARY</th>
+                                            <th class="wish-cell">PREMIUM</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>삭제량</td>
+                                            <td>0.5mm 이상</td>
+                                            <td class="wish-cell">최소화</td>
+                                        </tr>
+                                        <tr>
+                                            <td>내구성</td>
+                                            <td>파손 위험</td>
+                                            <td class="wish-cell">고강도</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div style="text-align: center; padding: 60px 20px;">
+                                <span class="label-sm">MESSAGE</span>
+                                <h2 class="gold">마지막 한마디</h2>
+                                <p>정확한 진단이 중요합니다. 환자의 자연치를 소중히 생각하는 마음으로 최선을 다하겠습니다.</p>
+                                <p class="gold" style="font-weight: 600; margin-top: 30px;">OOOO치과 대표원장 OOO 배상</p>
+                                <div style="margin-top: 40px;">
+                                    <a href="javascript:void(0)" class="cta-btn">PRIVATE CONSULTING</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ========== ROADMAP SECTION ========== -->
+            <section id="roadmap" style="padding-top: 50px;">
+                <div class="max-w-7xl mx-auto px-6">
+                    <div class="section-header fade-up">
+                        <span class="section-label">🗓️ 실행 계획</span>
+                        <h2>90일 안에 <span class="gradient-text">AI가 추천하는 병원</span>으로</h2>
+                    </div>
+
+                    <div class="timeline fade-up">
+                        <div class="timeline-item">
+                            <div class="timeline-dot">1</div>
+                            <div class="timeline-phase">1단계 · 1~30일</div>
+                            <h3 class="timeline-title">기반 구축</h3>
+                            <div class="timeline-tasks">
+                                <span class="timeline-task">llms.txt 파일 설치</span>
+                                <span class="timeline-task">FAQ 스키마 적용</span>
+                                <span class="timeline-task">홈페이지 구조 개선</span>
+                                <span class="timeline-task">시크릿 아카이브 개발</span>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot">2</div>
+                            <div class="timeline-phase">2단계 · 31~60일</div>
+                            <h3 class="timeline-title">콘텐츠 최적화</h3>
+                            <div class="timeline-tasks">
+                                <span class="timeline-task">기존 글 AI 친화적으로 수정</span>
+                                <span class="timeline-task">새 콘텐츠 발행</span>
+                                <span class="timeline-task">네이버 CUE: 대응</span>
+                                <span class="timeline-task">원장님 전문성 콘텐츠</span>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot">3</div>
+                            <div class="timeline-phase">3단계 · 61~90일</div>
+                            <h3 class="timeline-title">성과 확인</h3>
+                            <div class="timeline-tasks">
+                                <span class="timeline-task">시크릿 아카이브 본격 운영</span>
+                                <span class="timeline-task">AI 추천 모니터링</span>
+                                <span class="timeline-task">성과 분석 리포트</span>
+                                <span class="timeline-task">전략 고도화</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== ROI SECTION ========== -->
+            <section id="roi" style="padding-top: 100px;">
+                <div class="max-w-7xl mx-auto px-6">
+                    <div class="section-header fade-up">
+                        <span class="section-label">📈 기대 효과</span>
+                        <h2>왜 지금 시작해야 하나요?</h2>
+                        <p><span class="highlight-marker">먼저 시작하는 병원이 먼저 추천받습니다</span></p>
+                    </div>
+
+                    <div class="roi-grid fade-up">
+                        <div class="glass-card roi-card">
+                            <div class="roi-icon">🤖</div>
+                            <div class="roi-value">점유율 선점</div>
+                            <div class="roi-label">경쟁 병원이 키워드 광고에 매달릴 때,<br><span class="highlight-strong">ChatGPT와 네이버
+                                    AI 브리핑 선점</span>
+                            </div>
+                        </div>
+
+                        <div class="glass-card roi-card">
+                            <div class="roi-icon">👀</div>
+                            <div class="roi-value">진성 환자</div>
+                            <div class="roi-label">AI 답변을 보고 온 환자의<br><span class="highlight-strong">예약 확정률 14.2% 더
+                                    높음</span></div>
+                        </div>
+
+                        <div class="glass-card roi-card">
+                            <div class="roi-icon">💎</div>
+                            <div class="roi-value">디지털 자산</div>
+                            <div class="roi-label">한 번 학습된 정보는 지속적으로 남음<br><span class="highlight-strong">지속 가능한 마케팅
+                                    (디지털 자산화)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== CTA SECTION ========== -->
+            <div class="cta-section fade-up" style="margin-top: 100px;">
+                <h2>블로그 양을 조금 줄이고,<br><span
+                        style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4);">홈페이지(AEO)</span>에
+                    투자하세요!</h2>
+                <p style="font-size: 1.25rem;">
+                    블로그 10개 쓸 시간에 홈페이지 1개를 AI 친화적으로 만드는 것이<br>
+                    <strong style="font-size: 1.4rem;">더 많은 환자를 AI 추천으로 유입시킵니다.</strong>
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="design-voc" class="py-24 bg-[#121826] relative border-t border-slate-800">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="reveal text-center mb-16">
+                <span class="text-pink-500 font-bold tracking-widest text-sm uppercase">Part
+                    02. Design Strategy</span>
+                <h2 class="text-4xl md:text-5xl font-black mt-4 mb-6">"디자인 때문에<br>답답하셨던 적
+                    없으신가요?"</h2>
+
+            </div>
+            <div
+                class="reveal chat-box bg-[#9bbbd4] p-6 md:p-8 rounded-[2.5rem] shadow-2xl mx-auto max-w-2xl border-4 border-slate-800">
+                <div class="flex justify-between items-center mb-6 text-slate-700 text-xs px-2 font-medium">
+                    <span>14:02</span>
+                    <div class="flex gap-1.5 text-slate-600"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i
+                            class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div class="flex gap-3">
+                        <div class="chat-profile flex-shrink-0 bg-pink-100"><span class="text-pink-600">원장</span></div>
+                        <div class="flex flex-col items-start max-w-[80%]"><span
+                                class="text-slate-700 text-xs mb-1 font-bold">최원장님</span>
+                            <div class="chat-bubble-left shadow-sm">담당자가 바뀔 때마다 디자인 스타일이 바뀌는
+                                것 같아요. 병원 브랜드 이미지를 일관되게 하고
+                                싶습니다.</div><span class="text-slate-600 text-[10px] mt-1 ml-1">오후 2:02</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <div class="chat-profile flex-shrink-0 bg-pink-100"><span class="text-pink-600">원장</span></div>
+                        <div class="flex flex-col items-start max-w-[80%]"><span
+                                class="text-slate-700 text-xs mb-1 font-bold">정원장님</span>
+                            <div class="chat-bubble-left shadow-sm">간단한 공지사항 시안 하나 수정하려는데...
+                                연락하고 기다리느라 힘드네요.</div><span class="text-slate-600 text-[10px] mt-1 ml-1">오후 4:15</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="design-strategy" class="py-32 bg-[#0F1623] relative">
+        <div class="glow-blob bg-pink-600 w-96 h-96 rounded-full bottom-20 left-20 opacity-10">
+        </div>
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-20 reveal">
+                <span
+                    class="inline-block px-3 py-1 rounded-full border border-pink-500/30 bg-pink-900/20 text-pink-400 text-xs font-bold tracking-widest mb-4">DESIGN
+                    2.0 SOLUTION</span>
+                <h2 class="text-4xl md:text-5xl font-black mb-6">디자인 2.0,<br><span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-rose-400">브랜드
+                        시스템화</span>
+                </h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div
+                    class="reveal p-8 bg-[#1A202C] rounded-3xl border border-slate-700 group hover:border-pink-500/50 transition-all h-full">
+                    <div
+                        class="w-12 h-12 bg-pink-900/30 rounded-full flex items-center justify-center text-pink-400 font-bold mb-4">
+                        01</div>
+                    <h4 class="text-xl font-bold mb-3 text-white">디자인 아이덴티티</h4>
+                    <p class="text-base text-slate-400 leading-relaxed">
+                        "디자인이 병원의 <strong
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-rose-400 text-2xl">'급'</strong>을
+                        결정합니다."<br>
+                        작업마다 바뀌는 디자인 요소들을 통일, 규격화하여, 병원만의 일관성있는 디자인 아이덴티티 구축을 통해 브랜드의 품격을
+                        높입니다.
+                    </p>
+                </div>
+                <div
+                    class="reveal delay-100 p-8 bg-[#1A202C] rounded-3xl border border-slate-700 group hover:border-pink-500/50 transition-all h-full">
+                    <div
+                        class="w-12 h-12 bg-pink-900/30 rounded-full flex items-center justify-center text-pink-400 font-bold mb-4">
+                        02</div>
+                    <h4 class="text-xl font-bold mb-3 text-white">월 2회 프리미엄 비주얼 케어 (Visual Care)</h4>
+                    <p class="text-base text-slate-400 leading-relaxed">
+                        텍스트만으로는 환자의 신뢰를 얻기 어렵습니다. 썸네일, 홈페이지 팝업, 이벤트 배너 등 병원의 <strong class="text-white">'품격'</strong>을
+                        높여주는 고퀄리티 디자인을 월 2회 정기적으로 제작해 드립니다.<br><br>
+                        <span class="text-pink-400 font-bold">시각적 권위가 곧 의료진의 신뢰도로 직결됩니다.</span>
+                    </p>
+                </div>
+                <div
+                    class="reveal delay-200 p-8 bg-[#1A202C] rounded-3xl border border-slate-700 group hover:border-pink-500/50 transition-all h-full">
+                    <div
+                        class="w-12 h-12 bg-pink-900/30 rounded-full flex items-center justify-center text-pink-400 font-bold mb-4">
+                        03</div>
+                    <h4 class="text-xl font-bold mb-3 text-white">반복 시안물 원내 템플릿 제공</h4>
+                    <p class="text-base text-slate-400 leading-relaxed">
+                        매달 반복되는 시안(카드 할부 안내문, 전/후 케이스 등)은 일부 수정이 가능한 PPT 파일로 템플릿 무상 제공하여 원내
+                        보유는 물론, 제작 기간을 단축시킵니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="video-voc" class="py-24 bg-[#121826] relative border-t border-slate-800">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="reveal text-center mb-16">
+                <span class="text-purple-500 font-bold tracking-widest text-sm uppercase">Part
+                    03. Video Strategy</span>
+                <h2 class="text-4xl md:text-5xl font-black mt-4 mb-6">"영상, 해야 하는 건
+                    아는데<br>엄두가 안 나시나요?"</h2>
+
+            </div>
+            <div
+                class="reveal chat-box bg-[#9bbbd4] p-6 md:p-8 rounded-[2.5rem] shadow-2xl mx-auto max-w-2xl border-4 border-slate-800">
+                <div class="flex justify-between items-center mb-6 text-slate-700 text-xs px-2 font-medium">
+                    <span>18:30</span>
+                    <div class="flex gap-1.5 text-slate-600"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i
+                            class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div class="flex gap-3">
+                        <div class="chat-profile flex-shrink-0 bg-purple-100"><span class="text-purple-600">원장</span>
+                        </div>
+                        <div class="flex flex-col items-start max-w-[80%]"><span
+                                class="text-slate-700 text-xs mb-1 font-bold">강원장님</span>
+                            <div class="chat-bubble-left shadow-sm">진료하기도 바쁜데 대본 외우고,
+                                재촬영하고...<br>영상 촬영에 시간이 너무 많이 뺏깁니다
+                                ㅜㅜ</div><span class="text-slate-600 text-[10px] mt-1 ml-1">오후 6:30</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <div class="chat-profile flex-shrink-0 bg-purple-100"><span class="text-purple-600">원장</span>
+                        </div>
+                        <div class="flex flex-col items-start max-w-[80%]"><span
+                                class="text-slate-700 text-xs mb-1 font-bold">조원장님</span>
+                            <div class="chat-bubble-left shadow-sm">남들 다 하니까 유튜브 하긴
+                                하는데...<br>이게 진짜 환자가 오는데 도움이 되는지
+                                모르겠어요.</div><span class="text-slate-600 text-[10px] mt-1 ml-1">오후 8:12</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <div class="chat-profile flex-shrink-0 bg-purple-100"><span class="text-purple-600">원장</span>
+                        </div>
+                        <div class="flex flex-col items-start max-w-[80%]"><span
+                                class="text-slate-700 text-xs mb-1 font-bold">송원장님</span>
+                            <div class="chat-bubble-left shadow-sm">죄송한데 오늘 너무 피곤해서 촬영 날짜 미룰
+                                수 있을까요?<br>다음주로 스케줄 변경
+                                부탁드립니다...</div><span class="text-slate-600 text-[10px] mt-1 ml-1">오후 9:45</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <div class="chat-profile flex-shrink-0 bg-purple-100"><span class="text-purple-600">원장</span>
+                        </div>
+                        <div class="flex flex-col items-start max-w-[80%]"><span
+                                class="text-slate-700 text-xs mb-1 font-bold">최원장님</span>
+                            <div class="chat-bubble-left shadow-sm">영상미는 좋은데, 조회수가 안
+                                나와요.<br>그냥 우리끼리만 보는 영상 같아서 고민입니다.
+                            </div><span class="text-slate-600 text-[10px] mt-1 ml-1">오후
+                                10:20</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="video-strategy" class="py-32 bg-[#0B0F19] relative">
+        <div class="glow-blob bg-purple-600 w-96 h-96 rounded-full top-20 right-20 opacity-10">
+        </div>
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-24 reveal">
+                <span
+                    class="inline-block px-4 py-1.5 rounded-full border border-purple-500/30 bg-purple-900/20 text-purple-400 text-xs font-bold tracking-widest mb-6">VIDEO
+                    2.0 STRATEGY</span>
+                <h2 class="text-3xl md:text-5xl font-black mb-6 leading-tight">타겟 맞춤형 <span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">프로젝트
+                        솔루션</span></h2>
+                <p class="text-xl text-slate-400 mt-4">"지금은 숏폼의 시대, 흐름을 타야 합니다."</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-24">
+                <div
+                    class="reveal p-10 bg-[#1A202C] rounded-[2rem] border border-slate-700 flex flex-col justify-between">
+                    <div>
+                        <div class="text-purple-400 font-bold mb-4 text-lg">01. 타겟 기반 플랫폼 선정</div>
+                        <h3 class="text-2xl font-bold text-white mb-6">"내 환자가 가장 많이<br>머무는 곳을 공략합니다."</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                            모든 채널에 똑같은 영상을 올리지 않습니다. <strong class="text-purple-400">환자의 연령대와 주 이용 매체</strong>를 분석하여
+                            플랫폼과 포맷을 결정합니다.
+                        </p>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="p-4 bg-slate-900 rounded-xl border border-slate-800">
+                            <span class="text-sm font-bold text-purple-400 block mb-1">Case A (심미/교정/2030)</span>
+                            <span class="text-white text-base">인스타그램 릴스, 유튜브 숏츠 (비주얼 중심, 빠른 호흡)</span>
+                        </div>
+                        <div class="p-4 bg-slate-900 rounded-xl border border-slate-800">
+                            <span class="text-sm font-bold text-purple-400 block mb-1">Case B (임플란트/노년층)</span>
+                            <span class="text-white text-base">유튜브 롱폼, 다큐멘터리 형식, TV 방송 포맷 (신뢰감, 원장님 철학 강조)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="reveal delay-100 p-10 bg-[#1A202C] rounded-[2rem] border border-slate-700 flex flex-col justify-between">
+                    <div>
+                        <div class="text-purple-400 font-bold mb-4 text-lg">02. '프로젝트형' 접근
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-6">"공장형 콘텐츠 거부,<br>적재적소
+                            파트너"</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-6">단순히 개수 채우기식의
+                            반복적인 공장형 영상은 지양합니다.</p>
+                    </div>
+                    <div
+                        class="p-6 bg-gradient-to-br from-purple-900/30 to-slate-900 rounded-xl border border-purple-500/30 flex items-center justify-center text-center h-full">
+                        <p class="text-white font-medium">병원의 시즌 이슈, 프로모션,<br>원장님의 철
+                            등<br><br><span class="text-purple-300 font-bold">Right Place,
+                                Right Time</span><br>필요한 기획 영상을 제안합니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </section>
+
+
+
+    <section id="ad-shift" class="py-32 bg-[#0B0F19] relative border-t border-slate-800">
+        <div class="glow-blob bg-red-600 w-96 h-96 rounded-full bottom-0 left-0 opacity-10">
+        </div>
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+
+            <div class="text-center mb-24 reveal">
+                <span
+                    class="inline-block px-3 py-1 rounded-full border border-red-500/30 bg-red-900/20 text-red-400 text-xs font-bold tracking-widest mb-4">AD
+                    PARADIGM SHIFT</span>
+                <h2 class="text-3xl md:text-5xl font-black mb-6 leading-tight">Group D 2.0 :
+                    광고 관리의 <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400">패러다임
+                        시프트</span></h2>
+                <p class="text-xl text-white font-bold mb-8">"<span class="text-red-500">새는 돈</span>을 막는 것이 <span
+                        class="text-orange-400">수익의 시작</span>입니다."</p>
+
+            </div>
+
+            <div
+                class="reveal delay-200 chat-box bg-[#9bbbd4] p-6 md:p-8 rounded-[2.5rem] shadow-2xl mx-auto max-w-2xl border-4 border-slate-800 mb-24">
+                <div class="flex justify-between items-center mb-6 text-slate-700 text-xs px-2 font-medium">
+                    <span>11:20</span>
+                    <div class="flex gap-1.5 text-slate-600"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i
+                            class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div class="flex gap-3">
+                        <div class="chat-profile flex-shrink-0 bg-red-100"><span class="text-red-600">원장</span></div>
+                        <div class="flex flex-col items-start max-w-[80%]"><span
+                                class="text-slate-700 text-xs mb-1 font-bold">최원장님</span>
+                            <div class="chat-bubble-left shadow-sm">광고비는 계속 나가는데, 진짜 효과가 있는
+                                건지 모르겠습니다.</div><span class="text-slate-600 text-[10px] mt-1 ml-1">오전 11:20</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <div class="chat-profile flex-shrink-0 bg-red-100"><span class="text-red-600">원장</span></div>
+                        <div class="flex flex-col items-start max-w-[80%]"><span
+                                class="text-slate-700 text-xs mb-1 font-bold">김원장님</span>
+                            <div class="chat-bubble-left shadow-sm">네이버 말고 다른 것도 해야 하지 않나요?
+                                경쟁사는 항상 위에 있던데, 우리는 왜 밀리나요?
+                            </div><span class="text-slate-600 text-[10px] mt-1 ml-1">오후
+                                3:45</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <div class="chat-profile flex-shrink-0 bg-red-100"><span class="text-red-600">원장</span></div>
+                        <div class="flex flex-col items-start max-w-[80%]"><span
+                                class="text-slate-700 text-xs mb-1 font-bold">이원장님</span>
+                            <div class="chat-bubble-left shadow-sm">노출을 잡으려면 돈을 무조건 더 써야
+                                하나요?</div><span class="text-slate-600 text-[10px] mt-1 ml-1">오후 7:10</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reveal delay-300 text-center mb-24">
+                <h3 class="text-3xl md:text-5xl font-black text-white mb-6 leading-tight">
+                    "보여주기식 노출에서<br><span class="text-red-500 border-b-4 border-red-500">실질적
+                        내원</span>으로"</h3>
+                <p class="text-slate-400 max-w-2xl mx-auto text-lg">
+                    Group D 2.0 광고의 핵심은 무의미한 조회 수 늘리기가 아닙니다.<br>
+                    우리 치과에 실제 내원할 가능성이 높은 <strong class="text-white">'진성 고객'</strong>에게
+                    집중하여<br>
+                    <strong class="text-white">'실제 방문 전환'</strong>을 만들어내는 것입니다.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div
+                    class="reveal card-dark rounded-[2.5rem] p-10 flex flex-col items-center text-center hover-blue group h-full">
+                    <div class="text-6xl font-black text-slate-800 mb-6 group-hover:text-blue-500/20 transition-colors">
+                        01</div>
+                    <h3 class="text-2xl font-bold text-white mb-4">수평적 확장이 아닌<br><span class="text-red-400">'수직적
+                            강화'</span></h3>
+                    <div class="w-full h-px bg-white/10 my-6"></div>
+                    <div class="w-full">
+                        <span class="block text-sm font-bold text-red-400 mb-2">TO-BE (변화)</span>
+                        <p class="text-slate-300 font-medium">네이버 플레이스 & GFA 집중<br><span
+                                class="text-blue-400 font-bold">(ROAS 극대화)</span></p>
+                    </div>
+                </div>
+
+                <div
+                    class="reveal delay-100 card-dark rounded-[2.5rem] p-10 flex flex-col items-center text-center hover-blue group h-full">
+                    <div class="text-6xl font-black text-slate-800 mb-6 group-hover:text-blue-500/20 transition-colors">
+                        02</div>
+                    <h3 class="text-2xl font-bold text-white mb-4">단순 노출이 아닌<br><span class="text-red-400">'전환
+                            유도'</span></h3>
+                    <div class="w-full h-px bg-white/10 my-6"></div>
+                    <div class="w-full">
+                        <span class="block text-sm font-bold text-red-400 mb-2">TO-BE (변화)</span>
+                        <p class="text-slate-300 font-medium">검색 키워드 정조준 &<br><span class="text-blue-400 font-bold">후킹
+                                콘텐츠 배포</span></p>
+                    </div>
+                </div>
+
+                <div
+                    class="reveal delay-200 card-dark rounded-[2.5rem] p-10 flex flex-col items-center text-center hover-blue group h-full">
+                    <div class="text-6xl font-black text-slate-800 mb-6 group-hover:text-blue-500/20 transition-colors">
+                        03</div>
+                    <h3 class="text-2xl font-bold text-white mb-4">따로국밥이 아닌<br><span class="text-red-400">'원팀
+                            플레이'</span></h3>
+                    <div class="w-full h-px bg-white/10 my-6"></div>
+                    <div class="w-full">
+                        <span class="block text-sm font-bold text-red-400 mb-2">TO-BE (변화)</span>
+                        <p class="text-slate-300 font-medium">광고-콘텐츠 톤앤매너 일치 &<br><span
+                                class="text-blue-400 font-bold">문의 전환율 극대화</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <section id="policy" class="py-20 relative border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <h3 class="text-3xl font-bold mb-4">안전한 자산 관리를 위한<br><span class="text-slate-400">콘텐츠 2.0 운영 원칙</span>
+                </h3>
+                <p class="text-slate-500 text-sm mt-2">병원 마케팅의 리스크를 줄이고 자산 가치를 보호하기 위한 3대 핵심
+                    원칙입니다.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="reveal card-dark rounded-[2rem] p-8 hover-cyan">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="text-4xl font-black text-slate-600">01</span>
+                        <div class="w-10 h-10 rounded-full bg-slate-600 text-white flex items-center justify-center">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2 text-white">제3자 개입 <span class="text-red-500 font-black">NO</span>
+                    </h4>
+                    <span
+                        class="inline-block px-2 py-1 bg-red-500/20 text-red-400 text-[10px] font-bold rounded mb-4">리스크
+                        원천 차단</span>
+                    <p class="text-sm text-slate-400 leading-relaxed font-medium">
+                        "품질 저하와 어뷰징의 주범인 <strong class="text-white">'제3자 실행사 재하청'</strong>을 원천 금지합니다."<br>
+                        오직 내부 전담 팀만이 귀원의 콘텐츠를 다룹니다.
+                    </p>
+                </div>
+
+                <div class="reveal delay-100 card-dark rounded-[2rem] p-8 hover-cyan">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="text-4xl font-black text-slate-600">02</span>
+                        <div class="w-10 h-10 rounded-full bg-slate-600 text-white flex items-center justify-center">
+                            <i class="fas fa-broom"></i>
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2 text-white">리스크 계정 정화</h4>
+                    <span
+                        class="inline-block px-2 py-1 bg-yellow-500/20 text-yellow-400 text-[10px] font-bold rounded mb-4">브랜드
+                        이미지 쇄신</span>
+                    <p class="text-sm text-slate-400 leading-relaxed font-medium">
+                        "브랜드 인수 전, 관리되지 않아 방치된 저품질 포스팅과 리스크 게시물은 전수 조사하여 비공개/삭제 처리합니다."<br>
+                        깨끗한 백지 위에서 다시 시작합니다.
+                    </p>
+                </div>
+
+                <div
+                    class="reveal delay-200 p-8 rounded-[2rem] bg-white text-slate-900 shadow-xl border-4 border-slate-800 transform hover:-translate-y-2 transition-transform duration-300">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="text-4xl font-black text-slate-200">03</span>
+                        <div class="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center">
+                            <i class="fas fa-balance-scale"></i>
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2">합리적 운영 정책</h4>
+                    <span class="inline-block px-2 py-1 bg-blue-100 text-blue-600 text-xs font-bold rounded mb-4">지속 가능한
+                        고품질 유지</span>
+                    <ul class="text-base text-slate-600 space-y-2 font-medium">
+                        <li class="flex items-start gap-2"><span class="text-blue-500 mt-1">●</span><span><strong>이월 (최대
+                                    2회):</strong> 병원 사정상 불가피한 스케줄 조정 유연성 확보</span></li>
+                        <li class="flex items-start gap-2"><span class="text-blue-500 mt-1">●</span><span><strong>수정 (건당
+                                    1회):</strong> 명확한 피드백을 통한 효율적 커뮤니케이션</span></li>
+                        <li class="flex items-start gap-2"><span class="text-blue-500 mt-1">●</span><span><strong>작업 기간
+                                    (3일):</strong> 기획/검수에 필요한 최소한의 물리적 시간 확보</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="min-h-[80vh] flex items-center justify-center relative overflow-hidden py-20">
+        <div class="relative z-10 max-w-4xl mx-auto px-6 text-center">
+            <div class="reveal mb-8">
+                <span
+                    class="px-4 py-2 rounded-full border border-red-500/30 bg-red-900/20 text-red-400 text-sm font-bold tracking-widest animate-pulse">
+                    ⚠️ LIMITED PARTNERSHIP
+                </span>
+            </div>
+            <h2 class="reveal text-5xl md:text-7xl font-black mb-8 leading-none">Less Worry.<br><span
+                    class="text-cyan-400">More Patients.</span></h2>
+
+            <p class="reveal delay-200 text-slate-400 mb-12 max-w-2xl mx-auto text-lg">
+                "죄송합니다. 퀄리티 유지를 위해 <strong>분기별 5곳의 병원</strong>만 신규 컨설팅을 진행합니다."<br>
+                <span class="text-sm text-slate-500 mt-2 block">(현재 T/O 마감 임박)</span>
+            </p>
+
+            <div class="reveal delay-300 group inline-block relative">
+                <div
+                    class="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl blur opacity-30 group-hover:opacity-100 transition duration-200">
+                </div>
+                <a href="package.html"
+                    class="relative px-12 py-6 bg-white rounded-xl text-slate-900 font-black text-xl flex items-center gap-3 hover:scale-[1.02] active:scale-[0.98] transition-transform shadow-2xl">
+                    <span>무료 견적서 확인하기</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="border-t border-slate-800 py-12 text-center text-slate-500 text-sm bg-[#0B0F19]">
+        <p class="font-bold text-slate-400">GROUP-D 2.0 Strategy Proposal</p>
+        <p class="mt-2">© 2025 GROUP-D. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = { threshold: 0.15, rootMargin: '0px 0px -50px 0px' };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, observerOptions);
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+            window.addEventListener('scroll', () => {
+                const nav = document.getElementById('navbar');
+                if (window.scrollY > 50) {
+                    nav.classList.add('shadow-lg', 'bg-[#0B0F19]/95', 'border-cyan-900/30');
+                } else {
+                    nav.classList.remove('shadow-lg', 'bg-[#0B0F19]/80', 'border-cyan-900/30');
+                }
+            });
+        });
+    </script>
+    <script src="js/aeo_proposal.js"></script>
+</body>
+
+</html>
