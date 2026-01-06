@@ -37,7 +37,7 @@
   --shadow-glow: 0 0 80px rgba(59, 130, 246, 0.4);
   --transition-smooth: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-bounce: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-  
+
   font-family: var(--font-primary);
   color: var(--white);
   line-height: 1.8;
@@ -51,7 +51,8 @@
   font-weight: 800;
   line-height: 1.2;
   letter-spacing: -0.02em;
-  color: white; /* Ensure headings are white */
+  color: white;
+  /* Ensure headings are white */
 }
 
 .aeo-proposal-wrapper .gradient-text {
@@ -120,7 +121,8 @@
 }
 
 .aeo-proposal-wrapper .stat-number {
-  font-size: 4rem; /* Adjusted for container */
+  font-size: 4rem;
+  /* Adjusted for container */
   font-weight: 900;
   background: var(--gradient-primary);
   -webkit-background-clip: text;
@@ -151,13 +153,14 @@
 }
 
 .aeo-proposal-wrapper .stat-source svg {
-    width: 14px;
-    height: 14px;
+  width: 14px;
+  height: 14px;
 }
 
 /* Collision Animation */
 .aeo-proposal-wrapper .collision-container {
-    overflow: hidden; /* Contain animations */
+  overflow: hidden;
+  /* Contain animations */
 }
 
 .aeo-proposal-wrapper .collision-animation {
@@ -191,9 +194,19 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-.aeo-proposal-wrapper .chatgpt-bg { background: linear-gradient(145deg, #10A37F, #1A7F64); }
-.aeo-proposal-wrapper .gemini-bg { background: linear-gradient(145deg, #8B5CF6, #6366F1); }
-.aeo-proposal-wrapper .naver-bg { background: linear-gradient(145deg, #03C75A, #02A94F); position: relative; z-index: 2; }
+.aeo-proposal-wrapper .chatgpt-bg {
+  background: linear-gradient(145deg, #10A37F, #1A7F64);
+}
+
+.aeo-proposal-wrapper .gemini-bg {
+  background: linear-gradient(145deg, #8B5CF6, #6366F1);
+}
+
+.aeo-proposal-wrapper .naver-bg {
+  background: linear-gradient(145deg, #03C75A, #02A94F);
+  position: relative;
+  z-index: 2;
+}
 
 .aeo-proposal-wrapper .naver-shield {
   position: relative;
@@ -248,16 +261,16 @@
 }
 
 .aeo-proposal-wrapper .comparison-arrow {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 60px;
-    height: 60px;
-    background: var(--gradient-primary);
-    border-radius: 50%;
-    font-size: 1.5rem;
-    align-self: center;
-    box-shadow: var(--shadow-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background: var(--gradient-primary);
+  border-radius: 50%;
+  font-size: 1.5rem;
+  align-self: center;
+  box-shadow: var(--shadow-glow);
 }
 
 .aeo-proposal-wrapper .comparison-list {
@@ -331,16 +344,16 @@
 }
 
 .aeo-proposal-wrapper .tech-benefits li {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
 }
 
 .aeo-proposal-wrapper .tech-benefits li::before {
-    content: '✓';
-    color: var(--success);
-    font-weight: bold;
+  content: '✓';
+  color: var(--success);
+  font-weight: bold;
 }
 
 /* Code Block */
@@ -367,9 +380,18 @@
   height: 12px;
   border-radius: 50%;
 }
-.aeo-proposal-wrapper .code-dot:nth-child(1) { background: #FF5F56; }
-.aeo-proposal-wrapper .code-dot:nth-child(2) { background: #FFBD2E; }
-.aeo-proposal-wrapper .code-dot:nth-child(3) { background: #27CA40; }
+
+.aeo-proposal-wrapper .code-dot:nth-child(1) {
+  background: #FF5F56;
+}
+
+.aeo-proposal-wrapper .code-dot:nth-child(2) {
+  background: #FFBD2E;
+}
+
+.aeo-proposal-wrapper .code-dot:nth-child(3) {
+  background: #27CA40;
+}
 
 .aeo-proposal-wrapper .code-content {
   padding: 20px;
@@ -382,10 +404,21 @@
   line-height: 1.7;
 }
 
-.aeo-proposal-wrapper .code-keyword { color: #FF7B72; }
-.aeo-proposal-wrapper .code-string { color: #A5D6FF; }
-.aeo-proposal-wrapper .code-comment { color: #8B949E; }
-.aeo-proposal-wrapper .code-property { color: #79C0FF; }
+.aeo-proposal-wrapper .code-keyword {
+  color: #FF7B72;
+}
+
+.aeo-proposal-wrapper .code-string {
+  color: #A5D6FF;
+}
+
+.aeo-proposal-wrapper .code-comment {
+  color: #8B949E;
+}
+
+.aeo-proposal-wrapper .code-property {
+  color: #79C0FF;
+}
 
 /* Case Study Tables */
 .aeo-proposal-wrapper .comparison-table {
@@ -403,10 +436,25 @@
   vertical-align: top;
 }
 
-.aeo-proposal-wrapper .comparison-table th.before-col { background: rgba(239, 68, 68, 0.15); color: #F87171; }
-.aeo-proposal-wrapper .comparison-table th.after-col { background: rgba(16, 185, 129, 0.15); color: #34D399; }
-.aeo-proposal-wrapper .comparison-table td.before-col { background: rgba(239, 68, 68, 0.05); color: var(--gray-400); }
-.aeo-proposal-wrapper .comparison-table td.after-col { background: rgba(16, 185, 129, 0.05); color: var(--gray-200); }
+.aeo-proposal-wrapper .comparison-table th.before-col {
+  background: rgba(239, 68, 68, 0.15);
+  color: #F87171;
+}
+
+.aeo-proposal-wrapper .comparison-table th.after-col {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34D399;
+}
+
+.aeo-proposal-wrapper .comparison-table td.before-col {
+  background: rgba(239, 68, 68, 0.05);
+  color: var(--gray-400);
+}
+
+.aeo-proposal-wrapper .comparison-table td.after-col {
+  background: rgba(16, 185, 129, 0.05);
+  color: var(--gray-200);
+}
 
 /* Timeline */
 .aeo-proposal-wrapper .timeline {
@@ -425,7 +473,11 @@
   border-radius: 3px;
 }
 
-.aeo-proposal-wrapper .timeline-item { position: relative; padding-bottom: 56px; }
+.aeo-proposal-wrapper .timeline-item {
+  position: relative;
+  padding-bottom: 56px;
+}
+
 .aeo-proposal-wrapper .timeline-dot {
   position: absolute;
   left: -50px;
@@ -483,44 +535,91 @@
 
 /* Responsive Overrides */
 @media (max-width: 900px) {
+
   .aeo-proposal-wrapper .comparison-wrapper,
-  .aeo-proposal-wrapper .tech-card {
+  .aeo-proposal-wrapper .tech-card,
+  .aeo-proposal-wrapper .collision-animation {
     grid-template-columns: 1fr;
+    flex-direction: column;
+    gap: 20px;
   }
+
   .aeo-proposal-wrapper .comparison-arrow {
     transform: rotate(90deg);
+    margin: 10px auto;
+  }
+
+  .aeo-proposal-wrapper .stat-number {
+    font-size: 3rem;
+  }
+
+  .aeo-proposal-wrapper .glass-card {
+    padding: 24px;
   }
 }
 
 /* Animations Keyframes (Pre-fixed to avoid conflicts) */
 @keyframes aeo-content-fade {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes aeo-fly-in-left {
-  0% { transform: translateX(-100px); opacity: 0; }
-  100% { transform: translateX(0); opacity: 1; }
+  0% {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 @keyframes aeo-fly-in-right {
-  0% { transform: translateX(100px); opacity: 0; }
-  100% { transform: translateX(0); opacity: 1; }
+  0% {
+    transform: translateX(100px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 @keyframes aeo-blocked-appear {
-  0% { opacity: 0; transform: scale(0.5); }
-  50% { transform: scale(1.2); }
-  100% { opacity: 1; transform: scale(1); }
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* Animation triggers */
 .aeo-proposal-wrapper .collision-container.animate .logo-chatgpt {
   animation: aeo-fly-in-left 0.5s ease-out forwards;
 }
+
 .aeo-proposal-wrapper .collision-container.animate .logo-gemini {
   animation: aeo-fly-in-right 0.5s ease-out forwards;
 }
+
 .aeo-proposal-wrapper .collision-container.animate .blocked-text {
   animation: aeo-blocked-appear 0.3s ease-out 0.7s forwards;
 }

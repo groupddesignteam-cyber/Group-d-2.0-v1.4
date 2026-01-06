@@ -230,7 +230,7 @@
             class="inline-block border border-emerald-500/30 bg-emerald-900/10 rounded-full px-5 py-2 mb-6 backdrop-blur-md">
             <span class="text-xs font-bold text-emerald-400 tracking-[0.2em] uppercase">PREMIUM EXECUTION PACKAGE</span>
         </div>
-        <h1 class="text-4xl md:text-6xl font-extrabold mb-6 text-white tracking-tight leading-tight">
+        <h1 class="text-3xl md:text-6xl font-extrabold mb-6 text-white tracking-tight leading-tight">
             Branding & <span class="highlight-text text-emerald-400">Directionality</span>
         </h1>
         <p class="text-slate-300 font-light text-base md:text-lg max-w-3xl mx-auto leading-relaxed word-keep">
@@ -241,21 +241,27 @@
 
     <main class="max-w-7xl mx-auto px-4 min-h-[600px]">
 
-        <div class="flex flex-wrap justify-center gap-2 md:gap-4 mb-10" data-aos="fade-up">
+        <div class="flex md:flex-wrap overflow-x-auto gap-2 md:gap-4 mb-10 pb-2 md:pb-0 scrollbar-hide max-w-4xl mx-auto w-full"
+            data-aos="fade-up" style="-ms-overflow-style: none; scrollbar-width: none;">
+            <style>
+                .scrollbar-hide::-webkit-scrollbar {
+                    display: none;
+                }
+            </style>
             <button onclick="switchTab('tab-new', this)"
-                class="tab-btn active px-5 py-2.5 rounded-full bg-slate-800 text-slate-400 font-bold border border-slate-700 hover:bg-slate-700 text-sm md:text-base">
+                class="tab-btn active px-5 py-2.5 rounded-full bg-slate-800 text-slate-400 font-bold border border-slate-700 hover:bg-slate-700 text-sm md:text-base whitespace-nowrap">
                 1. Branding & Directionality
             </button>
             <button onclick="switchTab('tab-content', this)"
-                class="tab-btn px-5 py-2.5 rounded-full bg-slate-800 text-slate-400 font-bold border border-slate-700 hover:bg-slate-700 text-sm md:text-base">
+                class="tab-btn px-5 py-2.5 rounded-full bg-slate-800 text-slate-400 font-bold border border-slate-700 hover:bg-slate-700 text-sm md:text-base whitespace-nowrap">
                 2. 콘텐츠 패키지
             </button>
             <button onclick="switchTab('tab-performance', this)"
-                class="tab-btn px-5 py-2.5 rounded-full bg-slate-800 text-slate-400 font-bold border border-slate-700 hover:bg-slate-700 text-sm md:text-base">
+                class="tab-btn px-5 py-2.5 rounded-full bg-slate-800 text-slate-400 font-bold border border-slate-700 hover:bg-slate-700 text-sm md:text-base whitespace-nowrap">
                 3. 퍼포먼스 패키지
             </button>
             <button onclick="switchTab('tab-options', this)"
-                class="tab-btn px-5 py-2.5 rounded-full bg-slate-800 text-slate-400 font-bold border border-slate-700 hover:bg-slate-700 text-sm md:text-base">
+                class="tab-btn px-5 py-2.5 rounded-full bg-slate-800 text-slate-400 font-bold border border-slate-700 hover:bg-slate-700 text-sm md:text-base whitespace-nowrap">
                 4. 옵션 및 단품
             </button>
         </div>
@@ -361,7 +367,7 @@
                                     onclick="openExample('issue', '실시간 이슈 대응')"><b>실시간 이슈 대응 (수정/반영)</b> <span
                                         class="text-[10px] opacity-50">▶</span></li>
                                 <li class="text-slate-500 text-xs pt-1 list-none pl-0 before:content-none ml-[-1.2em]">
-                                    * 네이버, 카카오, 모두닥 등 주요 플랫폼 상시 모니터링
+                                    * 네이버, 카카오, 구글 등 주요 플랫폼 상시 모니터링
                                 </li>
                             </ul>
                         </div>
