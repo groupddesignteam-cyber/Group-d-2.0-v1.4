@@ -1,0 +1,2285 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[11-12] OO치과 리마케팅 리포트</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <style>
+        body {
+            font-family: 'Nunito', 'Pretendard', sans-serif;
+        }
+
+        #report-printable-area {
+            font-family: 'Pretendard', sans-serif;
+            color: #334155;
+            max-width: 1280px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .report-slide {
+            background-color: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #report-printable-area .report-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            text-align: center;
+            color: #1e293b;
+            margin-bottom: 1rem;
+            letter-spacing: -0.025em;
+        }
+
+        #report-printable-area .report-subtitle {
+            font-size: 1.1rem;
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 4rem;
+        }
+
+        #report-printable-area .report-client-info {
+            border: 1px solid #e2e8f0;
+            padding: 1.5rem 2rem;
+            border-radius: 0.75rem;
+            margin-bottom: 4rem;
+            background-color: #f8fafc;
+        }
+
+        #report-printable-area .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-top: 4rem;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid #3b82f6;
+        }
+
+        #report-printable-area .subsection-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        #report-printable-area .subsection-title .circle-icon {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background-color: #3b82f6;
+            color: white;
+            text-align: center;
+            line-height: 28px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-right: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        #report-printable-area .analysis-text {
+            background-color: #f8fafc;
+            border-left: 5px solid #60a5fa;
+            padding: 1.5rem 1.75rem;
+            border-radius: 0.25rem;
+            margin-top: 1.25rem;
+            margin-bottom: 1.25rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        #report-printable-area table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1.05rem;
+        }
+
+        #report-printable-area th,
+        #report-printable-area td {
+            border: 1px solid #e2e8f0;
+            padding: 1.25rem 1.5rem;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        #report-printable-area th {
+            background-color: #f1f5f9;
+            font-weight: 700;
+        }
+
+        #report-printable-area .summary-table td:nth-child(1) {
+            font-weight: 700;
+            width: 25%;
+        }
+
+        #report-printable-area .summary-table .kpi-value {
+            font-size: 2.25rem;
+            font-weight: 800;
+        }
+
+        #report-printable-area .one-line-summary {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: #f1f5f9;
+            border-radius: 0.5rem;
+            margin-top: 2.5rem;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .report-charts-container {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .report-charts-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 1.5cm;
+            }
+
+            body {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                background: white !important;
+            }
+
+            body>#root {
+                display: none !important;
+            }
+
+            div[role="dialog"] header,
+            .print-hidden {
+                display: none !important;
+            }
+
+            div[role="dialog"] {
+                position: static !important;
+                display: block !important;
+                width: 100% !important;
+                height: auto !important;
+                overflow: visible !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                background: none !important;
+            }
+
+            div[role="dialog"]>div,
+            #report-printable-area {
+                position: static !important;
+                display: block !important;
+                width: 100% !important;
+                height: auto !important;
+                max-height: none !important;
+                overflow: visible !important;
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                background: white !important;
+                padding: 0 !important;
+            }
+
+            .report-slide {
+                page-break-after: always !important;
+                break-inside: avoid !important;
+                width: 100% !important;
+                height: 100% !important;
+                padding: 1.5rem !important;
+                margin: 0 !important;
+                border: none !important;
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                display: flex !important;
+                flex-direction: column !important;
+            }
+
+            .report-slide:last-of-type {
+                page-break-after: avoid !important;
+            }
+
+            /* Ensure background colors and borders print correctly */
+            .analysis-text,
+            th,
+            .one-line-summary,
+            .circle-icon,
+            .section-title,
+            .report-client-info {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            .analysis-text {
+                background-color: #f8fafc !important;
+                border-left-color: #60a5fa !important;
+            }
+
+            th {
+                background-color: #f1f5f9 !important;
+            }
+
+            .one-line-summary {
+                background-color: #f1f5f9 !important;
+            }
+
+            .section-title {
+                border-bottom-color: #3b82f6 !important;
+            }
+
+            .circle-icon {
+                background-color: #3b82f6 !important;
+            }
+
+            .report-client-info {
+                background-color: #f8fafc !important;
+            }
+
+            .report-charts-container {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 1rem !important;
+            }
+
+            .report-chart-item {
+                break-inside: avoid;
+                height: 280px !important;
+            }
+
+            .recharts-wrapper,
+            .recharts-wrapper svg {
+                width: 100% !important;
+                height: 100% !important;
+            }
+
+            /* Adjust fonts for printing */
+            #report-printable-area * {
+                font-size: 9pt !important;
+                line-height: 1.5 !important;
+            }
+
+            #report-printable-area .report-title {
+                font-size: 22pt !important;
+            }
+
+            #report-printable-area .report-subtitle {
+                font-size: 10pt !important;
+            }
+
+            #report-printable-area .section-title {
+                font-size: 15pt !important;
+                margin-top: 1.5rem !important;
+            }
+
+            #report-printable-area .subsection-title {
+                font-size: 12pt !important;
+                margin-top: 1rem !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-slate-100 p-8">
+    <div id="report-printable-area">
+        <div class="report-slide flex-col justify-center items-center text-center">
+            <div>
+                <p class="report-subtitle">Marketing Performance &amp; Analysis Report</p>
+                <h1 class="text-3xl font-bold text-slate-900">[11월-12월] OO치과</h1>
+                <div class="my-12 h-1.5 w-24 bg-blue-500 mx-auto rounded-full"></div>
+                <p class="text-2xl font-bold text-slate-700">OO치과</p>
+                <p class="text-slate-500 mt-2">2026년 1월 5일 발행</p>
+            </div>
+        </div>
+        <div class="report-slide">
+            <h2 class="section-title">예약 퍼널 분석</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="">
+                    <h3 class="text-xl font-bold text-slate-800 text-center mb-6">2025-11</h3>
+                    <div class="flex flex-col gap-8">
+                        <div>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <div class="bg-white p-5 rounded-2xl shadow-sm flex items-center gap-4">
+                                    <div
+                                        class="w-12 h-12 rounded-lg flex items-center justify-center text-white shrink-0 bg-blue-500">
+                                        <i class="fas fa-file-alt text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-slate-500">총 신청</p>
+                                        <p class="text-3xl font-bold text-slate-800">67<span
+                                                class="text-xl font-semibold text-slate-500 ml-1.5">건</span></p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-5 rounded-2xl shadow-sm flex items-center gap-4">
+                                    <div
+                                        class="w-12 h-12 rounded-lg flex items-center justify-center text-white shrink-0 bg-green-500">
+                                        <i class="fas fa-check-circle text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-slate-500">내원 확정</p>
+                                        <p class="text-3xl font-bold text-slate-800">50<span
+                                                class="text-xl font-semibold text-slate-500 ml-1.5">건</span></p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-5 rounded-2xl shadow-sm flex items-center gap-4">
+                                    <div
+                                        class="w-12 h-12 rounded-lg flex items-center justify-center text-white shrink-0 bg-red-500">
+                                        <i class="fas fa-times-circle text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-slate-500">취소/노쇼</p>
+                                        <p class="text-3xl font-bold text-slate-800">17<span
+                                                class="text-xl font-semibold text-slate-500 ml-1.5">건</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 gap-4" style="min-height: 280px;">
+                            <div class="bg-white p-4 rounded-2xl shadow-sm border">
+                                <div class="w-full h-full flex flex-col p-2">
+                                    <h4 class="text-sm font-bold text-slate-700 mb-4 text-center">주요 희망 진료 TOP5</h4>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="진료상담">진료상담</span><span
+                                                    class="text-xs font-bold text-slate-800">16<span
+                                                        class="font-normal">건</span></span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 100%; background-color: rgb(14, 165, 233);"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="사랑니발치">사랑니발치</span><span
+                                                    class="text-xs font-bold text-slate-800">15<span
+                                                        class="font-normal">건</span></span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 93.75%; background-color: rgb(59, 130, 246);"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="스케일링">스케일링</span><span
+                                                    class="text-xs font-bold text-slate-800">14<span
+                                                        class="font-normal">건</span></span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 87.5%; background-color: rgb(99, 102, 241);"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="충치치료">충치치료</span><span
+                                                    class="text-xs font-bold text-slate-800">6<span
+                                                        class="font-normal">건</span></span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 37.5%; background-color: rgb(139, 92, 246);"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="구강검진">구강검진</span><span
+                                                    class="text-xs font-bold text-slate-800">6<span
+                                                        class="font-normal">건</span></span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 37.5%; background-color: rgb(168, 85, 247);"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-2xl shadow-sm border">
+                                <div class="w-full h-full flex flex-col p-2">
+                                    <h4 class="text-sm font-bold text-slate-700 mb-4 text-center">어떻게 치과를 알게 되었는지? TOP5
+                                    </h4>
+                                    <div class="space-y-4 overflow-y-auto pr-2" style="max-height: 220px;">
+                                        <div class="flex items-center gap-3">
+                                            <div class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center"
+                                                style="background-color: rgba(59, 130, 246, 0.125);"><i
+                                                    class="fas fa-question-circle text-lg"
+                                                    style="color: rgb(59, 130, 246);"></i></div>
+                                            <div class="flex-grow">
+                                                <div class="flex justify-between items-center text-xs"><span
+                                                        class="font-bold text-slate-700">기타</span><span
+                                                        class="font-semibold text-slate-500">52.0%</span></div>
+                                                <div class="flex justify-between items-center mt-1">
+                                                    <div class="w-full bg-slate-200/80 rounded-full h-2 flex-grow">
+                                                        <div class="h-2 rounded-full"
+                                                            style="width: 52%; background-color: rgb(59, 130, 246);">
+                                                        </div>
+                                                    </div><span
+                                                        class="text-xs font-bold text-slate-800 w-12 text-right">26건</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center gap-3">
+                                            <div class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center"
+                                                style="background-color: rgba(139, 92, 246, 0.125);"><i
+                                                    class="fas fa-search text-lg" style="color: rgb(139, 92, 246);"></i>
+                                            </div>
+                                            <div class="flex-grow">
+                                                <div class="flex justify-between items-center text-xs"><span
+                                                        class="font-bold text-slate-700">온라인</span><span
+                                                        class="font-semibold text-slate-500">32.0%</span></div>
+                                                <div class="flex justify-between items-center mt-1">
+                                                    <div class="w-full bg-slate-200/80 rounded-full h-2 flex-grow">
+                                                        <div class="h-2 rounded-full"
+                                                            style="width: 32%; background-color: rgb(139, 92, 246);">
+                                                        </div>
+                                                    </div><span
+                                                        class="text-xs font-bold text-slate-800 w-12 text-right">16건</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center gap-3">
+                                            <div class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center"
+                                                style="background-color: rgba(16, 185, 129, 0.125);"><i
+                                                    class="fas fa-users text-lg" style="color: rgb(16, 185, 129);"></i>
+                                            </div>
+                                            <div class="flex-grow">
+                                                <div class="flex justify-between items-center text-xs"><span
+                                                        class="font-bold text-slate-700">지인 소개</span><span
+                                                        class="font-semibold text-slate-500">16.0%</span></div>
+                                                <div class="flex justify-between items-center mt-1">
+                                                    <div class="w-full bg-slate-200/80 rounded-full h-2 flex-grow">
+                                                        <div class="h-2 rounded-full"
+                                                            style="width: 16%; background-color: rgb(16, 185, 129);">
+                                                        </div>
+                                                    </div><span
+                                                        class="text-xs font-bold text-slate-800 w-12 text-right">8건</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-2xl shadow-sm border">
+                                <div class="w-full h-full flex flex-col p-2">
+                                    <h4 class="text-sm font-bold text-slate-700 mb-4 text-center">주요 예약 취소 사유 TOP5</h4>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="기타/알 수 없음">기타/알 수 없음</span><span
+                                                    class="text-xs font-bold text-slate-800">8<span
+                                                        class="font-normal">건</span></span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 100%; background-color: rgb(239, 68, 68);"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="환자 요청에 의한 취소">환자 요청에 의한 취소</span><span
+                                                    class="text-xs font-bold text-slate-800">6<span
+                                                        class="font-normal">건</span></span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 75%; background-color: rgb(248, 113, 113);"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="일정변경후 다시예약">일정변경후 다시예약</span><span
+                                                    class="text-xs font-bold text-slate-800">1<span
+                                                        class="font-normal">건</span></span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 12.5%; background-color: rgb(251, 146, 60);"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="일정 확인 후 다시 예약하겠습니다">일정 확인 후 다시 예약하겠습니다</span><span
+                                                    class="text-xs font-bold text-slate-800">1<span
+                                                        class="font-normal">건</span></span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 12.5%; background-color: rgb(251, 191, 36);"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="죄송합니다.. 야근이 잡혀서 추후 다시 예약하겠습니다 ㅠㅠ">죄송합니다.. 야근이 잡혀서 추후 다시
+                                                    예약하겠습니다 ㅠㅠ</span><span
+                                                    class="text-xs font-bold text-slate-800">1<span
+                                                        class="font-normal">건</span></span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 12.5%; background-color: rgb(253, 224, 71);"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="">
+                    <h3 class="text-xl font-bold text-slate-800 text-center mb-6">2025-12</h3>
+                    <div class="flex flex-col gap-8">
+                        <div>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <div class="bg-white p-5 rounded-2xl shadow-sm flex items-center gap-4">
+                                    <div
+                                        class="w-12 h-12 rounded-lg flex items-center justify-center text-white shrink-0 bg-blue-500">
+                                        <i class="fas fa-file-alt text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-slate-500">총 신청</p>
+                                        <p class="text-3xl font-bold text-slate-800">78<span
+                                                class="text-xl font-semibold text-slate-500 ml-1.5">건</span></p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-5 rounded-2xl shadow-sm flex items-center gap-4">
+                                    <div
+                                        class="w-12 h-12 rounded-lg flex items-center justify-center text-white shrink-0 bg-green-500">
+                                        <i class="fas fa-check-circle text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-slate-500">내원 확정</p>
+                                        <p class="text-3xl font-bold text-slate-800">66<span
+                                                class="text-xl font-semibold text-slate-500 ml-1.5">건</span></p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-5 rounded-2xl shadow-sm flex items-center gap-4">
+                                    <div
+                                        class="w-12 h-12 rounded-lg flex items-center justify-center text-white shrink-0 bg-red-500">
+                                        <i class="fas fa-times-circle text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-slate-500">취소/노쇼</p>
+                                        <p class="text-3xl font-bold text-slate-800">12<span
+                                                class="text-xl font-semibold text-slate-500 ml-1.5">건</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 gap-4" style="min-height: 280px;">
+                            <div class="bg-white p-4 rounded-2xl shadow-sm border">
+                                <div class="w-full h-full flex flex-col p-2">
+                                    <h4 class="text-sm font-bold text-slate-700 mb-4 text-center">주요 희망 진료 TOP5</h4>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="진료상담">진료상담</span><span
+                                                    class="text-xs font-bold text-slate-800">21<span
+                                                        class="font-normal">건</span></span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 100%; background-color: rgb(14, 165, 233);"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="스케일링">스케일링</span><span
+                                                    class="text-xs font-bold text-slate-800">18<span
+                                                        class="font-normal">건</span></span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 85.7143%; background-color: rgb(59, 130, 246);"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="구강검진">구강검진</span><span
+                                                    class="text-xs font-bold text-slate-800">15<span
+                                                        class="font-normal">건</span></span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 71.4286%; background-color: rgb(99, 102, 241);"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="기타 (요청사항에 기입해주세요.)">기타 (요청사항에 기입해주세요.)</span><span
+                                                    class="text-xs font-bold text-slate-800">14<span
+                                                        class="font-normal">건</span></span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 66.6667%; background-color: rgb(139, 92, 246);"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="충치치료">충치치료</span><span
+                                                    class="text-xs font-bold text-slate-800">13<span
+                                                        class="font-normal">건</span></span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 61.9048%; background-color: rgb(168, 85, 247);"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-2xl shadow-sm border">
+                                <div class="w-full h-full flex flex-col p-2">
+                                    <h4 class="text-sm font-bold text-slate-700 mb-4 text-center">어떻게 치과를 알게 되었는지? TOP5
+                                    </h4>
+                                    <div class="space-y-4 overflow-y-auto pr-2" style="max-height: 220px;">
+                                        <div class="flex items-center gap-3">
+                                            <div class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center"
+                                                style="background-color: rgba(59, 130, 246, 0.125);"><i
+                                                    class="fas fa-question-circle text-lg"
+                                                    style="color: rgb(59, 130, 246);"></i></div>
+                                            <div class="flex-grow">
+                                                <div class="flex justify-between items-center text-xs"><span
+                                                        class="font-bold text-slate-700">기타</span><span
+                                                        class="font-semibold text-slate-500">54.5%</span></div>
+                                                <div class="flex justify-between items-center mt-1">
+                                                    <div class="w-full bg-slate-200/80 rounded-full h-2 flex-grow">
+                                                        <div class="h-2 rounded-full"
+                                                            style="width: 54.5455%; background-color: rgb(59, 130, 246);">
+                                                        </div>
+                                                    </div><span
+                                                        class="text-xs font-bold text-slate-800 w-12 text-right">36건</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center gap-3">
+                                            <div class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center"
+                                                style="background-color: rgba(139, 92, 246, 0.125);"><i
+                                                    class="fas fa-search text-lg" style="color: rgb(139, 92, 246);"></i>
+                                            </div>
+                                            <div class="flex-grow">
+                                                <div class="flex justify-between items-center text-xs"><span
+                                                        class="font-bold text-slate-700">온라인</span><span
+                                                        class="font-semibold text-slate-500">40.9%</span></div>
+                                                <div class="flex justify-between items-center mt-1">
+                                                    <div class="w-full bg-slate-200/80 rounded-full h-2 flex-grow">
+                                                        <div class="h-2 rounded-full"
+                                                            style="width: 40.9091%; background-color: rgb(139, 92, 246);">
+                                                        </div>
+                                                    </div><span
+                                                        class="text-xs font-bold text-slate-800 w-12 text-right">27건</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center gap-3">
+                                            <div class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center"
+                                                style="background-color: rgba(16, 185, 129, 0.125);"><i
+                                                    class="fas fa-users text-lg" style="color: rgb(16, 185, 129);"></i>
+                                            </div>
+                                            <div class="flex-grow">
+                                                <div class="flex justify-between items-center text-xs"><span
+                                                        class="font-bold text-slate-700">지인 소개</span><span
+                                                        class="font-semibold text-slate-500">3.0%</span></div>
+                                                <div class="flex justify-between items-center mt-1">
+                                                    <div class="w-full bg-slate-200/80 rounded-full h-2 flex-grow">
+                                                        <div class="h-2 rounded-full"
+                                                            style="width: 3.0303%; background-color: rgb(16, 185, 129);">
+                                                        </div>
+                                                    </div><span
+                                                        class="text-xs font-bold text-slate-800 w-12 text-right">2건</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center gap-3">
+                                            <div class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center"
+                                                style="background-color: rgba(100, 116, 139, 0.125);"><i
+                                                    class="fas fa-store text-lg" style="color: rgb(100, 116, 139);"></i>
+                                            </div>
+                                            <div class="flex-grow">
+                                                <div class="flex justify-between items-center text-xs"><span
+                                                        class="font-bold text-slate-700">오프라인</span><span
+                                                        class="font-semibold text-slate-500">1.5%</span></div>
+                                                <div class="flex justify-between items-center mt-1">
+                                                    <div class="w-full bg-slate-200/80 rounded-full h-2 flex-grow">
+                                                        <div class="h-2 rounded-full"
+                                                            style="width: 1.51515%; background-color: rgb(100, 116, 139);">
+                                                        </div>
+                                                    </div><span
+                                                        class="text-xs font-bold text-slate-800 w-12 text-right">1건</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-2xl shadow-sm border">
+                                <div class="w-full h-full flex flex-col p-2">
+                                    <h4 class="text-sm font-bold text-slate-700 mb-4 text-center">주요 예약 취소 사유 TOP5</h4>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="기타/알 수 없음">기타/알 수 없음</span><span
+                                                    class="text-xs font-bold text-slate-800">4<span
+                                                        class="font-normal">건</span></span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 100%; background-color: rgb(239, 68, 68);"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="담당 원장님 수요일, 일요일 휴진으로 다른 요일에 예약 다시 주시면 감사합니다!">담당 원장님 수요일, 일요일
+                                                    휴진으로 다른 요일에 예약 다시 주시면 감사합니다!</span><span
+                                                    class="text-xs font-bold text-slate-800">1<span
+                                                        class="font-normal">건</span></span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 25%; background-color: rgb(248, 113, 113);"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="급한 일정이 생겨서 못 가게되었습니다 정말 죄송합니다..ㅠㅠ">급한 일정이 생겨서 못 가게되었습니다 정말
+                                                    죄송합니다..ㅠㅠ</span><span
+                                                    class="text-xs font-bold text-slate-800">1<span
+                                                        class="font-normal">건</span></span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 25%; background-color: rgb(251, 146, 60);"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="19:30쯤 도착할거같아서 추후 검진 받겠습니다…. 진심으로 죄송합니다……..">19:30쯤 도착할거같아서
+                                                    추후 검진 받겠습니다…. 진심으로 죄송합니다……..</span><span
+                                                    class="text-xs font-bold text-slate-800">1<span
+                                                        class="font-normal">건</span></span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 25%; background-color: rgb(251, 191, 36);"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate" title="날짜 변경">날짜
+                                                    변경</span><span class="text-xs font-bold text-slate-800">1<span
+                                                        class="font-normal">건</span></span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 25%; background-color: rgb(253, 224, 71);"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="report-slide">
+            <h2 class="section-title">블로그 성과 분석</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="">
+                    <h3 class="text-xl font-bold text-slate-800 text-center mb-6">2025-11</h3>
+                    <div class="space-y-4">
+                        <div class="bg-slate-50/70 p-5 rounded-2xl border-2 border-dashed">
+                            <h3 class="text-xl font-bold text-slate-800 mb-5 text-center">핵심 요약</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="bg-white p-4 rounded-2xl border flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 rounded-lg flex items-center justify-center bg-purple-500 text-white shrink-0">
+                                        <i class="fas fa-eye text-lg"></i>
+                                    </div>
+                                    <div class="min-w-0 flex-1">
+                                        <p class="text-sm font-semibold text-slate-500 truncate">총 조회수</p>
+                                        <p class="text-2xl font-extrabold text-slate-800 mt-1">886<span
+                                                class="text-lg font-semibold text-slate-500 ml-1">회</span></p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-4 rounded-2xl border flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 rounded-lg flex items-center justify-center bg-blue-500 text-white shrink-0">
+                                        <i class="fas fa-file-signature text-lg"></i>
+                                    </div>
+                                    <div class="min-w-0 flex-1">
+                                        <p class="text-sm font-semibold text-slate-500 truncate">계약 건수</p>
+                                        <p class="text-2xl font-extrabold text-slate-800 mt-1">0<span
+                                                class="text-lg font-semibold text-slate-500 ml-1">건</span></p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-4 rounded-2xl border flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 rounded-lg flex items-center justify-center bg-green-500 text-white shrink-0">
+                                        <i class="fas fa-check-circle text-lg"></i>
+                                    </div>
+                                    <div class="min-w-0 flex-1">
+                                        <p class="text-sm font-semibold text-slate-500 truncate">발행 완료</p>
+                                        <p class="text-2xl font-extrabold text-slate-800 mt-1">8<span
+                                                class="text-lg font-semibold text-slate-500 ml-1">건</span></p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-4 rounded-2xl border flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 rounded-lg flex items-center justify-center bg-orange-500 text-white shrink-0">
+                                        <i class="fas fa-arrow-right text-lg"></i>
+                                    </div>
+                                    <div class="min-w-0 flex-1">
+                                        <p class="text-sm font-semibold text-slate-500 truncate">이월</p>
+                                        <p class="text-2xl font-extrabold text-slate-800 mt-1">0<span
+                                                class="text-lg font-semibold text-slate-500 ml-1">건</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 bg-white p-5 rounded-2xl border">
+                                <h4 class="text-lg font-bold text-slate-800 mb-4">핵심 인사이트</h4>
+                                <ul class="space-y-4">
+                                    <li class="flex items-start gap-4">
+                                        <div
+                                            class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center bg-purple-100 text-purple-600 mt-1">
+                                            <i class="fas fa-trophy text-xl"></i>
+                                        </div>
+                                        <p class="text-slate-700 text-base leading-relaxed pt-1">이번 달 가장 인기 있었던 포스팅은
+                                            <strong class="text-purple-700">"OO역 치과 잇몸치료, 단계별로 어떻게 진행될까요? (스케일링~수술까지
+                                                정리)"</strong>(으)로, 총 <strong class="text-purple-700">64회</strong>의 조회수를
+                                            기록했습니다.
+                                        </p>
+                                    </li>
+                                    <li class="flex items-start gap-4">
+                                        <div
+                                            class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center bg-blue-100 text-blue-600 mt-1">
+                                            <i class="fas fa-key text-xl"></i>
+                                        </div>
+                                        <p class="text-slate-700 text-base leading-relaxed pt-1">주요 검색 유입 키워드는 <strong
+                                                class="text-blue-700">"OO치과"</strong>(이)며, 전체 검색 유입의 <strong
+                                                class="text-blue-700">2.9%</strong>를 차지했습니다.</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-white p-4 rounded-2xl border">
+                                <div class="w-full h-full flex flex-col p-2">
+                                    <h4 class="text-sm font-bold text-slate-700 mb-4 text-center">조회수 TOP 5 게시물</h4>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="용두역 치과 잇몸치료, 단계별로 어떻게 진행될까요? (스케일링~수술까지 정리)">OO역 치과 잇몸치료,
+                                                    단계별로 어떻게 진행될까요? (스케일링~수술까지 정리)</span><span
+                                                    class="text-xs font-bold text-slate-800">64<span
+                                                        class="font-normal">회</span></span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 100%; background-color: rgb(139, 92, 246);"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="청량리역 치과 임플란트 뼈이식 후 회복기간 · 주의사항 완벽 가이드">OO역 치과 임플란트 뼈이식 후 회복기간
+                                                    · 주의사항 완벽 가이드</span><span
+                                                    class="text-xs font-bold text-slate-800">35<span
+                                                        class="font-normal">회</span></span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 54.6875%; background-color: rgb(168, 85, 247);"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="앞니 검은색 변색 신경 괴사로 인해 변색돼서 어두운 앞니 크라운 치료">앞니 검은색 변색 신경 괴사로 인해
+                                                    변색돼서 어두운 앞니 크라운 치료</span><span
+                                                    class="text-xs font-bold text-slate-800">25<span
+                                                        class="font-normal">회</span></span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 39.0625%; background-color: rgb(217, 70, 239);"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="전농동 치과, 광고 속 만 65세 보험 임플란트 금액을 믿기 전 꼭 확인해야 할 체크리스트!">OO동 치과,
+                                                    광고 속 만 65세 보험 임플란트 금액을 믿기 전 꼭 확인해야 할 체크리스트!</span><span
+                                                    class="text-xs font-bold text-slate-800">22<span
+                                                        class="font-normal">회</span></span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 34.375%; background-color: rgb(236, 72, 153);"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="청량리 치과 나이 들어도 가능한 무서운 고령 환자 임플란트 수술, 수면마취(의식하진정법)로 편안하게 받는 방법은?">OO동
+                                                    치과 나이 들어도 가능한 무서운 고령 환자 임플란트 수술, 수면마취(의식하진정법)로 편안하게 받는
+                                                    방법은?</span><span class="text-xs font-bold text-slate-800">21<span
+                                                        class="font-normal">회</span></span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 32.8125%; background-color: rgb(244, 114, 182);">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-2xl border">
+                                <div class="w-full h-full flex flex-col p-2">
+                                    <h4 class="text-sm font-bold text-slate-700 mb-4 text-center">검색 유입 TOP 5 키워드</h4>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="서울유플란트치과">OO치과</span><span
+                                                    class="text-xs font-bold text-slate-800">2.9%</span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 100%; background-color: rgb(14, 165, 233);"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="청량리치과 청량리플란트치과">OO동치과 OO동플란트치과</span><span
+                                                    class="text-xs font-bold text-slate-800">1.1%</span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 37.5439%; background-color: rgb(59, 130, 246);"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="잇몸 하얀 고름">잇몸 하얀 고름</span><span
+                                                    class="text-xs font-bold text-slate-800">0.7%</span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 24.9123%; background-color: rgb(99, 102, 241);"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="청량리치과">OO동치과</span><span
+                                                    class="text-xs font-bold text-slate-800">0.6%</span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 20.7018%; background-color: rgb(139, 92, 246);"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="앞니 한개 크라운">앞니 한개 크라운</span><span
+                                                    class="text-xs font-bold text-slate-800">0.5%</span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 16.4912%; background-color: rgb(168, 85, 247);"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-5 rounded-2xl border">
+                            <h3 class="text-lg font-bold text-slate-800 mb-2 flex items-center gap-2"><i
+                                    class="fas fa-list-alt text-green-500"></i><span>발행 완료 포스팅 목록 (8건)</span></h3>
+                            <div class="max-h-80 overflow-y-auto pr-2">
+                                <div class="divide-y divide-slate-100">
+                                    <div class="flex justify-between items-center py-2.5">
+                                        <p class="font-semibold text-slate-700 truncate pr-3 flex-1 min-w-0"
+                                            title="회기역 치과 “안 씌우면 어떻게 되나요?” 신경치료 후 크라운의 중요성 총정리">OO역 치과 “안 씌우면 어떻게 되나요?”
+                                            신경치료 후 크라운의 중요성 총정리</p>
+                                        <div class="flex-shrink-0 ml-3 flex items-center gap-4 text-sm"><span
+                                                class="text-xs text-slate-500 w-20 text-right">2025-11-30</span><a
+                                                href="https://blog.naver.com/sedation2875/224093355655" target="_blank"
+                                                rel="noopener noreferrer"
+                                                class="text-slate-400 hover:text-blue-600 transition-colors"
+                                                title="새 탭에서 보기"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"
+                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                    stroke-width="2">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14">
+                                                    </path>
+                                                </svg></a></div>
+                                    </div>
+                                    <div class="flex justify-between items-center py-2.5">
+                                        <p class="font-semibold text-slate-700 truncate pr-3 flex-1 min-w-0"
+                                            title="전농동 치과, 광고 속 만 65세 보험 임플란트 금액을 믿기 전 꼭 확인해야 할 체크리스트!">OO동 치과, 광고 속 만
+                                            65세 보험 임플란트 금액을 믿기 전 꼭 확인해야 할 체크리스트!</p>
+                                        <div class="flex-shrink-0 ml-3 flex items-center gap-4 text-sm"><span
+                                                class="text-xs text-slate-500 w-20 text-right">2025-11-28</span><a
+                                                href="https://blog.naver.com/sedation2875/224090215751" target="_blank"
+                                                rel="noopener noreferrer"
+                                                class="text-slate-400 hover:text-blue-600 transition-colors"
+                                                title="새 탭에서 보기"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"
+                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                    stroke-width="2">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14">
+                                                    </path>
+                                                </svg></a></div>
+                                    </div>
+                                    <div class="flex justify-between items-center py-2.5">
+                                        <p class="font-semibold text-slate-700 truncate pr-3 flex-1 min-w-0"
+                                            title="용두역 치과 잇몸치료, 단계별로 어떻게 진행될까요? (스케일링~수술까지 정리)">OO역 치과 잇몸치료, 단계별로 어떻게
+                                            진행될까요? (스케일링~수술까지 정리)</p>
+                                        <div class="flex-shrink-0 ml-3 flex items-center gap-4 text-sm"><span
+                                                class="text-xs text-slate-500 w-20 text-right">2025-11-26</span><a
+                                                href="https://blog.naver.com/sedation2875/224089196071" target="_blank"
+                                                rel="noopener noreferrer"
+                                                class="text-slate-400 hover:text-blue-600 transition-colors"
+                                                title="새 탭에서 보기"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"
+                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                    stroke-width="2">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14">
+                                                    </path>
+                                                </svg></a></div>
+                                    </div>
+                                    <div class="flex justify-between items-center py-2.5">
+                                        <p class="font-semibold text-slate-700 truncate pr-3 flex-1 min-w-0"
+                                            title="제기동역 치과 심미치료, 최소삭제 라미네이트 등 선택 기준 5가지 정리">OO역 치과 심미치료, 최소삭제 라미네이트 등 선택
+                                            기준 5가지 정리</p>
+                                        <div class="flex-shrink-0 ml-3 flex items-center gap-4 text-sm"><span
+                                                class="text-xs text-slate-500 w-20 text-right">2025-11-25</span><a
+                                                href="https://blog.naver.com/sedation2875/224087253669" target="_blank"
+                                                rel="noopener noreferrer"
+                                                class="text-slate-400 hover:text-blue-600 transition-colors"
+                                                title="새 탭에서 보기"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"
+                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                    stroke-width="2">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14">
+                                                    </path>
+                                                </svg></a></div>
+                                    </div>
+                                    <div class="flex justify-between items-center py-2.5">
+                                        <p class="font-semibold text-slate-700 truncate pr-3 flex-1 min-w-0"
+                                            title="제기동 치과 에서 보는, 턱에서 '딱- 딱-' 소리 나는 턱관절 장애 원인 및 치료법">OO동 치과 에서 보는, 턱에서
+                                            '딱- 딱-' 소리 나는 턱관절 장애 원인 및 치료법</p>
+                                        <div class="flex-shrink-0 ml-3 flex items-center gap-4 text-sm"><span
+                                                class="text-xs text-slate-500 w-20 text-right">2025-11-20</span><a
+                                                href="https://blog.naver.com/sedation2875/224082548789" target="_blank"
+                                                rel="noopener noreferrer"
+                                                class="text-slate-400 hover:text-blue-600 transition-colors"
+                                                title="새 탭에서 보기"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"
+                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                    stroke-width="2">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14">
+                                                    </path>
+                                                </svg></a></div>
+                                    </div>
+                                    <div class="flex justify-between items-center py-2.5">
+                                        <p class="font-semibold text-slate-700 truncate pr-3 flex-1 min-w-0"
+                                            title="청량리역 치과 임플란트 뼈이식 후 회복기간 · 주의사항 완벽 가이드">OO역 치과 임플란트 뼈이식 후 회복기간 · 주의사항
+                                            완벽 가이드</p>
+                                        <div class="flex-shrink-0 ml-3 flex items-center gap-4 text-sm"><span
+                                                class="text-xs text-slate-500 w-20 text-right">2025-11-18</span><a
+                                                href="https://blog.naver.com/sedation2875/224080369061" target="_blank"
+                                                rel="noopener noreferrer"
+                                                class="text-slate-400 hover:text-blue-600 transition-colors"
+                                                title="새 탭에서 보기"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"
+                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                    stroke-width="2">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14">
+                                                    </path>
+                                                </svg></a></div>
+                                    </div>
+                                    <div class="flex justify-between items-center py-2.5">
+                                        <p class="font-semibold text-slate-700 truncate pr-3 flex-1 min-w-0"
+                                            title="동대문구 치과 충치는 아프지만, 치아 상실로 이어지는 치주염은 조용히 옵니다. (원인 및 치료법)">OO동 치과 충치는
+                                            아프지만, 치아 상실로 이어지는 치주염은 조용히 옵니다. (원인 및 치료법)</p>
+                                        <div class="flex-shrink-0 ml-3 flex items-center gap-4 text-sm"><span
+                                                class="text-xs text-slate-500 w-20 text-right">2025-11-15</span><a
+                                                href="https://blog.naver.com/sedation2875/224065562424" target="_blank"
+                                                rel="noopener noreferrer"
+                                                class="text-slate-400 hover:text-blue-600 transition-colors"
+                                                title="새 탭에서 보기"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"
+                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                    stroke-width="2">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14">
+                                                    </path>
+                                                </svg></a></div>
+                                    </div>
+                                    <div class="flex justify-between items-center py-2.5">
+                                        <p class="font-semibold text-slate-700 truncate pr-3 flex-1 min-w-0"
+                                            title="청량리 치과 나이 들어도 가능한 무서운 고령 환자 임플란트 수술, 수면마취(의식하진정법)로 편안하게 받는 방법은?">OO동
+                                            치과 나이 들어도 가능한 무서운 고령 환자 임플란트 수술, 수면마취(의식하진정법)로 편안하게 받는 방법은?</p>
+                                        <div class="flex-shrink-0 ml-3 flex items-center gap-4 text-sm"><span
+                                                class="text-xs text-slate-500 w-20 text-right">2025-11-05</span><a
+                                                href="https://blog.naver.com/sedation2875/224065562424" target="_blank"
+                                                rel="noopener noreferrer"
+                                                class="text-slate-400 hover:text-blue-600 transition-colors"
+                                                title="새 탭에서 보기"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"
+                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                    stroke-width="2">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14">
+                                                    </path>
+                                                </svg></a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="">
+                    <h3 class="text-xl font-bold text-slate-800 text-center mb-6">2025-12</h3>
+                    <div class="space-y-4">
+                        <div class="bg-slate-50/70 p-5 rounded-2xl border-2 border-dashed">
+                            <h3 class="text-xl font-bold text-slate-800 mb-5 text-center">핵심 요약</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="bg-white p-4 rounded-2xl border flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 rounded-lg flex items-center justify-center bg-purple-500 text-white shrink-0">
+                                        <i class="fas fa-eye text-lg"></i>
+                                    </div>
+                                    <div class="min-w-0 flex-1">
+                                        <p class="text-sm font-semibold text-slate-500 truncate">총 조회수</p>
+                                        <p class="text-2xl font-extrabold text-slate-800 mt-1">916<span
+                                                class="text-lg font-semibold text-slate-500 ml-1">회</span></p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-4 rounded-2xl border flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 rounded-lg flex items-center justify-center bg-blue-500 text-white shrink-0">
+                                        <i class="fas fa-file-signature text-lg"></i>
+                                    </div>
+                                    <div class="min-w-0 flex-1">
+                                        <p class="text-sm font-semibold text-slate-500 truncate">계약 건수</p>
+                                        <p class="text-2xl font-extrabold text-slate-800 mt-1">8<span
+                                                class="text-lg font-semibold text-slate-500 ml-1">건</span></p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-4 rounded-2xl border flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 rounded-lg flex items-center justify-center bg-green-500 text-white shrink-0">
+                                        <i class="fas fa-check-circle text-lg"></i>
+                                    </div>
+                                    <div class="min-w-0 flex-1">
+                                        <p class="text-sm font-semibold text-slate-500 truncate">발행 완료</p>
+                                        <p class="text-2xl font-extrabold text-slate-800 mt-1">7<span
+                                                class="text-lg font-semibold text-slate-500 ml-1">건</span></p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-4 rounded-2xl border flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 rounded-lg flex items-center justify-center bg-orange-500 text-white shrink-0">
+                                        <i class="fas fa-arrow-right text-lg"></i>
+                                    </div>
+                                    <div class="min-w-0 flex-1">
+                                        <p class="text-sm font-semibold text-slate-500 truncate">이월</p>
+                                        <p class="text-2xl font-extrabold text-slate-800 mt-1">0<span
+                                                class="text-lg font-semibold text-slate-500 ml-1">건</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 bg-white p-5 rounded-2xl border">
+                                <h4 class="text-lg font-bold text-slate-800 mb-4">핵심 인사이트</h4>
+                                <ul class="space-y-4">
+                                    <li class="flex items-start gap-4">
+                                        <div
+                                            class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center bg-purple-100 text-purple-600 mt-1">
+                                            <i class="fas fa-trophy text-xl"></i>
+                                        </div>
+                                        <p class="text-slate-700 text-base leading-relaxed pt-1">이번 달 가장 인기 있었던 포스팅은
+                                            <strong class="text-purple-700">"OO역치과 심하게 휘어진 사랑니 뿌리도 신경 손상 없이 깨끗하게 발치가
+                                                가능합니다"</strong>(으)로, 총 <strong class="text-purple-700">44회</strong>의
+                                            조회수를 기록했습니다.
+                                        </p>
+                                    </li>
+                                    <li class="flex items-start gap-4">
+                                        <div
+                                            class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center bg-blue-100 text-blue-600 mt-1">
+                                            <i class="fas fa-key text-xl"></i>
+                                        </div>
+                                        <p class="text-slate-700 text-base leading-relaxed pt-1">주요 검색 유입 키워드는 <strong
+                                                class="text-blue-700">"OO치과"</strong>(이)며, 전체 검색 유입의 <strong
+                                                class="text-blue-700">2.7%</strong>를 차지했습니다.</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-white p-4 rounded-2xl border">
+                                <div class="w-full h-full flex flex-col p-2">
+                                    <h4 class="text-sm font-bold text-slate-700 mb-4 text-center">조회수 TOP 5 게시물</h4>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="안암역치과 심하게 휘어진 사랑니 뿌리도 신경 손상 없이 깨끗하게 발치가 가능합니다">OO역치과 심하게 휘어진
+                                                    사랑니 뿌리도 신경 손상 없이 깨끗하게 발치가 가능합니다</span><span
+                                                    class="text-xs font-bold text-slate-800">44<span
+                                                        class="font-normal">회</span></span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 100%; background-color: rgb(139, 92, 246);"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="청량리역 치과 임플란트 뼈이식 후 회복기간 · 주의사항 완벽 가이드">OO역 치과 임플란트 뼈이식 후 회복기간
+                                                    · 주의사항 완벽 가이드</span><span
+                                                    class="text-xs font-bold text-slate-800">35<span
+                                                        class="font-normal">회</span></span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 79.5455%; background-color: rgb(168, 85, 247);"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="안동치과 잇몸뼈 흡수 뿌리 끝 염증이 심한 어금니도 발치 즉시 임플란트로 단기간에 치아 완성 가능">OO동치과
+                                                    잇몸뼈 흡수 뿌리 끝 염증이 심한 어금니도 발치 즉시 임플란트로 단기간에 치아 완성 가능</span><span
+                                                    class="text-xs font-bold text-slate-800">33<span
+                                                        class="font-normal">회</span></span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 75%; background-color: rgb(217, 70, 239);"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="회기역 치과 “안 씌우면 어떻게 되나요?” 신경치료 후 크라운의 중요성 총정리">OO역 치과 “안 씌우면
+                                                    어떻게 되나요?” 신경치료 후 크라운의 중요성 총정리</span><span
+                                                    class="text-xs font-bold text-slate-800">29<span
+                                                        class="font-normal">회</span></span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 65.9091%; background-color: rgb(236, 72, 153);"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="서울유플란트치과 한눈에보기??">OO치과 한눈에보기??</span><span
+                                                    class="text-xs font-bold text-slate-800">24<span
+                                                        class="font-normal">회</span></span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 54.5455%; background-color: rgb(244, 114, 182);">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-2xl border">
+                                <div class="w-full h-full flex flex-col p-2">
+                                    <h4 class="text-sm font-bold text-slate-700 mb-4 text-center">검색 유입 TOP 5 키워드</h4>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="서울유플란트치과">OO치과</span><span
+                                                    class="text-xs font-bold text-slate-800">2.7%</span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 100%; background-color: rgb(14, 165, 233);"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="사랑니 뿌리">사랑니 뿌리</span><span
+                                                    class="text-xs font-bold text-slate-800">1.3%</span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 47.9554%; background-color: rgb(59, 130, 246);"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="사랑니 뿌리 휘어짐">사랑니 뿌리 휘어짐</span><span
+                                                    class="text-xs font-bold text-slate-800">0.7%</span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 26.0223%; background-color: rgb(99, 102, 241);"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="잇몸염증 발치">잇몸염증 발치</span><span
+                                                    class="text-xs font-bold text-slate-800">0.7%</span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 26.0223%; background-color: rgb(139, 92, 246);"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-center mb-1"><span
+                                                    class="text-xs font-medium text-slate-600 truncate"
+                                                    title="상계 주변의 수면치료">OO동 주변의 수면치료</span><span
+                                                    class="text-xs font-bold text-slate-800">0.6%</span></div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                                <div class="h-2 rounded-full"
+                                                    style="width: 21.5613%; background-color: rgb(168, 85, 247);"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-5 rounded-2xl border">
+                            <h3 class="text-lg font-bold text-slate-800 mb-2 flex items-center gap-2"><i
+                                    class="fas fa-list-alt text-green-500"></i><span>발행 완료 포스팅 목록 (7건)</span></h3>
+                            <div class="max-h-80 overflow-y-auto pr-2">
+                                <div class="divide-y divide-slate-100">
+                                    <div class="flex justify-between items-center py-2.5">
+                                        <p class="font-semibold text-slate-700 truncate pr-3 flex-1 min-w-0"
+                                            title="안동 치과, 앞니 임플란트 결과를 좌우하는 4가지 기준">OO동 치과, 앞니 임플란트 결과를 좌우하는 4가지 기준</p>
+                                        <div class="flex-shrink-0 ml-3 flex items-center gap-4 text-sm"><span
+                                                class="text-xs text-slate-500 w-20 text-right">2025-12-30</span></div>
+                                    </div>
+                                    <div class="flex justify-between items-center py-2.5">
+                                        <p class="font-semibold text-slate-700 truncate pr-3 flex-1 min-w-0"
+                                            title="전농동 임플란트 치과, 뼈가 없으면 어렵다? 네비게이션 가이드가 필요한 이유">OO동 임플란트 치과, 뼈가 없으면 어렵다?
+                                            네비게이션 가이드가 필요한 이유</p>
+                                        <div class="flex-shrink-0 ml-3 flex items-center gap-4 text-sm"><span
+                                                class="text-xs text-slate-500 w-20 text-right">2025-12-26</span></div>
+                                    </div>
+                                    <div class="flex justify-between items-center py-2.5">
+                                        <p class="font-semibold text-slate-700 truncate pr-3 flex-1 min-w-0"
+                                            title="동대문구 치과 에서 보는, 고령 및 전신질환 환자 임플란트 체크포인트!">OO동 치과 에서 보는, 고령 및 전신질환 환자
+                                            임플란트 체크포인트!</p>
+                                        <div class="flex-shrink-0 ml-3 flex items-center gap-4 text-sm"><span
+                                                class="text-xs text-slate-500 w-20 text-right">2025-12-23</span></div>
+                                    </div>
+                                    <div class="flex justify-between items-center py-2.5">
+                                        <p class="font-semibold text-slate-700 truncate pr-3 flex-1 min-w-0"
+                                            title="정릉역 치과 안 아파도 위험할 수 있습니다! 임플란트 보철물 교체 신호 5가지">OO역 치과 안 아파도 위험할 수 있습니다!
+                                            임플란트 보철물 교체 신호 5가지</p>
+                                        <div class="flex-shrink-0 ml-3 flex items-center gap-4 text-sm"><span
+                                                class="text-xs text-slate-500 w-20 text-right">2025-12-21</span></div>
+                                    </div>
+                                    <div class="flex justify-between items-center py-2.5">
+                                        <p class="font-semibold text-slate-700 truncate pr-3 flex-1 min-w-0"
+                                            title="길음역 치과, 신경치료 후 통증이 사라지지 않는다면 꼭 확인해야 할 5가지">OO역 치과, 신경치료 후 통증이 사라지지
+                                            않는다면 꼭 확인해야 할 5가지</p>
+                                        <div class="flex-shrink-0 ml-3 flex items-center gap-4 text-sm"><span
+                                                class="text-xs text-slate-500 w-20 text-right">2025-12-13</span></div>
+                                    </div>
+                                    <div class="flex justify-between items-center py-2.5">
+                                        <p class="font-semibold text-slate-700 truncate pr-3 flex-1 min-w-0"
+                                            title="안암역 치과 에서 보는 임플란트 재수술이 필요한 3가지 신호 (faet. 염증, 동요도, 보철 파절)">OO역 치과 에서
+                                            보는 임플란트 재수술이 필요한 3가지 신호 (faet. 염증, 동요도, 보철 파절)</p>
+                                        <div class="flex-shrink-0 ml-3 flex items-center gap-4 text-sm"><span
+                                                class="text-xs text-slate-500 w-20 text-right">2025-12-10</span></div>
+                                    </div>
+                                    <div class="flex justify-between items-center py-2.5">
+                                        <p class="font-semibold text-slate-700 truncate pr-3 flex-1 min-w-0"
+                                            title="신설동 치과 수면마취 임플란트, 누가 받으면 좋을까? (주의 대상 및 안전 기준 포함)">OO동 치과 수면마취 임플란트,
+                                            누가 받으면 좋을까? (주의 대상 및 안전 기준 포함)</p>
+                                        <div class="flex-shrink-0 ml-3 flex items-center gap-4 text-sm"><span
+                                                class="text-xs text-slate-500 w-20 text-right">2025-12-08</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="report-slide">
+            <h2 class="section-title">유튜브 성과 분석</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="">
+                    <h3 class="text-xl font-bold text-slate-800 text-center mb-6">2025-12</h3>
+                    <div class="space-y-6">
+                        <div class="bg-slate-50/70 p-5 rounded-2xl border-2 border-dashed">
+                            <h3 class="text-xl font-bold text-slate-800 mb-5 text-center">채널 성과</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="bg-white p-4 rounded-2xl border flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 rounded-lg flex items-center justify-center bg-red-500 text-white shrink-0">
+                                        <i class="fas fa-play-circle text-lg"></i>
+                                    </div>
+                                    <div class="min-w-0 flex-1">
+                                        <p class="text-sm font-semibold text-slate-500 truncate">총 조회수</p>
+                                        <p class="text-2xl font-extrabold text-slate-800 mt-1">10,444<span
+                                                class="text-lg font-semibold text-slate-500 ml-1">회</span></p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-4 rounded-2xl border flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 rounded-lg flex items-center justify-center bg-orange-500 text-white shrink-0">
+                                        <i class="fas fa-clock text-lg"></i>
+                                    </div>
+                                    <div class="min-w-0 flex-1">
+                                        <p class="text-sm font-semibold text-slate-500 truncate">총 시청 시간</p>
+                                        <p class="text-2xl font-extrabold text-slate-800 mt-1">489.167<span
+                                                class="text-lg font-semibold text-slate-500 ml-1">시간</span></p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-4 rounded-2xl border flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 rounded-lg flex items-center justify-center bg-yellow-500 text-white shrink-0">
+                                        <i class="fas fa-users text-lg"></i>
+                                    </div>
+                                    <div class="min-w-0 flex-1">
+                                        <p class="text-sm font-semibold text-slate-500 truncate">구독자 증감</p>
+                                        <p class="text-2xl font-extrabold text-slate-800 mt-1">+43<span
+                                                class="text-lg font-semibold text-slate-500 ml-1">명</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-slate-50/70 p-5 rounded-2xl border-2 border-dashed">
+                            <h3 class="text-xl font-bold text-slate-800 mb-5 text-center">제작 성과 ([영상팀])</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-white p-4 rounded-2xl border flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 rounded-lg flex items-center justify-center bg-teal-500 text-white shrink-0">
+                                        <i class="fas fa-file-signature text-lg"></i>
+                                    </div>
+                                    <div class="min-w-0 flex-1">
+                                        <p class="text-sm font-semibold text-slate-500 truncate">계약 건수</p>
+                                        <p class="text-2xl font-extrabold text-slate-800 mt-1">0<span
+                                                class="text-lg font-semibold text-slate-500 ml-1">건</span></p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-4 rounded-2xl border flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 rounded-lg flex items-center justify-center bg-cyan-500 text-white shrink-0">
+                                        <i class="fas fa-film text-lg"></i>
+                                    </div>
+                                    <div class="min-w-0 flex-1">
+                                        <p class="text-sm font-semibold text-slate-500 truncate">제작 완료</p>
+                                        <p class="text-2xl font-extrabold text-slate-800 mt-1">0<span
+                                                class="text-lg font-semibold text-slate-500 ml-1">건</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="bg-white p-4 rounded-2xl border">
+                                <div class="w-full h-full flex flex-col p-2">
+                                    <h4 class="text-sm font-bold text-slate-700 mb-4 text-center">조회수 TOP 3 동영상</h4>
+                                    <div class="space-y-4">
+                                        <div class="flex items-center gap-3"><span
+                                                class="font-bold text-slate-400 text-base w-6 text-center">1</span>
+                                            <div class="flex-grow min-w-0">
+                                                <div class="flex justify-between items-center mb-1">
+                                                    <p class="text-sm font-medium text-slate-600 truncate"
+                                                        title="임플란트 뼈이식, 의사들이 숨기는 진실 공개합니다 [청량리 임플란트, 청량리 전체임플란트]">임플란트
+                                                        뼈이식, 의사들이 숨기는 진실 공개합니다 [OO동 임플란트, OO동 전체임플란트]</p><span
+                                                        class="text-sm font-bold text-slate-800 flex-shrink-0 pl-2">1,078<span
+                                                            class="font-normal text-xs ml-1">회</span></span>
+                                                </div>
+                                                <div class="w-full bg-slate-100 rounded-full h-2.5">
+                                                    <div class="h-2.5 rounded-full"
+                                                        style="width: 100%; background-color: rgb(239, 68, 68);"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center gap-3"><span
+                                                class="font-bold text-slate-400 text-base w-6 text-center">2</span>
+                                            <div class="flex-grow min-w-0">
+                                                <div class="flex justify-between items-center mb-1">
+                                                    <p class="text-sm font-medium text-slate-600 truncate"
+                                                        title="전체 임플란트 몇개하면 되나요? 임플란트 평생 쓰려면 '이것'만 기억하세요 [청량리치과, 청량리역치과]">
+                                                        전체 임플란트 몇개하면 되나요? 임플란트 평생 쓰려면 '이것'만 기억하세요 [OO동치과, OO역치과]</p>
+                                                    <span
+                                                        class="text-sm font-bold text-slate-800 flex-shrink-0 pl-2">967<span
+                                                            class="font-normal text-xs ml-1">회</span></span>
+                                                </div>
+                                                <div class="w-full bg-slate-100 rounded-full h-2.5">
+                                                    <div class="h-2.5 rounded-full"
+                                                        style="width: 89.7032%; background-color: rgb(249, 115, 22);">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center gap-3"><span
+                                                class="font-bold text-slate-400 text-base w-6 text-center">3</span>
+                                            <div class="flex-grow min-w-0">
+                                                <div class="flex justify-between items-center mb-1">
+                                                    <p class="text-sm font-medium text-slate-600 truncate"
+                                                        title="수면임플란트 정말 안전할까? 치과에 '이 장비' 있는지 꼭 확인하세요 [청량리치과, 청량리역치과]">
+                                                        수면임플란트 정말 안전할까? 치과에 '이 장비' 있는지 꼭 확인하세요 [OO동치과, OO역치과]</p><span
+                                                        class="text-sm font-bold text-slate-800 flex-shrink-0 pl-2">888<span
+                                                            class="font-normal text-xs ml-1">회</span></span>
+                                                </div>
+                                                <div class="w-full bg-slate-100 rounded-full h-2.5">
+                                                    <div class="h-2.5 rounded-full"
+                                                        style="width: 82.3748%; background-color: rgb(245, 158, 11);">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-2xl border">
+                                <div class="w-full h-full flex flex-col p-2">
+                                    <h4 class="text-sm font-bold text-slate-700 mb-4 text-center">트래픽 소스 TOP 3</h4>
+                                    <div class="space-y-4">
+                                        <div class="flex items-center gap-3"><span
+                                                class="font-bold text-slate-400 text-base w-6 text-center">1</span>
+                                            <div class="flex-grow">
+                                                <div class="flex justify-between items-center mb-1"><span
+                                                        class="text-sm font-medium text-slate-600 truncate"
+                                                        title="탐색 기능">탐색 기능</span><span
+                                                        class="text-sm font-bold text-slate-800">73.1<span
+                                                            class="font-normal text-xs ml-0.5">%</span></span></div>
+                                                <div class="w-full bg-slate-100 rounded-full h-2.5">
+                                                    <div class="h-2.5 rounded-full"
+                                                        style="width: 100%; background-color: rgb(239, 68, 68);"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center gap-3"><span
+                                                class="font-bold text-slate-400 text-base w-6 text-center">2</span>
+                                            <div class="flex-grow">
+                                                <div class="flex justify-between items-center mb-1"><span
+                                                        class="text-sm font-medium text-slate-600 truncate"
+                                                        title="추천 동영상">추천 동영상</span><span
+                                                        class="text-sm font-bold text-slate-800">12.0<span
+                                                            class="font-normal text-xs ml-0.5">%</span></span></div>
+                                                <div class="w-full bg-slate-100 rounded-full h-2.5">
+                                                    <div class="h-2.5 rounded-full"
+                                                        style="width: 16.4295%; background-color: rgb(249, 115, 22);">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center gap-3"><span
+                                                class="font-bold text-slate-400 text-base w-6 text-center">3</span>
+                                            <div class="flex-grow">
+                                                <div class="flex justify-between items-center mb-1"><span
+                                                        class="text-sm font-medium text-slate-600 truncate"
+                                                        title="YouTube 검색">YouTube 검색</span><span
+                                                        class="text-sm font-bold text-slate-800">6.3<span
+                                                            class="font-normal text-xs ml-0.5">%</span></span></div>
+                                                <div class="w-full bg-slate-100 rounded-full h-2.5">
+                                                    <div class="h-2.5 rounded-full"
+                                                        style="width: 8.63201%; background-color: rgb(245, 158, 11);">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-2xl shadow-sm border">
+                            <h4 class="text-sm font-bold text-slate-700 mb-4 text-center">영상 종류별 분포</h4>
+                            <div class="flex items-center justify-center h-24 text-sm text-slate-500">데이터 없음</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="">
+                    <h3 class="text-xl font-bold text-slate-800 text-center mb-6">2026-01</h3>
+                    <div class="space-y-6">
+                        <div class="bg-slate-50/70 p-5 rounded-2xl border-2 border-dashed">
+                            <h3 class="text-xl font-bold text-slate-800 mb-5 text-center">채널 성과</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="bg-white p-4 rounded-2xl border flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 rounded-lg flex items-center justify-center bg-red-500 text-white shrink-0">
+                                        <i class="fas fa-play-circle text-lg"></i>
+                                    </div>
+                                    <div class="min-w-0 flex-1">
+                                        <p class="text-sm font-semibold text-slate-500 truncate">총 조회수</p>
+                                        <p class="text-2xl font-extrabold text-slate-800 mt-1">0<span
+                                                class="text-lg font-semibold text-slate-500 ml-1">회</span></p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-4 rounded-2xl border flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 rounded-lg flex items-center justify-center bg-orange-500 text-white shrink-0">
+                                        <i class="fas fa-clock text-lg"></i>
+                                    </div>
+                                    <div class="min-w-0 flex-1">
+                                        <p class="text-sm font-semibold text-slate-500 truncate">총 시청 시간</p>
+                                        <p class="text-2xl font-extrabold text-slate-800 mt-1">0<span
+                                                class="text-lg font-semibold text-slate-500 ml-1">시간</span></p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-4 rounded-2xl border flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 rounded-lg flex items-center justify-center bg-yellow-500 text-white shrink-0">
+                                        <i class="fas fa-users text-lg"></i>
+                                    </div>
+                                    <div class="min-w-0 flex-1">
+                                        <p class="text-sm font-semibold text-slate-500 truncate">구독자 증감</p>
+                                        <p class="text-2xl font-extrabold text-slate-800 mt-1">+0<span
+                                                class="text-lg font-semibold text-slate-500 ml-1">명</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-slate-50/70 p-5 rounded-2xl border-2 border-dashed">
+                            <h3 class="text-xl font-bold text-slate-800 mb-5 text-center">제작 성과 ([영상팀])</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-white p-4 rounded-2xl border flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 rounded-lg flex items-center justify-center bg-teal-500 text-white shrink-0">
+                                        <i class="fas fa-file-signature text-lg"></i>
+                                    </div>
+                                    <div class="min-w-0 flex-1">
+                                        <p class="text-sm font-semibold text-slate-500 truncate">계약 건수</p>
+                                        <p class="text-2xl font-extrabold text-slate-800 mt-1">4<span
+                                                class="text-lg font-semibold text-slate-500 ml-1">건</span></p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-4 rounded-2xl border flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 rounded-lg flex items-center justify-center bg-cyan-500 text-white shrink-0">
+                                        <i class="fas fa-film text-lg"></i>
+                                    </div>
+                                    <div class="min-w-0 flex-1">
+                                        <p class="text-sm font-semibold text-slate-500 truncate">제작 완료</p>
+                                        <p class="text-2xl font-extrabold text-slate-800 mt-1">0<span
+                                                class="text-lg font-semibold text-slate-500 ml-1">건</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="bg-white p-4 rounded-2xl border">
+                                <div class="flex flex-col items-center justify-center h-full text-slate-500">
+                                    <p class="text-sm font-semibold">Top 동영상 데이터 없음</p>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-2xl border">
+                                <div class="flex flex-col items-center justify-center h-full text-slate-500">
+                                    <p class="text-sm font-semibold">트래픽 소스 데이터 없음</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-2xl shadow-sm border">
+                            <h4 class="text-sm font-bold text-slate-700 mb-4 text-center">영상 종류별 분포</h4>
+                            <div class="flex items-center justify-center h-24 text-sm text-slate-500">데이터 없음</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="report-slide">
+            <h2 class="section-title">네이버 광고 성과 분석</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="opacity-50">
+                    <h3 class="text-xl font-bold text-slate-800 text-center mb-6">데이터 없음</h3>
+                    <div class="text-center text-slate-500 p-8 rounded-2xl h-full flex flex-col justify-center"><i
+                            class="fas fa-exclamation-circle text-3xl text-slate-400 mb-3"></i>
+                        <p class="font-semibold">지난달 데이터 없음</p>
+                    </div>
+                </div>
+                <div class="">
+                    <h3 class="text-xl font-bold text-slate-800 text-center mb-6">2025-12</h3>
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="bg-white p-5 rounded-2xl border h-full">
+                                <h3 class="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2.5"><i
+                                        class="fas fa-eye text-blue-500"></i><span>노출수 기준 TOP 5</span></h3>
+                                <div class="space-y-4">
+                                    <div class="flex items-start gap-3"><span
+                                            class="font-bold text-slate-400 text-lg w-6 text-center mt-0.5">1</span>
+                                        <div class="flex-grow">
+                                            <div class="flex justify-between items-center mb-1.5"><span
+                                                    class="font-semibold text-slate-800 truncate pr-2 text-base"
+                                                    title="치과">치과</span></div>
+                                            <div title="노출수: 3,913" class="w-full bg-slate-100 rounded-full h-3 group">
+                                                <div class="h-3 rounded-full transition-all duration-300 bg-blue-500"
+                                                    style="width: 100%;"></div>
+                                            </div>
+                                            <div
+                                                class="grid grid-cols-2 gap-2 text-xs text-slate-500 mt-2 tabular-nums text-center">
+                                                <div class="font-bold text-blue-600">
+                                                    <p class="text-slate-400 text-[10px] font-semibold">노출</p>3,913
+                                                </div>
+                                                <div class="">
+                                                    <p class="text-slate-400 text-[10px] font-semibold">클릭</p>52
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start gap-3"><span
+                                            class="font-bold text-slate-400 text-lg w-6 text-center mt-0.5">2</span>
+                                        <div class="flex-grow">
+                                            <div class="flex justify-between items-center mb-1.5"><span
+                                                    class="font-semibold text-slate-800 truncate pr-2 text-base"
+                                                    title="청량리치과">OO동치과</span></div>
+                                            <div title="노출수: 375" class="w-full bg-slate-100 rounded-full h-3 group">
+                                                <div class="h-3 rounded-full transition-all duration-300 bg-blue-500"
+                                                    style="width: 9.58344%;"></div>
+                                            </div>
+                                            <div
+                                                class="grid grid-cols-2 gap-2 text-xs text-slate-500 mt-2 tabular-nums text-center">
+                                                <div class="font-bold text-blue-600">
+                                                    <p class="text-slate-400 text-[10px] font-semibold">노출</p>375
+                                                </div>
+                                                <div class="">
+                                                    <p class="text-slate-400 text-[10px] font-semibold">클릭</p>11
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start gap-3"><span
+                                            class="font-bold text-slate-400 text-lg w-6 text-center mt-0.5">3</span>
+                                        <div class="flex-grow">
+                                            <div class="flex justify-between items-center mb-1.5"><span
+                                                    class="font-semibold text-slate-800 truncate pr-2 text-base"
+                                                    title="근처치과">근처치과</span></div>
+                                            <div title="노출수: 102" class="w-full bg-slate-100 rounded-full h-3 group">
+                                                <div class="h-3 rounded-full transition-all duration-300 bg-blue-500"
+                                                    style="width: 2.6067%;"></div>
+                                            </div>
+                                            <div
+                                                class="grid grid-cols-2 gap-2 text-xs text-slate-500 mt-2 tabular-nums text-center">
+                                                <div class="font-bold text-blue-600">
+                                                    <p class="text-slate-400 text-[10px] font-semibold">노출</p>102
+                                                </div>
+                                                <div class="">
+                                                    <p class="text-slate-400 text-[10px] font-semibold">클릭</p>3
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start gap-3"><span
+                                            class="font-bold text-slate-400 text-lg w-6 text-center mt-0.5">4</span>
+                                        <div class="flex-grow">
+                                            <div class="flex justify-between items-center mb-1.5"><span
+                                                    class="font-semibold text-slate-800 truncate pr-2 text-base"
+                                                    title="청량리역치과">OO역치과</span></div>
+                                            <div title="노출수: 67" class="w-full bg-slate-100 rounded-full h-3 group">
+                                                <div class="h-3 rounded-full transition-all duration-300 bg-blue-500"
+                                                    style="width: 1.71224%;"></div>
+                                            </div>
+                                            <div
+                                                class="grid grid-cols-2 gap-2 text-xs text-slate-500 mt-2 tabular-nums text-center">
+                                                <div class="font-bold text-blue-600">
+                                                    <p class="text-slate-400 text-[10px] font-semibold">노출</p>67
+                                                </div>
+                                                <div class="">
+                                                    <p class="text-slate-400 text-[10px] font-semibold">클릭</p>5
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start gap-3"><span
+                                            class="font-bold text-slate-400 text-lg w-6 text-center mt-0.5">5</span>
+                                        <div class="flex-grow">
+                                            <div class="flex justify-between items-center mb-1.5"><span
+                                                    class="font-semibold text-slate-800 truncate pr-2 text-base"
+                                                    title="치과병원">치과병원</span></div>
+                                            <div title="노출수: 66" class="w-full bg-slate-100 rounded-full h-3 group">
+                                                <div class="h-3 rounded-full transition-all duration-300 bg-blue-500"
+                                                    style="width: 1.68669%;"></div>
+                                            </div>
+                                            <div
+                                                class="grid grid-cols-2 gap-2 text-xs text-slate-500 mt-2 tabular-nums text-center">
+                                                <div class="font-bold text-blue-600">
+                                                    <p class="text-slate-400 text-[10px] font-semibold">노출</p>66
+                                                </div>
+                                                <div class="">
+                                                    <p class="text-slate-400 text-[10px] font-semibold">클릭</p>1
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-5 rounded-2xl border h-full">
+                                <h3 class="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2.5"><i
+                                        class="fas fa-mouse-pointer text-green-500"></i><span>클릭수 기준 TOP 5</span></h3>
+                                <div class="space-y-4">
+                                    <div class="flex items-start gap-3"><span
+                                            class="font-bold text-slate-400 text-lg w-6 text-center mt-0.5">1</span>
+                                        <div class="flex-grow">
+                                            <div class="flex justify-between items-center mb-1.5"><span
+                                                    class="font-semibold text-slate-800 truncate pr-2 text-base"
+                                                    title="치과">치과</span></div>
+                                            <div title="클릭수: 52" class="w-full bg-slate-100 rounded-full h-3 group">
+                                                <div class="h-3 rounded-full transition-all duration-300 bg-green-500"
+                                                    style="width: 100%;"></div>
+                                            </div>
+                                            <div
+                                                class="grid grid-cols-2 gap-2 text-xs text-slate-500 mt-2 tabular-nums text-center">
+                                                <div class="">
+                                                    <p class="text-slate-400 text-[10px] font-semibold">노출</p>3,913
+                                                </div>
+                                                <div class="font-bold text-green-600">
+                                                    <p class="text-slate-400 text-[10px] font-semibold">클릭</p>52
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start gap-3"><span
+                                            class="font-bold text-slate-400 text-lg w-6 text-center mt-0.5">2</span>
+                                        <div class="flex-grow">
+                                            <div class="flex justify-between items-center mb-1.5"><span
+                                                    class="font-semibold text-slate-800 truncate pr-2 text-base"
+                                                    title="청량리치과">OO동치과</span></div>
+                                            <div title="클릭수: 11" class="w-full bg-slate-100 rounded-full h-3 group">
+                                                <div class="h-3 rounded-full transition-all duration-300 bg-green-500"
+                                                    style="width: 21.1538%;"></div>
+                                            </div>
+                                            <div
+                                                class="grid grid-cols-2 gap-2 text-xs text-slate-500 mt-2 tabular-nums text-center">
+                                                <div class="">
+                                                    <p class="text-slate-400 text-[10px] font-semibold">노출</p>375
+                                                </div>
+                                                <div class="font-bold text-green-600">
+                                                    <p class="text-slate-400 text-[10px] font-semibold">클릭</p>11
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start gap-3"><span
+                                            class="font-bold text-slate-400 text-lg w-6 text-center mt-0.5">3</span>
+                                        <div class="flex-grow">
+                                            <div class="flex justify-between items-center mb-1.5"><span
+                                                    class="font-semibold text-slate-800 truncate pr-2 text-base"
+                                                    title="청량리역치과">OO역치과</span></div>
+                                            <div title="클릭수: 5" class="w-full bg-slate-100 rounded-full h-3 group">
+                                                <div class="h-3 rounded-full transition-all duration-300 bg-green-500"
+                                                    style="width: 9.61538%;"></div>
+                                            </div>
+                                            <div
+                                                class="grid grid-cols-2 gap-2 text-xs text-slate-500 mt-2 tabular-nums text-center">
+                                                <div class="">
+                                                    <p class="text-slate-400 text-[10px] font-semibold">노출</p>67
+                                                </div>
+                                                <div class="font-bold text-green-600">
+                                                    <p class="text-slate-400 text-[10px] font-semibold">클릭</p>5
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start gap-3"><span
+                                            class="font-bold text-slate-400 text-lg w-6 text-center mt-0.5">4</span>
+                                        <div class="flex-grow">
+                                            <div class="flex justify-between items-center mb-1.5"><span
+                                                    class="font-semibold text-slate-800 truncate pr-2 text-base"
+                                                    title="근처치과">근처치과</span></div>
+                                            <div title="클릭수: 3" class="w-full bg-slate-100 rounded-full h-3 group">
+                                                <div class="h-3 rounded-full transition-all duration-300 bg-green-500"
+                                                    style="width: 5.76923%;"></div>
+                                            </div>
+                                            <div
+                                                class="grid grid-cols-2 gap-2 text-xs text-slate-500 mt-2 tabular-nums text-center">
+                                                <div class="">
+                                                    <p class="text-slate-400 text-[10px] font-semibold">노출</p>102
+                                                </div>
+                                                <div class="font-bold text-green-600">
+                                                    <p class="text-slate-400 text-[10px] font-semibold">클릭</p>3
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start gap-3"><span
+                                            class="font-bold text-slate-400 text-lg w-6 text-center mt-0.5">5</span>
+                                        <div class="flex-grow">
+                                            <div class="flex justify-between items-center mb-1.5"><span
+                                                    class="font-semibold text-slate-800 truncate pr-2 text-base"
+                                                    title="일요일치과">일요일치과</span></div>
+                                            <div title="클릭수: 3" class="w-full bg-slate-100 rounded-full h-3 group">
+                                                <div class="h-3 rounded-full transition-all duration-300 bg-green-500"
+                                                    style="width: 5.76923%;"></div>
+                                            </div>
+                                            <div
+                                                class="grid grid-cols-2 gap-2 text-xs text-slate-500 mt-2 tabular-nums text-center">
+                                                <div class="">
+                                                    <p class="text-slate-400 text-[10px] font-semibold">노출</p>26
+                                                </div>
+                                                <div class="font-bold text-green-600">
+                                                    <p class="text-slate-400 text-[10px] font-semibold">클릭</p>3
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="report-slide">
+                <h2 class="section-title">디자인 성과 분석</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="">
+                        <h3 class="text-xl font-bold text-slate-800 text-center mb-6">2025-11</h3>
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border space-y-6">
+                            <h3 class="text-xl font-bold text-slate-800 border-b pb-4">2025-11 디자인 성과</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="bg-pink-50 p-5 rounded-xl border border-pink-100 flex items-center gap-4">
+                                    <div
+                                        class="w-12 h-12 bg-pink-500 rounded-lg flex items-center justify-center text-white text-xl">
+                                        <i class="fas fa-layer-group"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-semibold text-slate-500">총 작업 건수</p>
+                                        <p class="text-2xl font-bold text-slate-800">4 <span
+                                                class="text-base font-normal text-slate-500">건</span></p>
+                                    </div>
+                                </div>
+                                <div class="bg-pink-50 p-5 rounded-xl border border-pink-100 flex items-center gap-4">
+                                    <div
+                                        class="w-12 h-12 bg-pink-500 rounded-lg flex items-center justify-center text-white text-xl">
+                                        <i class="fas fa-file-image"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-semibold text-slate-500">총 완료 페이지</p>
+                                        <p class="text-2xl font-bold text-slate-800">6 <span
+                                                class="text-base font-normal text-slate-500">페이지</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="overflow-hidden rounded-xl border border-slate-200">
+                                <table class="w-full text-left text-sm">
+                                    <thead class="bg-slate-50 text-slate-600 font-semibold">
+                                        <tr>
+                                            <th class="p-3">디자인 작업명</th>
+                                            <th class="p-3 text-right">페이지 수</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-100">
+                                        <tr class="hover:bg-slate-50/50">
+                                            <td class="p-3 text-slate-700 font-medium">블로그 스킨 제작</td>
+                                            <td class="p-3 text-right text-slate-600">0</td>
+                                        </tr>
+                                        <tr class="hover:bg-slate-50/50">
+                                            <td class="p-3 text-slate-700 font-medium">구인공고 제작</td>
+                                            <td class="p-3 text-right text-slate-600">2</td>
+                                        </tr>
+                                        <tr class="hover:bg-slate-50/50">
+                                            <td class="p-3 text-slate-700 font-medium">OO치과의원 GFA 광고 소재 제작안</td>
+                                            <td class="p-3 text-right text-slate-600">2</td>
+                                        </tr>
+                                        <tr class="hover:bg-slate-50/50">
+                                            <td class="p-3 text-slate-700 font-medium">OO치과의원 GFA 광고 소재 수정안</td>
+                                            <td class="p-3 text-right text-slate-600">2</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <h3 class="text-xl font-bold text-slate-800 text-center mb-6">2025-12</h3>
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border space-y-6">
+                            <h3 class="text-xl font-bold text-slate-800 border-b pb-4">2025-12 디자인 성과</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="bg-pink-50 p-5 rounded-xl border border-pink-100 flex items-center gap-4">
+                                    <div
+                                        class="w-12 h-12 bg-pink-500 rounded-lg flex items-center justify-center text-white text-xl">
+                                        <i class="fas fa-layer-group"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-semibold text-slate-500">총 작업 건수</p>
+                                        <p class="text-2xl font-bold text-slate-800">1 <span
+                                                class="text-base font-normal text-slate-500">건</span></p>
+                                    </div>
+                                </div>
+                                <div class="bg-pink-50 p-5 rounded-xl border border-pink-100 flex items-center gap-4">
+                                    <div
+                                        class="w-12 h-12 bg-pink-500 rounded-lg flex items-center justify-center text-white text-xl">
+                                        <i class="fas fa-file-image"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-semibold text-slate-500">총 완료 페이지</p>
+                                        <p class="text-2xl font-bold text-slate-800">3 <span
+                                                class="text-base font-normal text-slate-500">페이지</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="overflow-hidden rounded-xl border border-slate-200">
+                                <table class="w-full text-left text-sm">
+                                    <thead class="bg-slate-50 text-slate-600 font-semibold">
+                                        <tr>
+                                            <th class="p-3">디자인 작업명</th>
+                                            <th class="p-3 text-right">페이지 수</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-100">
+                                        <tr class="hover:bg-slate-50/50">
+                                            <td class="p-3 text-slate-700 font-medium">판촉물 로고 시안 제작</td>
+                                            <td class="p-3 text-right text-slate-600">3</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="report-slide">
+                <h2 class="section-title">종합 분석 및 실행 계획</h2>
+                <div class="space-y-8">
+                    <div class="one-line-summary"><strong>종합 요약: </strong>
+                        <div class="">
+                            <div class="text-slate-800 text-base leading-relaxed">
+                                <p class="mb-2 last:mb-0">블로그를 통한 고관여 진료(임플란트) 계약 전환이 급증했으나, 의료진 휴진 일정 미인지 및 개인 사정으로 인한
+                                    취소율이 여전히 존재하여 예약 관리 효율화와 로컬 키워드 광고 최적화가 시급합니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="subsection-title"><span class="circle-icon">1</span>상세 분석</h3>
+                        <div class="mb-4 relative group">
+                            <p class="font-bold text-lg text-slate-700">예약 추세 분석</p>
+                            <div
+                                class="analysis-text relative print:p-0 print:border-none print:bg-transparent print:!shadow-none">
+                                <div class="">
+                                    <p class="mb-2 last:mb-0">11월 대비 12월은 '내원 확정' 비율이 안정적으로 유지되고 있으며, 특히 블로그를 통한 유입 후 실제
+                                        '계약'으로 이어지는 건수가 0건에서 8건으로 폭발적으로 증가했습니다. 이는 진성 고객 유입이 늘어나고 있음을 시사합니다. 다만, 특정
+                                        요일(수, 일) 의료진 휴진 관련 정보 부족으로 인한 취소가 발생하고 있어 예약 시스템의 정비가 필요합니다.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-4 relative group">
+                            <p class="font-bold text-lg text-slate-700">취소/노쇼 분석</p>
+                            <div
+                                class="analysis-text relative print:p-0 print:border-none print:bg-transparent print:!shadow-none">
+                                <div class="">
+                                    <p class="mb-2 last:mb-0">취소 및 노쇼의 주요 원인은 '개인 일정 변경/야근'과 '의료진 휴진 일정 미인지'입니다. 단순
+                                        변심보다는 스케줄링 문제가 큽니다. 개선 방안으로는 1) 네이버 예약 페이지 내 의료진별 휴진일/진료 가능 시간 팝업 또는 공지 강화, 2)
+                                        예약 확정 시 '진료 시간 변경은 최소 1일 전 부탁드립니다'라는 문구를 포함한 알림톡 자동 발송 시스템 점검, 3) 야간 진료 수요(야근
+                                        언급)에 대응하여 야간 진료일 안내를 강조하는 것입니다.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-4 relative group">
+                            <p class="font-bold text-lg text-slate-700">유입 경로 분석</p>
+                            <div
+                                class="analysis-text relative print:p-0 print:border-none print:bg-transparent print:!shadow-none">
+                                <div class="">
+                                    <p class="mb-2 last:mb-0">압도적으로 '인터넷 검색(네이버 플레이스/지도)'을 통한 유입이 많으며, '지인 소개'가 꾸준히
+                                        뒷받침하고 있습니다. 12월 블로그 계약 건수 급증을 볼 때, 검색을 통해 블로그 콘텐츠를 소비하고 신뢰를 쌓은 뒤 플레이스로 예약하는
+                                        '검색-&gt;블로그-&gt;예약'의 퍼널이 완성되고 있습니다. 외부 서비스 유입보다는 자체 채널(플레이스, 블로그) 강화가 효율적입니다.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-4 relative group">
+                            <p class="font-bold text-lg text-slate-700">주요 희망 진료 분석</p>
+                            <div
+                                class="analysis-text relative print:p-0 print:border-none print:bg-transparent print:!shadow-none">
+                                <div class="">
+                                    <p class="mb-2 last:mb-0">계절적 요인(연말)으로 인해 '스케일링' 수요가 높으며, '사랑니 발치'와 '임플란트' 문의가
+                                        핵심입니다. 특히 '수면치료'와 '안 아픈 치료'에 대한 니즈가 검색어와 요청사항에서 발견됩니다. 사랑니와 임플란트 환자에게 '통증
+                                        완화(수면마취 등)' 솔루션을 강조하면 내원율을 높일 수 있습니다.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-4 relative group">
+                            <p class="font-bold text-lg text-slate-700">블로그 성과 인사이트</p>
+                            <div
+                                class="analysis-text relative print:p-0 print:border-none print:bg-transparent print:!shadow-none">
+                                <div class="">
+                                    <p class="mb-2 last:mb-0">12월 블로그는 조회수 대비 '계약 건수 8건'이라는 놀라운 성과를 달성했습니다. 특히 '사랑니 뿌리
+                                        휘어짐', '뼈이식 회복기간' 등 환자의 불안감을 해소해주는 전문적인 정보성 글이 주효했습니다. 단순 병원 홍보보다는 현재처럼 환자가 겪는
+                                        구체적인 문제(통증, 회복기간, 뼈이식 여부)를 해결해주는 콘텐츠가 신뢰를 줍니다. 1월에는 '새해 부모님 임플란트', '방학 맞이 사랑니
+                                        발치' 등 시의성 있는 주제를 섞어 발행하면 시너지가 날 것입니다.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-4 relative group">
+                            <p class="font-bold text-lg text-slate-700">유튜브 성과 인사이트</p>
+                            <div
+                                class="analysis-text relative print:p-0 print:border-none print:bg-transparent print:!shadow-none">
+                                <div class="">
+                                    <p class="mb-2 last:mb-0">현재 유튜브 성과가 전무(0)하므로, 무리하게 영상을 제작하기보다는 블로그에서 반응이 좋았던 '사랑니
+                                        발치', '임플란트 뼈이식' 주제를 활용해 1분 이내의 '쇼츠(Shorts)' 영상을 테스트로 1~2개 제작해보는 것을 권장합니다. 블로그 글의
+                                        핵심 요약본을 카드뉴스 형태로 만들어 영상화하는 것만으로도 초기 트래픽 소스를 다각화할 수 있습니다.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-4 relative group">
+                            <p class="font-bold text-lg text-slate-700">광고 성과 인사이트</p>
+                            <div
+                                class="analysis-text relative print:p-0 print:border-none print:bg-transparent print:!shadow-none">
+                                <div class="">
+                                    <p class="mb-2 last:mb-0">12월 광고 데이터 분석 결과, '치과'라는 대표 키워드가 전체 비용의 약 65%(116,798원)를
+                                        소진했으나 클릭수는 52건에 그쳤습니다. 반면 'OO동치과', 'OO역치과'는 상대적으로 적은 비용으로 유효한 노출을 만들고 있습니다. 다음 달
+                                        전략은 '치과' 키워드의 입찰가를 대폭 낮추거나 제외 키워드로 설정하고, 절감된 예산을 'OO동 임플란트', 'OO동 사랑니'와 같은 세부 진료
+                                        키워드와 지역 키워드 조합에 집중 투입하여 실질적인 예약 전환율을 높여야 합니다.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="subsection-title"><span class="circle-icon">2</span>핵심 진단 및 전략</h3>
+                        <div
+                            class="mb-6 relative group border border-transparent hover:border-slate-200 rounded-lg p-2 -m-2 transition-colors">
+                            <p class="font-bold text-lg text-slate-700">진단 1</p>
+                            <div
+                                class="analysis-text relative print:p-0 print:border-none print:bg-transparent print:!shadow-none">
+                                <div class="">
+                                    <p class="mb-2 last:mb-0">블로그 콘텐츠의 구매 전환율 급상승 (진성 고객 확보 성공)</p>
+                                </div>
+                            </div>
+                            <p class="font-bold text-lg text-slate-700 mt-4">전략 1</p>
+                            <div
+                                class="analysis-text relative print:p-0 print:border-none print:bg-transparent print:!shadow-none">
+                                <div class="">
+                                    <p class="mb-2 last:mb-0">성공한 키워드(휘어진 사랑니, 뼈이식 임플란트)와 유사한 '문제 해결형' 심층 콘텐츠 발행 빈도를 주
+                                        2회 이상으로 유지하여 전문성 강조 및 유입 가속화.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="mb-6 relative group border border-transparent hover:border-slate-200 rounded-lg p-2 -m-2 transition-colors">
+                            <p class="font-bold text-lg text-slate-700">진단 2</p>
+                            <div
+                                class="analysis-text relative print:p-0 print:border-none print:bg-transparent print:!shadow-none">
+                                <div class="">
+                                    <p class="mb-2 last:mb-0">광고 예산의 비효율적 집행 (포괄적 키워드 과다 지출)</p>
+                                </div>
+                            </div>
+                            <p class="font-bold text-lg text-slate-700 mt-4">전략 2</p>
+                            <div
+                                class="analysis-text relative print:p-0 print:border-none print:bg-transparent print:!shadow-none">
+                                <div class="">
+                                    <p class="mb-2 last:mb-0">단가만 높고 전환율이 낮은 '치과' 대표 키워드 예산을 50% 이상 삭감하고, 'OO역 임플란트',
+                                        'OO동 사랑니' 등 구체적 로컬+진료명 키워드로 예산 재배분.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="mb-6 relative group border border-transparent hover:border-slate-200 rounded-lg p-2 -m-2 transition-colors">
+                            <p class="font-bold text-lg text-slate-700">진단 3</p>
+                            <div
+                                class="analysis-text relative print:p-0 print:border-none print:bg-transparent print:!shadow-none">
+                                <div class="">
+                                    <p class="mb-2 last:mb-0">일정 미숙지로 인한 이탈 발생</p>
+                                </div>
+                            </div>
+                            <p class="font-bold text-lg text-slate-700 mt-4">전략 3</p>
+                            <div
+                                class="analysis-text relative print:p-0 print:border-none print:bg-transparent print:!shadow-none">
+                                <div class="">
+                                    <p class="mb-2 last:mb-0">네이버 예약 설정에서 의료진별 휴진일을 명확히 블락(Block) 처리하고, 예약 안내 메시지에 '변경
+                                        가능성'을 낮추는 확정적 워딩 사용.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="subsection-title"><span class="circle-icon">3</span>2026-01 실행 계획 (Action Plan)</h3>
+                        <table class="summary-table">
+                            <thead>
+                                <tr>
+                                    <th>과업</th>
+                                    <th>기대효과</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="group">
+                                    <td>
+                                        <div class="">
+                                            <div class="text-slate-800 text-base leading-relaxed">
+                                                <p class="mb-2 last:mb-0">네이버 검색광고 키워드 필터링 및 입찰가 조정</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="">
+                                            <div class="text-slate-800 text-base leading-relaxed">
+                                                <p class="mb-2 last:mb-0">'치과' 키워드 비용 절감 및 로컬 키워드 노출 증대로 광고비 대비 내원
+                                                    효율(ROAS) 30% 개선</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="group">
+                                    <td>
+                                        <div class="">
+                                            <div class="text-slate-800 text-base leading-relaxed">
+                                                <p class="mb-2 last:mb-0">블로그 '고난이도 임플란트/사랑니' 성공 사례 콘텐츠 4건 발행</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="">
+                                            <div class="text-slate-800 text-base leading-relaxed">
+                                                <p class="mb-2 last:mb-0">검색 유입 고객의 신뢰도 상승을 통한 고가 진료(임플란트) 계약 건수 월 10건
+                                                    이상 목표 달성</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="group">
+                                    <td>
+                                        <div class="">
+                                            <div class="text-slate-800 text-base leading-relaxed">
+                                                <p class="mb-2 last:mb-0">네이버 예약 공지사항 업데이트 및 해피콜 스크립트 수정</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="">
+                                            <div class="text-slate-800 text-base leading-relaxed">
+                                                <p class="mb-2 last:mb-0">의료진 휴진 및 진료 시간 착오로 인한 불필요한 예약 취소율 10% 미만으로 감소
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="group">
+                                    <td>
+                                        <div class="">
+                                            <div class="text-slate-800 text-base leading-relaxed">
+                                                <p class="mb-2 last:mb-0">12월 미방문/취소 환자 대상 '새해 맞이 검진' 리마인드 문자 발송</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="">
+                                            <div class="text-slate-800 text-base leading-relaxed">
+                                                <p class="mb-2 last:mb-0">이탈 환자 재유입 유도 및 1월 예약 공백 시간대 충원</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+</body>
+
+</html>

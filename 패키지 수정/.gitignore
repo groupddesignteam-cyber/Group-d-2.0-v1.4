@@ -1,0 +1,12 @@
+
+# Ignore unnecessary backup files and folders
+*복사본*
+*_updated.html
+*.bak
+*.tmp
+*.log
+.DS_Store
+
+# Ignore specific backup folders seen in directory
+수정/
+수정2/
