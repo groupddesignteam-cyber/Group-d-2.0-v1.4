@@ -2020,9 +2020,7 @@
         </div>
     </div>
     <!-- Design Timeline Modal -->
-    <div id="design-timeline-overlay"
-        class="modal-overlay fixed inset-0 bg-black/80 z-[9999] hidden items-center justify-center p-4 backdrop-blur-sm transition-opacity duration-300 opacity-0"
-        onclick="closeDesignTimeline(event)">
+    <div id="design-timeline-overlay" class="modal-overlay" onclick="closeDesignTimeline(event)">
         <div
             class="bg-slate-900 rounded-2xl w-full max-w-5xl max-h-[90vh] overflow-y-auto border border-white/10 shadow-2xl relative animate-scale-up">
             <div
@@ -2539,6 +2537,7 @@
             if (overlay) {
                 overlay.style.display = 'flex';
                 setTimeout(() => overlay.classList.add('show'), 10);
+                document.body.style.overflow = 'hidden';
             }
         }
         function closeDesignModal(e) { if (e.target.id === 'design-modal-overlay') closeDesignModalNow(); }
@@ -2546,40 +2545,35 @@
             const overlay = document.getElementById('design-modal-overlay');
             if (overlay) {
                 overlay.classList.remove('show');
-                setTimeout(() => overlay.style.display = 'none', 300);
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                    document.body.style.overflow = '';
+                }, 300);
             }
         }
 
-        // Design Timeline Modal Functions
-        const designTimelineOverlay = document.getElementById('design-timeline-overlay');
-
+        // --- Design Timeline Modal ---
         function openDesignTimeline() {
-            designTimelineOverlay.style.display = 'flex';
-            designTimelineOverlay.classList.remove('hidden');
-            setTimeout(() => {
-                designTimelineOverlay.classList.remove('opacity-0');
-            }, 10);
-            document.body.style.overflow = 'hidden';
+            const overlay = document.getElementById('design-timeline-overlay');
+            if (overlay) {
+                overlay.style.display = 'flex';
+                setTimeout(() => overlay.classList.add('show'), 10);
+                document.body.style.overflow = 'hidden';
+            }
         }
-
-        function closeDesignTimeline(event) {
-            if (event.target === designTimelineOverlay) {
-                closeDesignTimelineNow();
+        function closeDesignTimeline(e) { if (e.target.id === 'design-timeline-overlay') closeDesignTimelineNow(); }
+        function closeDesignTimelineNow() {
+            const overlay = document.getElementById('design-timeline-overlay');
+            if (overlay) {
+                overlay.classList.remove('show');
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                    document.body.style.overflow = '';
+                }, 300);
             }
         }
 
-        function closeDesignTimelineNow() {
-            designTimelineOverlay.classList.add('opacity-0');
-            setTimeout(() => {
-                designTimelineOverlay.classList.add('hidden');
-                designTimelineOverlay.style.display = 'none';
-                document.body.style.overflow = '';
-            }, 300);
-        }
-
-        // Report Modal Functions
-        const reportModalOverlay = document.getElementById('report-modal-overlay');
-
+        // --- Report Modal ---
         function openReportModal() {
             const overlay = document.getElementById('report-modal-overlay');
             if (overlay) {
@@ -2588,14 +2582,7 @@
                 document.body.style.overflow = 'hidden';
             }
         }
-
-        function closeReportModal(event) {
-            const overlay = document.getElementById('report-modal-overlay');
-            if (event.target === overlay) {
-                closeReportModalNow();
-            }
-        }
-
+        function closeReportModal(e) { if (e.target.id === 'report-modal-overlay') closeReportModalNow(); }
         function closeReportModalNow() {
             const overlay = document.getElementById('report-modal-overlay');
             if (overlay) {
