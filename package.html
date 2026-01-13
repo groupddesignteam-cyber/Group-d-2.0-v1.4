@@ -1982,14 +1982,14 @@
         <div class="modal-content p-0 max-w-4xl bg-[#0f111a] border border-white/10 shadow-3xl overflow-hidden"
             onclick="event.stopPropagation()">
             <div
-                class="relative h-[450px] md:h-[650px] bg-[#090a11] flex items-center justify-center overflow-hidden border-b border-white/5">
+                class="relative aspect-[3/2] max-h-[75vh] bg-[#090a11] flex items-center justify-center overflow-hidden border-b border-white/5">
                 <div id="example-img-container"
-                    class="w-full h-full flex items-center justify-center bg-[#090a11] relative p-4">
+                    class="w-full h-full flex items-center justify-center bg-[#090a11] relative p-0">
                     <img id="example-img" src="" alt="Example Preview"
-                        class="max-w-full max-h-full object-contain opacity-0 transition-opacity duration-500 z-10 blur-sm"
+                        class="w-full h-full object-cover object-top opacity-0 transition-opacity duration-500 z-10"
                         onload="this.classList.remove('opacity-0')">
                     <img id="example-img-2" src="" alt="Example Preview 2"
-                        class="max-w-full max-h-full object-contain opacity-0 transition-opacity duration-500 z-10 hidden blur-sm"
+                        class="w-full h-full object-cover object-top opacity-0 transition-opacity duration-500 z-10 hidden"
                         onload="this.classList.remove('opacity-0')">
                     <div class="absolute inset-0 bg-slate-950/50 flex items-center justify-center">
                         <span
@@ -2927,43 +2927,37 @@
             'signage': {
                 title: '사이니지 디자인',
                 desc: '병원 내외부의 주목도를 높이는 사이니지 디자인입니다. 10장 이상의 다양한 시안을 통해 병원의 아이덴티티를 강화합니다.',
-                img: '디자인예시/사이니지/1p.jpg',
-                img2: '디자인예시/사이니지/2p.jpg'
+                img: '디자인예시/사이니지.jpg'
             },
             'internal_draft': {
                 title: '원내 시안물',
                 desc: '데스크, 대기실, 진료실 등 주요 공간에 비치되는 안내물 및 게시물 디자인입니다. 원장님 소개부터 각 진료별 안내까지 포함됩니다.',
-                img: '디자인예시/원내 홍보물/1. 원장 소개.jpg',
-                img2: '디자인예시/원내 홍보물/2. 미션.jpg'
+                img: '디자인예시/원내 시안물.jpg'
             },
             'recruit': {
                 title: '구인공고 디자인',
                 desc: '우수한 인재 영입을 위한 전문적인 구인공고 디자인입니다. 병원의 비전과 근무 환경을 매력적으로 전달합니다.',
-                img: '디자인예시/구인공고/바른선택_구인공고.jpg'
+                img: '디자인예시/채용공고.jpg'
             },
             'consent': {
                 title: '주의사항 & 동의서',
                 desc: '환자가 반드시 숙지해야 할 내용을 명확하고 이해하기 쉽게 디자인한 서식입니다. 발치, 임플란트, 교정 등 다양한 항목을 제공합니다.',
-                img: '디자인예시/주의사항&동의서/PDF_연세닥터홍치과 주의사항_1_발치 후 주의사항.jpg',
-                img2: '디자인예시/주의사항&동의서/PDF_연세닥터홍치과 주의사항_2_신경치료 후 주의사항.jpg'
+                img: '디자인예시/주의사항.jpg'
             },
             'event_draft': {
                 title: '이벤트 시안',
                 desc: '시즌별, 이슈별 이벤트를 효과적으로 알릴 수 있는 주목도 높은 디자인입니다.',
-                img: '디자인예시/이벤트시안/바다치과_신년이벤트.jpg',
-                img2: '디자인예시/이벤트시안/4_연말이벤트_차안_수정.jpg'
+                img: '디자인예시/이벤트.jpg'
             },
             'xbanner_design': {
                 title: 'X배너',
                 desc: '오프라인 유동 인구를 타겟으로 한 강력한 시각 이미지의 X배너 디자인입니다.',
-                img: '디자인예시/X배너/수면치료 배너.jpg',
-                img2: '디자인예시/X배너/365일 진료 배너_600.1800_대지 1.jpg'
+                img: '디자인예시/X배너.jpg'
             },
             'case_template': {
                 title: '전/후 케이스 템플릿',
                 desc: '치료 전후 사진을 전문적으로 보여줄 수 있는 통일된 포맷의 템플릿입니다.',
-                img: '디자인예시/전후 케이스 템플릿/전후케이스 01.jpg',
-                img2: '디자인예시/전후 케이스 템플릿/전후케이스 02.jpg'
+                img: '디자인예시/전 후 케이스.jpg'
             }
         };
 
@@ -2987,10 +2981,10 @@
                     imgEl2.src = data.img2;
                     imgEl2.classList.remove('hidden');
                     // Side-by-side or simple grid if 2 images
-                    imgEl.className = "w-1/2 max-h-full object-contain opacity-0 transition-opacity duration-500 z-10 px-1 blur-sm";
-                    imgEl2.className = "w-1/2 max-h-full object-contain opacity-0 transition-opacity duration-500 z-10 px-1 blur-sm";
+                    imgEl.className = "w-1/2 h-full object-cover object-top opacity-0 transition-opacity duration-500 z-10 px-1";
+                    imgEl2.className = "w-1/2 h-full object-cover object-top opacity-0 transition-opacity duration-500 z-10 px-1";
                 } else {
-                    imgEl.className = "max-w-full max-h-full object-contain opacity-0 transition-opacity duration-500 z-10 blur-sm";
+                    imgEl.className = "w-full h-full object-cover object-top opacity-0 transition-opacity duration-500 z-10";
                 }
             } else {
                 imgEl.src = '';
