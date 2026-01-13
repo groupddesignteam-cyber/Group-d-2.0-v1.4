@@ -1,0 +1,3002 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GROUP D 2.0 Smart Estimate</title>
+    <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Pretendard', sans-serif;
+            word-break: keep-all;
+        }
+
+        /* 배경 스타일 */
+        .bg-deep-dark {
+            background-color: #0B0C15;
+            background-image:
+                radial-gradient(circle at 15% 20%, rgba(16, 185, 129, 0.04) 0%, transparent 40%),
+                radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.04) 0%, transparent 40%),
+                radial-gradient(circle at 50% 80%, rgba(168, 85, 247, 0.04) 0%, transparent 40%),
+                radial-gradient(circle at 50% 0%, #1a1b2e 0%, #0B0C15 80%);
+            min-height: 100vh;
+        }
+
+        /* 탭 버튼 스타일 */
+        .tab-btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            transform: translateY(-1px);
+        }
+
+        /* 카드 스타일 */
+        .card-dark {
+            background-color: rgba(19, 20, 31, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-dark:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            background-color: rgba(30, 41, 59, 0.6);
+        }
+
+        .card-dark.selected {
+            background-color: rgba(30, 50, 90, 0.4);
+            border-color: #60A5FA !important;
+            box-shadow: 0 0 0 1px #60A5FA, 0 8px 30px -5px rgba(96, 165, 250, 0.15);
+        }
+
+        .card-dark.selected::after {
+            content: "✔";
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            color: #60A5FA;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* 옵션(단품) 카드 스타일 - 심플함 강조 */
+        .option-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+        .option-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            background: rgba(30, 41, 59, 0.6);
+        }
+
+        .option-card.active {
+            border-color: #818cf8;
+            background: rgba(49, 46, 129, 0.2);
+        }
+
+        /* 수량 조절 버튼 */
+        .counter-box {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+            padding: 2px;
+        }
+
+        .btn-count {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-count:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .btn-plus {
+            color: #60A5FA;
+        }
+
+        .count-num {
+            width: 24px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: white;
+        }
+
+        /* 하단 고정 바 */
+        .calculator-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(11, 12, 21, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px 0;
+            z-index: 100;
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .calculator-bar.active {
+            transform: translateY(0);
+        }
+
+        /* 체크리스트 */
+        .check-list li {
+            position: relative;
+            padding-left: 1.2em;
+            margin-bottom: 0.4em;
+            color: #cbd5e1;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        .check-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #60A5FA;
+        }
+
+        /* 모달 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 200;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            width: 95%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .modal-overlay.show .modal-content {
+            transform: scale(1);
+        }
+
+        input[type="checkbox"],
+        input[type="radio"] {
+            display: none;
+        }
+    </style>
+</head>
+
+
+<body class="bg-deep-dark text-slate-200 overflow-x-hidden pb-48">
+
+    <!-- Background Image -->
+    <div class="fixed inset-0 z-[-1]">
+        <img src="dental_bg.png" alt="Background" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-[2px]"></div>
+    </div>
+
+    <header class="text-center pt-24 pb-16 px-4" data-aos="zoom-in">
+        <div
+            class="inline-block border border-emerald-500/30 bg-emerald-900/10 rounded-full px-5 py-2 mb-6 backdrop-blur-md">
+            <span class="text-xs font-bold text-emerald-400 tracking-[0.2em] uppercase">PREMIUM EXECUTION PACKAGE</span>
+        </div>
+        <h1 class="text-3xl md:text-6xl font-extrabold mb-6 text-white tracking-tight leading-tight">
+            Branding & <span class="highlight-text text-emerald-400">Directionality</span>
+        </h1>
+        <p class="text-slate-300 font-light text-base md:text-lg max-w-3xl mx-auto leading-relaxed word-keep">
+            신환 창출에 꼭 필요한 필수 세팅 + 4개월 집중 관리 + 방향성 제시 + 기획 + 콘텐츠 발행<br>
+            <span class="text-emerald-500/80 text-sm mt-2 block font-medium">(성공적인 개원을 위한 Total 4개월 로드맵)</span>
+        </p>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 min-h-[600px]">
+
+        <div class="flex md:flex-wrap justify-center overflow-x-auto gap-2 md:gap-4 mb-10 pb-2 md:pb-0 scrollbar-hide max-w-4xl mx-auto w-full"
+            data-aos="fade-up" style="-ms-overflow-style: none; scrollbar-width: none;">
+            <style>
+                .scrollbar-hide::-webkit-scrollbar {
+                    display: none;
+                }
+            </style>
+            <button onclick="switchTab('tab-new', this)"
+                class="tab-btn active px-5 py-2.5 rounded-full bg-slate-800 text-slate-400 font-bold border border-slate-700 hover:bg-slate-700 text-sm md:text-base whitespace-nowrap">
+                1. Branding & Directionality
+            </button>
+            <button onclick="switchTab('tab-content', this)"
+                class="tab-btn px-5 py-2.5 rounded-full bg-slate-800 text-slate-400 font-bold border border-slate-700 hover:bg-slate-700 text-sm md:text-base whitespace-nowrap">
+                2. 콘텐츠 패키지
+            </button>
+            <button onclick="switchTab('tab-performance', this)"
+                class="tab-btn px-5 py-2.5 rounded-full bg-slate-800 text-slate-400 font-bold border border-slate-700 hover:bg-slate-700 text-sm md:text-base whitespace-nowrap">
+                3. 퍼포먼스 패키지
+            </button>
+            <button onclick="switchTab('tab-options', this)"
+                class="tab-btn px-5 py-2.5 rounded-full bg-slate-800 text-slate-400 font-bold border border-slate-700 hover:bg-slate-700 text-sm md:text-base whitespace-nowrap">
+                4. 옵션 및 단품
+            </button>
+        </div>
+
+        <div id="tab-new" class="tab-content block animate-fade-in">
+            <div class="max-w-4xl mx-auto space-y-12">
+                <!-- Pricing Card -->
+                <div class="card-dark rounded-[2rem] p-6 md:p-10 border-emerald-500/50 selected-auto"
+                    onclick="selectRadio(this, 'main_package', 3300000, 'Branding & Directionality')">
+                    <input type="radio" name="main_package" class="item-input" data-price="3300000"
+                        data-name="Branding & Directionality">
+
+                    <div
+                        class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 pb-6 border-b border-white/10">
+                        <div>
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="bg-emerald-600 text-white text-[10px] md:text-xs font-bold px-2.5 py-1 rounded-full inline-block tracking-wider">PREMIUM
+                                    SETUP</span>
+                                <span class="text-slate-400 text-xs font-medium">VAT 포함</span>
+                            </div>
+                            <h3 class="text-2xl md:text-3xl font-bold text-white mb-2">Branding & Directionality</h3>
+                            <p class="text-slate-400 text-sm md:text-base leading-relaxed">
+                                개원 브랜딩 전략 세팅 + 4개월 밀착 운영 + <br class="md:hidden" />성장 방향성(Directionality) 제시 및 콘텐츠 최적화
+                            </p>
+                        </div>
+                        <div class="text-left md:text-right">
+                            <span class="block text-3xl md:text-4xl font-extrabold text-white">330<span
+                                    class="text-lg font-normal text-slate-400">만원</span></span>
+                            <span class="text-emerald-400 text-xs font-bold mt-1 block">(부가세 포함)</span>
+                            <span class="text-slate-500 text-[10px] font-normal block mt-1">(월 단위 결제)</span>
+                            <span class="text-emerald-400 text-[10px] font-bold mt-0.5 block">BEST CHOICE</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                        <!-- 1. Branding & Setting (Left Top) -->
+                        <div
+                            class="bg-slate-800/20 rounded-2xl p-4 border border-white/5 hover:border-emerald-500/30 transition-all duration-300">
+                            <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-lg">
+                                <span
+                                    class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
+                                브랜딩 & 세부 세팅
+                            </h4>
+                            <ul class="check-list pl-2 space-y-2">
+                                <li class="cursor-pointer hover:text-emerald-400 transition-colors"
+                                    onclick="openExample('strategy', '브랜딩 기획')"><b>브랜딩 기획:</b> 진료권 분석 및 경쟁 치과 모니터링 <span
+                                        class="text-[10px] opacity-50">▶</span></li>
+                                <li class="cursor-pointer hover:text-emerald-400 transition-colors"
+                                    onclick="openExample('story', '스토리텔링')"><b>스토리텔링:</b> 의료진 프로필 및 병원 철학 기획 <span
+                                        class="text-[10px] opacity-50">▶</span></li>
+                                <li class="cursor-pointer hover:text-emerald-400 transition-colors"
+                                    onclick="openExample('seo', 'SEO 전략')"><b>SEO 전략:</b> 세부키워드 상위노출 전략 수립 <span
+                                        class="text-[10px] opacity-50">▶</span></li>
+                                <li class="cursor-pointer hover:text-emerald-400 transition-colors"
+                                    onclick="openExample('place', '플레이스 최적화')"><b>플레이스 최적화:</b> 예약/톡톡/스마트콜 연동 및 세팅 <span
+                                        class="text-[10px] opacity-50">▶</span></li>
+                                <li class="cursor-pointer hover:text-emerald-400 transition-colors"
+                                    onclick="openExample('map', '지도 등록')"><b>지도 등록:</b> 카카오맵, 구글맵, 내비게이션 3사 <span
+                                        class="text-[10px] opacity-50">▶</span></li>
+                            </ul>
+                        </div>
+
+                        <!-- 2. Content Marketing (Right Top) -->
+                        <div
+                            class="bg-slate-800/20 rounded-2xl p-4 border border-white/5 hover:border-blue-500/30 transition-all duration-300">
+                            <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-lg">
+                                <span
+                                    class="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.5)]"></span>
+                                콘텐츠 마케팅
+                            </h4>
+                            <ul class="check-list pl-2 space-y-2">
+                                <li class="cursor-pointer hover:text-blue-400 transition-colors"
+                                    onclick="openExample('imp_post', '임상/정보 포스팅')"><b>임상/정보 포스팅 (월 6건)</b> <span
+                                        class="text-[10px] opacity-50">▶</span></li>
+                                <li class="cursor-pointer hover:text-blue-400 transition-colors"
+                                    onclick="openExample('simple_post', '간단 포스팅')"><b>간단 포스팅 (월 5건)</b> <span
+                                        class="text-[10px] opacity-50">▶</span></li>
+                                <li class="cursor-pointer hover:text-blue-400 transition-colors"
+                                    onclick="openExample('event', '이벤트/프로모션 기획')"><b>이벤트/프로모션 기획</b> <span
+                                        class="text-[10px] opacity-50">▶</span></li>
+                                <li class="cursor-pointer hover:text-blue-400 transition-colors"
+                                    onclick="openExample('comm', '댓글/서로이웃 관리')"><b>댓글/서로이웃 관리</b> <span
+                                        class="text-[10px] opacity-50">▶</span></li>
+                            </ul>
+                        </div>
+
+                        <!-- 3. Operation Support & Risk Care (Left Bottom) -->
+                        <div
+                            class="bg-slate-800/20 rounded-2xl p-4 border border-white/5 hover:border-purple-500/30 transition-all duration-300">
+                            <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-lg">
+                                <span
+                                    class="w-2 h-2 rounded-full bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.5)]"></span>
+                                운영 지원 & 리스크 케어
+                            </h4>
+                            <ul class="check-list pl-2 space-y-2">
+                                <li class="cursor-pointer hover:text-purple-400 transition-colors"
+                                    onclick="openExample('risk', '악성 리뷰 대응')"><b>채널별 악성 리뷰 대응 가이드</b> <span
+                                        class="text-[10px] opacity-50">▶</span></li>
+                                <li class="cursor-pointer hover:text-purple-400 transition-colors"
+                                    onclick="openReportModal()"><b>월간 마케팅 성과 리포트 제공</b> <span
+                                        class="text-[10px] opacity-50">▶</span></li>
+                                <li class="cursor-pointer hover:text-purple-400 transition-colors"
+                                    onclick="openExample('issue', '실시간 이슈 대응')"><b>실시간 이슈 대응 (수정/반영)</b> <span
+                                        class="text-[10px] opacity-50">▶</span></li>
+                                <li class="text-slate-500 text-xs pt-1 list-none pl-0 before:content-none">
+                                    네이버, 카카오, 구글 등 주요 플랫폼 상시 모니터링
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- 4. Design Solution (Right Bottom) -->
+                        <div
+                            class="bg-slate-800/20 rounded-2xl p-4 border border-white/5 hover:border-amber-500/30 transition-all duration-300">
+                            <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-lg">
+                                <span
+                                    class="w-2 h-2 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]"></span>
+                                디자인 솔루션
+                            </h4>
+                            <div class="bg-amber-900/10 rounded-xl p-3 border border-amber-500/20 mb-3">
+                                <p class="text-amber-100 text-sm mb-1 font-medium">총 12종의 온/오프라인 디자인 제공</p>
+                                <p class="text-[11px] text-amber-200/50 leading-tight">
+                                    * 미사용 디자인은 <b>[포스팅]</b> 및 <b>[컨텐츠]</b> 제작으로 <br> 전환 가능합니다. (버려지는 혜택 없이 사용하세요.)
+                                </p>
+                            </div>
+                            <button onclick="openDesignModal(); event.stopPropagation();"
+                                class="w-full py-2 bg-amber-600 hover:bg-amber-500 rounded-lg text-white text-xs font-bold transition-all shadow-lg shadow-amber-900/30 flex items-center justify-center gap-1">
+                                디자인 상세 품목 보기 <span class="text-[10px]">▶</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Timeline Section -->
+                <div class="card-dark rounded-[2rem] p-6 border-slate-700/50" data-aos="fade-up">
+                    <div class="mb-6 flex items-center justify-between cursor-pointer group" onclick="toggleTimeline()">
+                        <div>
+                            <span
+                                class="text-emerald-400 font-bold text-xs tracking-wider uppercase mb-1 block group-hover:text-emerald-300 transition-colors">Process
+                                Roadmap</span>
+                            <h3 class="text-xl md:text-2xl font-bold text-white flex items-center gap-2">
+                                Branding & Directionality 상세 타임라인
+                                <svg id="timeline-icon" xmlns="http://www.w3.org/2000/svg"
+                                    class="h-6 w-6 text-slate-400 transition-transform duration-300 group-hover:text-white"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </h3>
+                        </div>
+                        <div class="hidden md:flex gap-2 text-xs">
+                            <span class="flex items-center gap-1 text-slate-400"><span
+                                    class="w-3 h-3 rounded bg-slate-600/50"></span> 진행 기간</span>
+                        </div>
+                    </div>
+
+                    <div id="timeline-content"
+                        class="hidden overflow-x-auto pb-2 custom-scrollbar transition-all duration-300 max-h-[60vh] overflow-y-auto">
+                        <table class="w-full min-w-[800px] text-xs border-collapse text-slate-300">
+                            <thead>
+                                <tr class="text-slate-500 border-b border-white/5 bg-slate-800/20">
+                                    <th class="p-2 text-center w-20 border-r border-white/5">대분류</th>
+                                    <th class="p-2 text-center w-32 border-r border-white/5">소분류</th>
+                                    <th class="p-2 text-left pl-4 border-r border-white/5">항목</th>
+                                    <th class="p-1 w-12 text-center border-r border-white/5 bg-slate-800/50">1개월</th>
+                                    <th class="p-1 w-12 text-center border-r border-white/5 bg-slate-800/30">2개월</th>
+                                    <th class="p-1 w-12 text-center border-r border-white/5 bg-slate-800/50">3개월</th>
+                                    <th class="p-1 w-12 text-center bg-slate-800/30">4개월</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5">
+                                <!-- 초기 세팅 -->
+                                <tr>
+                                    <td rowspan="77"
+                                        class="p-2 text-center font-bold text-emerald-400 border-r border-white/5 bg-emerald-900/5">
+                                        초기 세팅</td>
+                                    <td class="p-2 text-center text-slate-400 border-r border-white/5">방문촬영(전문 작가 대동)
+                                    </td>
+                                    <td class="p-2 pl-4 border-r border-white/5">인테리어 및 컨셉샷</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="5" class="p-2 text-center text-slate-400 border-r border-white/5">브랜딩
+                                        기획</td>
+                                    <td class="p-2 pl-4 border-r border-white/5">대표 이미지 기획</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">블로그 스킨 기획</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">홍보성 이미지 기획</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">자동응답 이미지 기획</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">브랜딩 소개글 기획</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="23" class="p-2 text-center text-slate-400 border-r border-white/5">네이버
+                                        블로그</td>
+                                    <td class="p-2 pl-4 border-r border-white/5">계정 생성</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">저품질 여부 테스트</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">명칭 설정</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">별명 설정</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">블로그 주제 설정</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">프로필 소개글 설정</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">프로필 이미지 설정</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">콘텐츠 공유 설정</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">레이아웃 설정</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">상단메뉴 설정</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">카테고리 설정</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">주제분류 설정</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">메인 기본 설정</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">프롤로그 설정</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">톡톡 연동</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">대표블로그 신청</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">[PC] 스킨 설정</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">[PC] 위젯 설정</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">[MO] 스킨 설정</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">[MO] 외부링크 설정</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">[MO] 전화번호 기입</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">[MO] 주소기입</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">[MO] 대표글 보기방식 변경</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+
+                                <!-- 네이버 플레이스 (7 items) -->
+                                <tr>
+                                    <td rowspan="7" class="p-2 text-center text-slate-400 border-r border-white/5">네이버
+                                        플레이스</td>
+                                    <td class="p-2 pl-4 border-r border-white/5">개설신청</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">병원정보기입</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">대표키워드 SEO 설정</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">외부링크 등록</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">워터마크 등록</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">브랜딩 시안 등록</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">소식글 연동</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <!-- 네이버 예약 (6 items) -->
+                                <tr>
+                                    <td rowspan="6" class="p-2 text-center text-slate-400 border-r border-white/5">네이버
+                                        예약</td>
+                                    <td class="p-2 pl-4 border-r border-white/5">예약개설 신청</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">진료시간 기입</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">예약자 정보 요청 설정</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">플레이스 연동</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">덴트웹 연동</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">시안 업로드</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <!-- 네이버 톡톡 (6 items) -->
+                                <tr>
+                                    <td rowspan="6" class="p-2 text-center text-slate-400 border-r border-white/5">네이버
+                                        톡톡</td>
+                                    <td class="p-2 pl-4 border-r border-white/5">톡톡 생성</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">프로필 설정</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">소개글 설정</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">병원정보 기입</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">자동응답메세지 설정</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">블로그, 플레이스 연동</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <!-- 네이버 광고 -->
+                                <tr>
+                                    <td class="p-2 text-center text-slate-400 border-r border-white/5">네이버 광고</td>
+                                    <td class="p-2 pl-4 border-r border-white/5">네이버 광고 계정 생성</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <!-- 카카오맵 (8 items) -->
+                                <tr>
+                                    <td rowspan="8" class="p-2 text-center text-slate-400 border-r border-white/5">카카오 맵
+                                    </td>
+                                    <td class="p-2 pl-4 border-r border-white/5">카카오맵 매장 개설</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">병원정보 기입</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">시안 업로드</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">가격표 설정</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">해시태그 SEO 설정</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">외부링크 등록</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">카카오채널 연동</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">워터마크 등록</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <!-- 카카오 채널 (6 items) -->
+                                <tr>
+                                    <td rowspan="6" class="p-2 text-center text-slate-400 border-r border-white/5">카카오
+                                        채널</td>
+                                    <td class="p-2 pl-4 border-r border-white/5">카카오채널 개설</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">채널 홈 설정</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">채팅방 메뉴 설정</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">자동응답메세지 설정</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">비즈니스 인증</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">1:1 상담 메시지 세팅 (*필요시)</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <!-- 구글 (7 items) -->
+                                <tr>
+                                    <td rowspan="7" class="p-2 text-center text-slate-400 border-r border-white/5">구글
+                                    </td>
+                                    <td class="p-2 pl-4 border-r border-white/5">업체 등록</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">비즈니스 계정 생성</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">비즈니스 인증</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">소개글 설정</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">병원정보 기입</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">시안 업로드</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">외부링크 연동</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <!-- 당근 (6 items) -->
+                                <tr>
+                                    <td rowspan="6" class="p-2 text-center text-slate-400 border-r border-white/5">당근
+                                    </td>
+                                    <td class="p-2 pl-4 border-r border-white/5">비즈프로필 생성</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">병원정보기입</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">소개글 설정</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">시안 업로드</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">외부링크 등록</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">소식글 발행</td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+                                <!-- 티맵 -->
+                                <tr>
+                                    <td class="p-2 text-center text-slate-400 border-r border-white/5">티맵</td>
+                                    <td class="p-2 pl-4 border-r border-white/5">업체등록</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5"></td>
+                                    <td class="p-0.5"></td>
+                                </tr>
+
+                                <!-- 정기 관리 -->
+                                <tr>
+                                    <td rowspan="20"
+                                        class="p-2 text-center font-bold text-amber-400 border-r border-white/5 bg-amber-900/5">
+                                        정기 관리영역</td>
+                                    <td rowspan="5" class="p-2 text-center text-slate-400 border-r border-white/5">채널별
+                                        상태 및 오류 모니터링</td>
+                                    <td class="p-2 pl-4 border-r border-white/5">네이버 플레이스</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">네이버 예약</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">카카오맵</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">카카오채널</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">구글</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                </tr>
+
+                                <!-- 악성리뷰 모니터링 및 후속조치 (3 items) -->
+                                <tr>
+                                    <td rowspan="3" class="p-2 text-center text-slate-400 border-r border-white/5">채널별
+                                        악성리뷰 모니터링 및 후속조치</td>
+                                    <td class="p-2 pl-4 border-r border-white/5">네이버</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">카카오</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">구글</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                </tr>
+
+                                <!-- 월간 진료일정 반영 (4 items) -->
+                                <tr>
+                                    <td rowspan="4" class="p-2 text-center text-slate-400 border-r border-white/5">채널별
+                                        월간 진료일정 반영</td>
+                                    <td class="p-2 pl-4 border-r border-white/5">네이버 플레이스</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">네이버 예약(덴트웹 연동)</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">카카오</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">구글</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                </tr>
+
+                                <!-- 시안 교체 및 설정값 변경 (5 items) -->
+                                <tr>
+                                    <td rowspan="5" class="p-2 text-center text-slate-400 border-r border-white/5">시안 교체
+                                        및 설정값 변경(필요시)</td>
+                                    <td class="p-2 pl-4 border-r border-white/5">네이버 플레이스</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">네이버 예약</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">카카오맵</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">카카오채널</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">구글</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                </tr>
+
+                                <!-- 의료법 보건소 민원 대응 (2 items) -->
+                                <tr>
+                                    <td rowspan="2" class="p-2 text-center text-slate-400 border-r border-white/5">
+                                        의료법<br>보건소 민원 대응</td>
+                                    <td class="p-2 pl-4 border-r border-white/5">담당 주무관 소통 대행</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 pl-4 border-r border-white/5">온라인 채널 시정조치 대행</td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                    <td class="p-0.5">
+                                        <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-content" class="tab-content hidden animate-fade-in">
+            <div class="max-w-4xl mx-auto">
+                <div class="card-dark rounded-[2rem] p-6 md:p-10 border-blue-500/50 hover-blue"
+                    onclick="selectRadio(this, 'main_package', 2800000, '콘텐츠 패키지')">
+                    <input type="radio" name="main_package" class="item-input">
+
+                    <div
+                        class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 pb-6 border-b border-white/10">
+                        <div>
+                            <span
+                                class="bg-blue-600 text-white text-[10px] md:text-xs font-bold px-2.5 py-1 rounded-full mb-3 inline-block tracking-wider">ALL-IN-ONE
+                                CARE</span>
+                            <h3 class="text-2xl md:text-3xl font-bold text-white mb-2">콘텐츠 패키지</h3>
+                            <p class="text-slate-400 text-sm">기본 운영 + 블로그 집중 관리 + 필수 바이럴 통합형</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="block text-3xl md:text-4xl font-extrabold text-white">280<span
+                                    class="text-lg font-normal text-slate-400">만원</span></span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                        <div>
+                            <h4
+                                class="text-blue-400 font-bold mb-4 text-sm uppercase tracking-wider border-b border-blue-500/30 pb-2">
+                                1. 운영 및 플랫폼 관리 (150만 상당)</h4>
+                            <ul class="check-list space-y-2">
+                                <li><b>전 채널 통합 관리:</b> 네이버, 카카오, 구글</li>
+                                <li><b>의료법 대응:</b> 시정조치, 심의 대행, 문구 수정</li>
+                                <li><b>광고/디자인:</b> 플레이스 광고 관리, 디자인 월 2건(4장)</li>
+                                <li>악성리뷰 모니터링 및 SEO 최적화</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4
+                                class="text-blue-400 font-bold mb-4 text-sm uppercase tracking-wider border-b border-blue-500/30 pb-2">
+                                2. 블로그 집중 관리 (80만 상당)</h4>
+                            <ul class="check-list space-y-2">
+                                <li><b>소통 관리:</b> 댓글 관리, 서로이웃(5,000명 목표)</li>
+                                <li><b>포스팅:</b> 간단 포스팅(월 5건), 업로드 대행(월 2회)</li>
+                            </ul>
+                        </div>
+                        <div class="md:col-span-2">
+                            <h4
+                                class="text-amber-400 font-bold mb-4 text-sm uppercase tracking-wider border-b border-amber-500/30 pb-2">
+                                3. 바이럴 및 리뷰 (50만 상당)</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div
+                                    class="bg-slate-800/50 p-3 rounded-lg border border-white/5 flex items-center justify-between">
+                                    <span class="text-slate-300 text-sm">맘카페 침투 (여론형성)</span>
+                                    <span class="text-white font-bold text-sm">월 4건</span>
+                                </div>
+                                <div
+                                    class="bg-slate-800/50 p-3 rounded-lg border border-white/5 flex items-center justify-between">
+                                    <span class="text-slate-300 text-sm">영수증 리뷰 (후기작성)</span>
+                                    <span class="text-white font-bold text-sm">월 30건</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-performance" class="tab-content hidden animate-fade-in">
+            <div class="max-w-4xl mx-auto">
+                <div class="card-dark rounded-[2rem] p-6 md:p-10 border-purple-500/50 hover-purple"
+                    onclick="selectRadio(this, 'main_package', 0, '퍼포먼스 패키지')">
+                    <input type="radio" name="main_package" class="item-input">
+
+                    <div
+                        class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 pb-6 border-b border-white/10">
+                        <div>
+                            <span
+                                class="bg-purple-600 text-white text-[10px] md:text-xs font-bold px-2.5 py-1 rounded-full mb-3 inline-block tracking-wider">HIGH
+                                PERFORMANCE</span>
+                            <h3 class="text-2xl md:text-3xl font-bold text-white mb-2">퍼포먼스 패키지</h3>
+                            <p class="text-slate-400 text-sm">확실한 상위 노출 및 배포를 위한 보장형 상품</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="block text-2xl md:text-3xl font-bold text-white">견적 문의</span>
+                            <span class="text-purple-400 text-xs font-bold mt-1 block">키워드별 단가 상이</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-slate-800/40 p-6 rounded-2xl border border-purple-500/20">
+                            <h4 class="text-white text-lg font-bold mb-2">🏆 플레이스 순위 보장</h4>
+                            <p class="text-slate-400 text-sm mb-4">주요 키워드 상위 노출 보장형 상품입니다.</p>
+                            <ul class="check-list">
+                                <li>희망 키워드 분석 및 제안</li>
+                                <li>순위 진입 시 과금 (성과 보장)</li>
+                                <li>순위 유지 관리</li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-800/40 p-6 rounded-2xl border border-purple-500/20">
+                            <h4 class="text-white text-lg font-bold mb-2">🚀 최적화 블로그 배포</h4>
+                            <p class="text-slate-400 text-sm mb-4">최적화 블로그를 활용하여 키워드를 장악합니다.</p>
+                            <ul class="check-list">
+                                <li>최적화 블로그/카페 활용</li>
+                                <li>건바이건 또는 기간 보장형 선택</li>
+                                <li>브랜드 인지도 확산</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-options" class="tab-content hidden animate-fade-in">
+            <div class="max-w-6xl mx-auto">
+                <div class="bg-blue-900/20 border border-blue-500/20 p-4 rounded-xl mb-6 text-center">
+                    <p class="text-blue-200 text-sm font-medium">✨ 필요한 항목만 골라 담으세요. 구체적인 비용은 상담 시 안내해 드립니다.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-10">
+
+                    <div>
+                        <div
+                            class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 border-l-4 border-amber-500 pl-3">
+                            <h3 class="text-lg font-bold text-white">A. 광고 운영 대행료
+                                <span class="text-xs font-normal text-slate-500 ml-1">(광고비 별도 충전)</span>
+                            </h3>
+                            <button onclick="openAdGuideModal()"
+                                class="text-[10px] font-bold text-amber-500 border border-amber-500/30 hover:bg-amber-500/10 px-2 py-1 rounded transition-all flex items-center gap-1.5 w-fit">
+                                <span>📋 광고 운영 가이드</span>
+                                <span class="opacity-40">▶</span>
+                            </button>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="option-card" data-name="옵션: 플레이스 광고">
+                                <span class="text-sm text-slate-300 font-medium">네이버 플레이스 광고</span>
+                                <div class="counter-box">
+                                    <div class="btn-count btn-minus" onclick="updateOptionCount(this, -1)">-</div>
+                                    <div class="count-num">0</div>
+                                    <div class="btn-count btn-plus" onclick="updateOptionCount(this, 1)">+</div>
+                                </div>
+                            </div>
+                            <div class="option-card" data-name="옵션: 파워링크(텍스트형)">
+                                <span class="text-sm text-slate-300 font-medium">네이버 파워링크 (텍스트형)</span>
+                                <div class="counter-box">
+                                    <div class="btn-count btn-minus" onclick="updateOptionCount(this, -1)">-</div>
+                                    <div class="count-num">0</div>
+                                    <div class="btn-count btn-plus" onclick="updateOptionCount(this, 1)">+</div>
+                                </div>
+                            </div>
+                            <div class="option-card" data-name="옵션: 파워링크(이미지형)">
+                                <span class="text-sm text-slate-300 font-medium">네이버 파워링크 (이미지형)</span>
+                                <div class="counter-box">
+                                    <div class="btn-count btn-minus" onclick="updateOptionCount(this, -1)">-</div>
+                                    <div class="count-num">0</div>
+                                    <div class="btn-count btn-plus" onclick="updateOptionCount(this, 1)">+</div>
+                                </div>
+                            </div>
+                            <div class="option-card" data-name="옵션: GFA 성과형">
+                                <span class="text-sm text-slate-300 font-medium">네이버 GFA (성과형)</span>
+                                <div class="counter-box">
+                                    <div class="btn-count btn-minus" onclick="updateOptionCount(this, -1)">-</div>
+                                    <div class="count-num">0</div>
+                                    <div class="btn-count btn-plus" onclick="updateOptionCount(this, 1)">+</div>
+                                </div>
+                            </div>
+                            <div class="option-card" data-name="옵션: SNS/구글/유튜브">
+                                <span class="text-sm text-slate-300 font-medium">SNS/구글/유튜브 광고</span>
+                                <div class="counter-box">
+                                    <div class="btn-count btn-minus" onclick="updateOptionCount(this, -1)">-</div>
+                                    <div class="count-num">0</div>
+                                    <div class="btn-count btn-plus" onclick="updateOptionCount(this, 1)">+</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-bold text-white mb-4 border-l-4 border-emerald-500 pl-3">B. 블로그 & 바이럴
+                        </h3>
+                        <div class="space-y-2">
+                            <div class="option-card" data-name="옵션: 간단 포스팅(1회성)">
+                                <span class="text-sm text-slate-300 font-medium">간단 포스팅 (1회성)</span>
+                                <div class="counter-box">
+                                    <div class="btn-count btn-minus" onclick="updateOptionCount(this, -1)">-</div>
+                                    <div class="count-num">0</div>
+                                    <div class="btn-count btn-plus" onclick="updateOptionCount(this, 1)">+</div>
+                                </div>
+                            </div>
+                            <div class="option-card" data-name="옵션: 커스텀 포스팅">
+                                <span class="text-sm text-slate-300 font-medium">커스텀 포스팅 (Standard)</span>
+                                <div class="counter-box">
+                                    <div class="btn-count btn-minus" onclick="updateOptionCount(this, -1)">-</div>
+                                    <div class="count-num">0</div>
+                                    <div class="btn-count btn-plus" onclick="updateOptionCount(this, 1)">+</div>
+                                </div>
+                            </div>
+                            <div class="option-card" data-name="옵션: 브랜딩/다이나믹 포스팅">
+                                <span class="text-sm text-slate-300 font-medium">브랜딩/다이나믹 포스팅</span>
+                                <div class="counter-box">
+                                    <div class="btn-count btn-minus" onclick="updateOptionCount(this, -1)">-</div>
+                                    <div class="count-num">0</div>
+                                    <div class="btn-count btn-plus" onclick="updateOptionCount(this, 1)">+</div>
+                                </div>
+                            </div>
+                            <div class="option-card" data-name="옵션: 서로이웃 관리(월)">
+                                <span class="text-sm text-slate-300 font-medium">서로이웃 관리 (월)</span>
+                                <div class="counter-box">
+                                    <div class="btn-count btn-minus" onclick="updateOptionCount(this, -1)">-</div>
+                                    <div class="count-num">0</div>
+                                    <div class="btn-count btn-plus" onclick="updateOptionCount(this, 1)">+</div>
+                                </div>
+                            </div>
+                            <div class="option-card" data-name="옵션: 맘카페(정보성/Hot딜)">
+                                <span class="text-sm text-slate-300 font-medium">맘카페 (정보성/Hot딜)</span>
+                                <div class="counter-box">
+                                    <div class="btn-count btn-minus" onclick="updateOptionCount(this, -1)">-</div>
+                                    <div class="count-num">0</div>
+                                    <div class="btn-count btn-plus" onclick="updateOptionCount(this, 1)">+</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-bold text-white mb-4 border-l-4 border-blue-500 pl-3">C. 상세페이지 & 웹 구축
+                        </h3>
+                        <div class="space-y-2">
+                            <div class="option-card" data-name="옵션: 상세페이지 Standard">
+                                <span class="text-sm text-slate-300 font-medium">상세페이지 Standard (간단)</span>
+                                <div class="counter-box">
+                                    <div class="btn-count btn-minus" onclick="updateOptionCount(this, -1)">-</div>
+                                    <div class="count-num">0</div>
+                                    <div class="btn-count btn-plus" onclick="updateOptionCount(this, 1)">+</div>
+                                </div>
+                            </div>
+                            <div class="option-card" data-name="옵션: 상세페이지 Deluxe">
+                                <span class="text-sm text-slate-300 font-medium">상세페이지 Deluxe (일반)</span>
+                                <div class="counter-box">
+                                    <div class="btn-count btn-minus" onclick="updateOptionCount(this, -1)">-</div>
+                                    <div class="count-num">0</div>
+                                    <div class="btn-count btn-plus" onclick="updateOptionCount(this, 1)">+</div>
+                                </div>
+                            </div>
+                            <div class="option-card" data-name="옵션: 이벤트 랜딩(1P)">
+                                <span class="text-sm text-slate-300 font-medium">원페이지 (별도 협의)</span>
+                                <div class="counter-box">
+                                    <div class="btn-count btn-minus" onclick="updateOptionCount(this, -1)">-</div>
+                                    <div class="count-num">0</div>
+                                    <div class="btn-count btn-plus" onclick="updateOptionCount(this, 1)">+</div>
+                                </div>
+                            </div>
+                            <div class="option-card" data-name="옵션: 홈페이지(4P)">
+                                <span class="text-sm text-slate-300 font-medium">멀티페이지 (별도 협의)</span>
+                                <div class="counter-box">
+                                    <div class="btn-count btn-minus" onclick="updateOptionCount(this, -1)">-</div>
+                                    <div class="count-num">0</div>
+                                    <div class="btn-count btn-plus" onclick="updateOptionCount(this, 1)">+</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-bold text-white mb-4 border-l-4 border-pink-500 pl-3">D. 영상 제작</h3>
+                        <div class="space-y-2">
+                            <div class="option-card" data-name="옵션: 숏폼(일반)">
+                                <span class="text-sm text-slate-300 font-medium">숏폼 (일반)</span>
+                                <div class="counter-box">
+                                    <div class="btn-count btn-minus" onclick="updateOptionCount(this, -1)">-</div>
+                                    <div class="count-num">0</div>
+                                    <div class="btn-count btn-plus" onclick="updateOptionCount(this, 1)">+</div>
+                                </div>
+                            </div>
+                            <div class="option-card" data-name="옵션: 숏폼(셀프/정보성)">
+                                <span class="text-sm text-slate-300 font-medium">숏폼 (셀프/정보성)</span>
+                                <div class="counter-box">
+                                    <div class="btn-count btn-minus" onclick="updateOptionCount(this, -1)">-</div>
+                                    <div class="count-num">0</div>
+                                    <div class="btn-count btn-plus" onclick="updateOptionCount(this, 1)">+</div>
+                                </div>
+                            </div>
+                            <div class="option-card" data-name="옵션: 유튜브 롱폼">
+                                <span class="text-sm text-slate-300 font-medium">유튜브 롱폼 (인터뷰/QnA)</span>
+                                <div class="counter-box">
+                                    <div class="btn-count btn-minus" onclick="updateOptionCount(this, -1)">-</div>
+                                    <div class="count-num">0</div>
+                                    <div class="btn-count btn-plus" onclick="updateOptionCount(this, 1)">+</div>
+                                </div>
+                            </div>
+                            <div class="option-card" data-name="옵션: 브랜딩 필름">
+                                <span class="text-sm text-slate-300 font-medium">브랜딩 필름</span>
+                                <div class="counter-box">
+                                    <div class="btn-count btn-minus" onclick="updateOptionCount(this, -1)">-</div>
+                                    <div class="count-num">0</div>
+                                    <div class="btn-count btn-plus" onclick="updateOptionCount(this, 1)">+</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Design Detail Modal -->
+    <div id="design-modal-overlay" class="modal-overlay" onclick="closeDesignModal(event)">
+        <div class="modal-content p-8 max-w-2xl bg-[#0f101a] border border-emerald-500/20 shadow-2xl relative"
+            onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <span class="text-emerald-500 font-bold text-xs tracking-wider uppercase mb-1 block">Premium
+                        Design</span>
+                    <h3 class="text-xl md:text-2xl font-bold text-white">디자인 솔루션 상세 품목</h3>
+                </div>
+                <button onclick="closeDesignModalNow()"
+                    class="text-slate-500 hover:text-white text-2xl transition-colors">&times;</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
+                <!-- New Opening -->
+                <div class="bg-slate-800/30 rounded-xl p-5 border border-white/5">
+                    <h4 class="text-white font-bold mb-4 flex items-center gap-2 border-b border-white/10 pb-3">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> [신규개원] 기본 제작
+                    </h4>
+                    <ul class="space-y-2.5 text-sm text-slate-300">
+                        <li class="flex items-start gap-2 cursor-pointer hover:text-emerald-400 transition-colors"
+                            onclick="openExample('place_setting', '플레이스 세팅 시안')">
+                            <span class="text-emerald-500 mt-1">✔</span>
+                            <span>플레이스 세팅 시안 제작 5종 <span class="text-[10px] opacity-30">▶</span></span>
+                        </li>
+                        <li class="flex items-start gap-2 cursor-pointer hover:text-emerald-400 transition-colors"
+                            onclick="openExample('blog_skin', '블로그 스킨')">
+                            <span class="text-emerald-500 mt-1">✔</span>
+                            <span>블로그 스킨 (PC/MB) 세팅 시안 제작 2종 <span class="text-[10px] opacity-30">▶</span></span>
+                        </li>
+                        <li class="flex items-start gap-2 cursor-pointer hover:text-emerald-400 transition-colors"
+                            onclick="openExample('promo_setting', '홍보성 세팅 시안')">
+                            <span class="text-emerald-500 mt-1">✔</span>
+                            <span>홍보성 세팅 시안 제작 최소 3종 <span class="text-[10px] opacity-30">▶</span></span>
+                        </li>
+                        <li class="flex items-start gap-2 cursor-pointer hover:text-emerald-400 transition-colors"
+                            onclick="openExample('talk_setting', '톡톡 세팅 시안')">
+                            <span class="text-emerald-500 mt-1">✔</span>
+                            <span>톡톡 세팅 시안 제작 최소 3종 <span class="text-[10px] opacity-30">▶</span></span>
+                        </li>
+                        <li class="flex items-start gap-2 cursor-pointer hover:text-emerald-400 transition-colors"
+                            onclick="openExample('signage', '사이니지 디자인')">
+                            <span class="text-emerald-500 mt-1">✔</span>
+                            <span>사이니지 10장 (가로 or 세로) <span class="text-[10px] opacity-30">▶</span></span>
+                        </li>
+                        <li class="flex items-start gap-2 cursor-pointer hover:text-emerald-400 transition-colors"
+                            onclick="openExample('internal_draft', '원내 시안물')">
+                            <span class="text-emerald-500 mt-1">✔</span>
+                            <span>원내 시안물 5장 (A4 기준) <span class="text-[10px] opacity-30">▶</span></span>
+                        </li>
+                        <li class="flex items-start gap-2 cursor-pointer hover:text-emerald-400 transition-colors"
+                            onclick="openExample('recruit', '구인공고')">
+                            <span class="text-emerald-500 mt-1">✔</span>
+                            <span>구인공고 1장 <span class="text-[10px] opacity-30">▶</span></span>
+                        </li>
+                        <li class="flex items-start gap-2 cursor-pointer hover:text-emerald-400 transition-colors"
+                            onclick="openExample('consent', '주의사항 & 동의서')">
+                            <span class="text-emerald-500 mt-1">✔</span>
+                            <span>주의사항 & 동의서 10장 (A4 기준) <span class="text-[10px] opacity-30">▶</span></span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Existing Opening -->
+                <div class="bg-slate-800/30 rounded-xl p-5 border border-white/5">
+                    <h4 class="text-white font-bold mb-4 flex items-center gap-2 border-b border-white/10 pb-3">
+                        <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span> [기개원] 기본 제작
+                    </h4>
+                    <ul class="space-y-2.5 text-sm text-slate-300">
+                        <li class="flex items-start gap-2 cursor-pointer hover:text-blue-400 transition-colors"
+                            onclick="openExample('place_setting', '플레이스 세팅 시안')">
+                            <span class="text-blue-500 mt-1">✔</span>
+                            <span>플레이스 세팅 시안 제작 5종 <span class="text-[10px] opacity-30">▶</span></span>
+                        </li>
+                        <li class="flex items-start gap-2 cursor-pointer hover:text-blue-400 transition-colors"
+                            onclick="openExample('blog_skin', '블로그 스킨')">
+                            <span class="text-blue-500 mt-1">✔</span>
+                            <span>블로그 스킨 (PC/MB) 세팅 시안 제작 2종 <span class="text-[10px] opacity-30">▶</span></span>
+                        </li>
+                        <li class="flex items-start gap-2 cursor-pointer hover:text-blue-400 transition-colors"
+                            onclick="openExample('promo_setting', '홍보성 세팅 시안')">
+                            <span class="text-blue-500 mt-1">✔</span>
+                            <span>홍보성 세팅 시안 제작 최소 3종 <span class="text-[10px] opacity-30">▶</span></span>
+                        </li>
+                        <li class="flex items-start gap-2 cursor-pointer hover:text-blue-400 transition-colors"
+                            onclick="openExample('talk_setting', '톡톡 세팅 시안')">
+                            <span class="text-blue-500 mt-1">✔</span>
+                            <span>톡톡 세팅 시안 제작 최소 3종 <span class="text-[10px] opacity-30">▶</span></span>
+                        </li>
+                        <li class="flex items-start gap-2 cursor-pointer hover:text-blue-400 transition-colors"
+                            onclick="openExample('signage', '사이니지 디자인')">
+                            <span class="text-blue-500 mt-1">✔</span>
+                            <span>사이니지 10장 (가로 or 세로) <span class="text-[10px] opacity-30">▶</span></span>
+                        </li>
+                        <li class="flex items-start gap-2 cursor-pointer hover:text-blue-400 transition-colors"
+                            onclick="openExample('internal_draft', '원내 시안물')">
+                            <span class="text-blue-500 mt-1">✔</span>
+                            <span>원내 시안물 5장 (A4기준) <span class="text-[10px] opacity-30">▶</span></span>
+                        </li>
+                        <li class="flex items-start gap-2 cursor-pointer hover:text-blue-400 transition-colors"
+                            onclick="openExample('event_draft', '이벤트 시안')">
+                            <span class="text-blue-500 mt-1">✔</span>
+                            <span>이벤트 시안 2장 (A4기준) <span class="text-[10px] opacity-30">▶</span></span>
+                        </li>
+                        <li class="flex items-start gap-2 cursor-pointer hover:text-blue-400 transition-colors"
+                            onclick="openExample('xbanner_design', 'X-배너')">
+                            <span class="text-blue-500 mt-1">✔</span>
+                            <span>X배너 2장 <span class="text-[10px] opacity-30">▶</span></span>
+                        </li>
+                        <li class="flex items-start gap-2 cursor-pointer hover:text-blue-400 transition-colors"
+                            onclick="openExample('case_template', '전/후 케이스 템플릿')">
+                            <span class="text-blue-500 mt-1">✔</span>
+                            <span>전/후 케이스 템플릿 1장 <span class="text-[10px] opacity-30">▶</span></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-slate-800/30 rounded-xl p-5 border border-white/5 mb-6">
+                <h4 class="text-white font-bold mb-4 flex items-center gap-2 border-b border-white/10 pb-3">
+                    <span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span> 신규개원 / 기개원 공통사항
+                </h4>
+                <div class="grid grid-cols-1 gap-4">
+                    <ul class="space-y-2 text-[13px] text-slate-300">
+                        <li class="flex items-start gap-1"><span>•</span> <span>계약일로부터 3개월 내 제작 요청 / 제작건 이월 불가</span>
+                        </li>
+                        <li class="flex items-start gap-1"><span>•</span> <span>인쇄대행 불가</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-amber-900/20 border border-amber-500/20 p-4 rounded-xl flex items-start gap-3 mb-6">
+                <span class="text-xl">💡</span>
+                <div>
+                    <p class="text-amber-200 text-sm font-bold mb-1">디자인 품목 전환 혜택</p>
+                    <p class="text-amber-200/70 text-xs leading-relaxed">
+                        * 미사용 디자인 항목은 <b>[포스팅]</b> 및 <b>[컨텐츠]</b> 제작으로<br>
+                        전환하여 낭비되는 비용 없이 활용 가능합니다. (담당자 협의 필요)
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <button onclick="openDesignTimeline()"
+                    class="w-full py-4 rounded-xl bg-gradient-to-r from-slate-700 to-slate-600 hover:from-slate-600 hover:to-slate-500 text-white font-bold transition-all border border-white/10 shadow-lg flex items-center justify-center gap-2 group">
+                    <span>디자인 타임라인 보기</span>
+                    <span class="group-hover:translate-x-1 transition-transform">→</span>
+                </button>
+                <p class="text-slate-500 text-xs text-center">(진행 기간은 유동성이 있으니 참고 바랍니다)</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Example Preview Modal (Context7 Style) -->
+    <div id="example-modal-overlay" class="modal-overlay" onclick="closeExampleModal(event)">
+        <div class="modal-content p-0 max-w-4xl bg-[#0f111a] border border-white/10 shadow-3xl overflow-hidden"
+            onclick="event.stopPropagation()">
+            <div
+                class="relative aspect-[3/2] max-h-[75vh] bg-[#090a11] flex items-center justify-center overflow-hidden border-b border-white/5">
+                <div id="example-img-container"
+                    class="w-full h-full flex items-center justify-center bg-[#090a11] relative p-0">
+                    <img id="example-img" src="" alt="Example Preview"
+                        class="w-full h-full object-cover object-top opacity-0 transition-opacity duration-500 z-10"
+                        onload="this.classList.remove('opacity-0')">
+                    <img id="example-img-2" src="" alt="Example Preview 2"
+                        class="w-full h-full object-cover object-top opacity-0 transition-opacity duration-500 z-10 hidden"
+                        onload="this.classList.remove('opacity-0')">
+                    <div class="absolute inset-0 bg-slate-950/50 flex items-center justify-center">
+                        <span
+                            class="text-slate-800 text-6xl font-black opacity-10 uppercase tracking-tighter">PREVIEW</span>
+                    </div>
+                </div>
+                <div
+                    class="absolute inset-0 bg-gradient-to-t from-[#0f111a] via-transparent to-transparent pointer-events-none opacity-60">
+                </div>
+                <button onclick="closeExampleModalNow()"
+                    class="absolute top-6 right-6 w-12 h-12 rounded-full bg-black/60 backdrop-blur-md text-white flex items-center justify-center hover:bg-white/10 transition-all border border-white/20 text-2xl z-20 shadow-xl">&times;</button>
+            </div>
+            <div class="p-8 md:p-10 -mt-8 relative z-30">
+                <div
+                    class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 mb-4 backdrop-blur-sm">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="text-[10px] font-bold text-emerald-400 tracking-wider">PREVIEW EXAMPLE</span>
+                </div>
+                <h4 id="example-title" class="text-2xl md:text-3xl font-bold text-white mb-4">Example Title</h4>
+                <p id="example-desc" class="text-slate-400 leading-relaxed text-base mb-8">
+                    상세 예시 내용이 여기에 표시됩니다. 전략적인 마케팅 로직과 실제 사례를 시각화하여 보여드립니다.
+                </p>
+                <div class="flex justify-end pt-6 border-t border-white/5">
+                    <button onclick="closeExampleModalNow()"
+                        class="px-6 py-2.5 rounded-lg bg-slate-800 text-slate-400 font-bold hover:bg-slate-700 hover:text-white transition-all text-sm">확인했습니다</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Design Timeline Modal -->
+    <div id="design-timeline-overlay" class="modal-overlay" onclick="closeDesignTimeline(event)">
+        <div
+            class="bg-slate-900 rounded-2xl w-full max-w-5xl max-h-[90vh] overflow-y-auto border border-white/10 shadow-2xl relative animate-scale-up">
+            <div
+                class="sticky top-0 bg-slate-900/95 backdrop-blur z-10 p-6 border-b border-white/10 flex justify-between items-center">
+                <div>
+                    <span class="text-emerald-400 font-bold tracking-wider text-xs mb-1 block">PREMIUM DESIGN</span>
+                    <h3 class="text-xl md:text-2xl font-bold text-white">디자인 솔루션 타임라인</h3>
+                </div>
+                <button onclick="closeDesignTimelineNow()"
+                    class="text-slate-500 hover:text-white text-2xl transition-colors">&times;</button>
+            </div>
+
+            <div class="p-6">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-center border-collapse">
+                        <thead class="bg-slate-800 text-slate-300 font-bold sticky top-0">
+                            <tr>
+                                <th class="p-3 border border-white/10">대분류</th>
+                                <th class="p-3 border border-white/10">소분류</th>
+                                <th class="p-3 border border-white/10 text-left pl-4">항목</th>
+                                <th class="p-3 border border-white/10 w-20">1개월</th>
+                                <th class="p-3 border border-white/10 w-20">2개월</th>
+                                <th class="p-3 border border-white/10 w-20">3개월</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-400">
+                            <!-- Web Design -->
+                            <tr>
+                                <td rowspan="7"
+                                    class="p-3 border border-white/10 bg-slate-800/30 font-bold text-blue-400">디자인</td>
+                                <td rowspan="7" class="p-3 border border-white/10 bg-slate-800/20">웹 시안</td>
+                                <td
+                                    class="p-3 border border-white/10 text-left pl-4 hover:text-white transition-colors">
+                                    플레이스 세팅 시안</td>
+                                <td class="p-1 border border-white/10">
+                                    <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                </td>
+                                <td class="p-1 border border-white/10">
+                                    <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                </td>
+                                <td class="p-1 border border-white/10">
+                                    <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td
+                                    class="p-3 border border-white/10 text-left pl-4 hover:text-white transition-colors">
+                                    블로그 스킨 시안</td>
+                                <td class="p-1 border border-white/10">
+                                    <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                </td>
+                                <td class="p-1 border border-white/10">
+                                    <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                </td>
+                                <td class="p-1 border border-white/10"></td>
+                            </tr>
+                            <tr>
+                                <td
+                                    class="p-3 border border-white/10 text-left pl-4 hover:text-white transition-colors">
+                                    홍보성 시안</td>
+                                <td class="p-1 border border-white/10">
+                                    <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                </td>
+                                <td class="p-1 border border-white/10"></td>
+                                <td class="p-1 border border-white/10"></td>
+                            </tr>
+                            <tr>
+                                <td
+                                    class="p-3 border border-white/10 text-left pl-4 hover:text-white transition-colors">
+                                    카카오 자동응답 시안</td>
+                                <td class="p-1 border border-white/10">
+                                    <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                </td>
+                                <td class="p-1 border border-white/10"></td>
+                                <td class="p-1 border border-white/10"></td>
+                            </tr>
+                            <tr>
+                                <td
+                                    class="p-3 border border-white/10 text-left pl-4 hover:text-white transition-colors">
+                                    네이버 톡톡 시안</td>
+                                <td class="p-1 border border-white/10">
+                                    <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                </td>
+                                <td class="p-1 border border-white/10"></td>
+                                <td class="p-1 border border-white/10"></td>
+                            </tr>
+                            <tr>
+                                <td
+                                    class="p-3 border border-white/10 text-left pl-4 hover:text-white transition-colors">
+                                    포스팅 의료법 시안</td>
+                                <td class="p-1 border border-white/10">
+                                    <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                </td>
+                                <td class="p-1 border border-white/10"></td>
+                                <td class="p-1 border border-white/10"></td>
+                            </tr>
+                            <tr>
+                                <td
+                                    class="p-3 border border-white/10 text-left pl-4 hover:text-white transition-colors">
+                                    네이버 예약 시안</td>
+                                <td class="p-1 border border-white/10">
+                                    <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                </td>
+                                <td class="p-1 border border-white/10">
+                                    <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                </td>
+                                <td class="p-1 border border-white/10"></td>
+                            </tr>
+
+                            <!-- Internal Design -->
+                            <tr>
+                                <td rowspan="8"
+                                    class="p-3 border border-white/10 bg-slate-800/30 font-bold text-blue-400">디자인</td>
+                                <td rowspan="8" class="p-3 border border-white/10 bg-slate-800/20">내부 시안</td>
+                                <td
+                                    class="p-3 border border-white/10 text-left pl-4 hover:text-white transition-colors">
+                                    원내 사이니지 (DID) 시안</td>
+                                <td class="p-1 border border-white/10"></td>
+                                <td class="p-1 border border-white/10">
+                                    <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                </td>
+                                <td class="p-1 border border-white/10">
+                                    <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td
+                                    class="p-3 border border-white/10 text-left pl-4 hover:text-white transition-colors">
+                                    채용공고 시안</td>
+                                <td class="p-1 border border-white/10">
+                                    <div class="h-4 w-full rounded bg-emerald-500/60"></div>
+                                </td>
+                                <td class="p-1 border border-white/10"></td>
+                                <td class="p-1 border border-white/10"></td>
+                            </tr>
+                            <tr>
+                                <td
+                                    class="p-3 border border-white/10 text-left pl-4 hover:text-white transition-colors">
+                                    원내 시안물</td>
+                                <td colspan="3" class="p-1 border border-white/10 text-center text-xs text-slate-400">
+                                    1~3개월 내 기간 협의
+                                </td>
+                            </tr>
+                            <tr>
+                                <td
+                                    class="p-3 border border-white/10 text-left pl-4 hover:text-white transition-colors">
+                                    이벤트 시안</td>
+                                <td colspan="3" class="p-1 border border-white/10 text-center text-xs text-slate-400">
+                                    1~3개월 내 기간 협의
+                                </td>
+                            </tr>
+                            <tr>
+                                <td
+                                    class="p-3 border border-white/10 text-left pl-4 hover:text-white transition-colors">
+                                    치료 전, 후 시안 템플릿</td>
+                                <td colspan="3" class="p-1 border border-white/10 text-center text-xs text-slate-400">
+                                    1~3개월 내 기간 협의
+                                </td>
+                            </tr>
+                            <tr>
+                                <td
+                                    class="p-3 border border-white/10 text-left pl-4 hover:text-white transition-colors">
+                                    주의사항 시안</td>
+                                <td colspan="3" class="p-1 border border-white/10 text-center text-xs text-slate-400">
+                                    1~3개월 내 기간 협의
+                                </td>
+                            </tr>
+                            <tr>
+                                <td
+                                    class="p-3 border border-white/10 text-left pl-4 hover:text-white transition-colors">
+                                    동의서 시안</td>
+                                <td colspan="3" class="p-1 border border-white/10 text-center text-xs text-slate-400">
+                                    1~3개월 내 기간 협의
+                                </td>
+                            </tr>
+                            <tr>
+                                <td
+                                    class="p-3 border border-white/10 text-left pl-4 hover:text-white transition-colors">
+                                    엘리베이터 광고 시안</td>
+                                <td colspan="3"
+                                    class="p-3 border border-white/10 text-center text-xs text-slate-500 font-medium">매월
+                                    2건 제작 내 치환 가능 / 기간 협의</td>
+                            </tr>
+
+                            <!-- Additional removed -->
+
+                            <!-- Print -->
+                            <tr>
+                                <td rowspan="3"
+                                    class="p-3 border border-white/10 bg-slate-800/30 font-bold text-blue-400">디자인</td>
+                                <td rowspan="3" class="p-3 border border-white/10 bg-slate-800/20">인쇄물 시안</td>
+                                <td
+                                    class="p-3 border border-white/10 text-left pl-4 hover:text-white transition-colors">
+                                    리뷰 피켓 시안</td>
+                                <td colspan="3"
+                                    class="p-3 border border-white/10 text-center text-xs text-slate-500 font-medium">매월
+                                    2건 제작 내 치환 가능 / 기간 협의</td>
+                            </tr>
+                            <tr>
+                                <td
+                                    class="p-3 border border-white/10 text-left pl-4 hover:text-white transition-colors">
+                                    간단 패키지 / 판촉물 시안</td>
+                                <td colspan="3"
+                                    class="p-3 border border-white/10 text-center text-xs text-slate-500 font-medium">매월
+                                    2건 제작 내 치환 가능 / 기간 협의</td>
+                            </tr>
+                            <tr>
+                                <td
+                                    class="p-3 border border-white/10 text-left pl-4 hover:text-white transition-colors">
+                                    X배너 시안</td>
+                                <td colspan="3" class="p-1 border border-white/10 text-center text-xs text-slate-400">
+                                    1~3개월 내 기간 협의
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="mt-6 p-4 bg-slate-800/50 rounded-xl border border-white/5 space-y-2">
+                        <button onclick="alert('추후 내용이 업데이트될 예정입니다.')"
+                            class="w-full py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-slate-300 font-bold text-xs transition-colors mb-2">
+                            [디자인 치환 상품 목록 안내]
+                        </button>
+                        <p class="text-slate-400 text-sm">* 디자인은 최소 3개월간 제작을 진행하며 이후 제작된 시안물을 세팅하고, 마케팅 진행으로 4개월 플랜이
+                            완성됩니다.</p>
+                        <p class="text-slate-400 text-sm">* 오프라인 마케팅 추가 시 버스광고 (버스쉘터) / 마트 카트 광고 / 지하철 역사 광고 / 아파트 전단지 /
+                            영화관<br>
+                            >> 컨텐츠 제작 비용 별도로 발생됩니다. (마케팅에 따른 기간 조율)</p>
+                        <p class="text-slate-400 text-sm mt-3 pt-3 border-t border-white/5">* 원내 시안물의 경우 병원 사정에 따라 필요한
+                            시점에 요청해주시면 제작해 드립니다. (총 수량 내 차감 방식)</p>
+                        <p class="text-slate-400 text-sm">* 모든 디자인 제작물은 인쇄용 파일을 제공해 드리며, 인쇄 대행은 진행하지 않습니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div
+        class="calculator-bar active flex flex-col md:flex-row items-center justify-center gap-4 fixed bottom-0 left-0 w-full z-50 px-4">
+        <div class="flex-none w-full md:w-auto flex justify-between md:justify-center gap-8 text-sm">
+            <div>
+                <p class="text-slate-500 text-xs mb-1">예상 견적</p>
+                <p class="text-2xl font-extrabold text-white"><span id="total-price">0</span> <span
+                        class="text-sm font-normal text-slate-400">원 + @</span></p>
+            </div>
+            <div class="w-px bg-white/10 h-10"></div>
+            <div>
+                <p class="text-slate-500 text-xs mb-1">선택한 옵션</p>
+                <p class="text-xl font-bold text-emerald-400"><span id="option-count">0</span> <span
+                        class="text-xs font-normal text-slate-400">개</span></p>
+            </div>
+        </div>
+
+        <div class="w-full md:w-auto flex flex-col md:flex-row items-center gap-4 md:absolute md:right-8">
+            <button onclick="resetAll()"
+                class="bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold px-4 py-2 rounded-lg transition-colors flex items-center gap-1 shadow-md">
+                <span>↺</span> 초기화
+            </button>
+            <button onclick="openModal()"
+                class="w-full md:w-auto bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold px-8 py-4 rounded-xl hover:shadow-lg hover:shadow-blue-500/30 transition-all transform hover:-translate-y-1">
+                견적서 제출 및 상담신청
+            </button>
+        </div>
+    </div>
+
+    <div id="modal-overlay" class="modal-overlay" onclick="closeModal(event)">
+        <div class="modal-content p-8" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-white">상담 신청서</h3>
+                <button onclick="closeModalNow()" class="text-slate-500 hover:text-white text-2xl">&times;</button>
+            </div>
+            <div class="bg-slate-800/50 rounded-xl p-5 mb-6 text-sm border border-white/5">
+                <p class="text-slate-400 mb-3 pb-2 border-b border-white/10 font-bold">선택하신 패키지 및 옵션</p>
+                <ul id="selected-list"
+                    class="space-y-1.5 text-slate-200 list-disc pl-4 mb-4 text-xs max-h-40 overflow-y-auto">
+                    <li>선택된 항목이 없습니다.</li>
+                </ul>
+                <div class="flex justify-between text-slate-300 font-bold border-t border-white/10 pt-3">
+                    <span>예상 견적: <span id="modal-price" class="text-white text-lg">0</span>원</span>
+                </div>
+            </div>
+            <form class="space-y-4">
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">병원명</label>
+                    <input type="text" id="hospital-name"
+                        class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:border-blue-500 outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">성함/직함</label>
+                        <input type="text" id="user-name"
+                            class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:border-blue-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">연락처</label>
+                        <input type="tel" id="user-phone"
+                            class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:border-blue-500 outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">비고 / 특이사항</label>
+                    <textarea id="user-remarks" rows="3"
+                        class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:border-blue-500 outline-none resize-none"></textarea>
+                </div>
+                <button type="button" onclick="submitConsultation()" id="submit-btn"
+                    class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl mt-4 hover:bg-blue-500 transition">신청하기</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Report Preview Modal -->
+    <div id="report-modal-overlay"
+        class="modal-overlay fixed inset-0 bg-black/80 z-[9999] hidden items-center justify-center p-4 backdrop-blur-sm transition-opacity duration-300"
+        onclick="closeReportModal(event)">
+        <div class="bg-slate-900 rounded-2xl w-full max-w-[95vw] h-[90vh] border border-white/10 shadow-2xl relative flex flex-col"
+            onclick="event.stopPropagation()">
+            <div
+                class="p-4 border-b border-white/10 flex justify-between items-center bg-slate-900/95 backdrop-blur z-10 rounded-t-2xl">
+                <div>
+                    <h3 class="text-xl font-bold text-white">월간 마케팅 성과 리포트 예시</h3>
+                    <p class="text-slate-400 text-sm">실제 제공되는 리포트 양식입니다. (개인정보 보호를 위해 블러 처리되었습니다)</p>
+                </div>
+                <button onclick="closeReportModalNow()"
+                    class="text-slate-500 hover:text-white text-2xl transition-colors">&times;</button>
+            </div>
+            <div class="flex-1 flex flex-col md:flex-row gap-4 p-4 overflow-hidden">
+                <!-- Left: Seoul Remember Dental -->
+                <div class="flex-1 bg-white rounded-xl overflow-hidden border border-slate-200">
+                    <iframe src="./보고서/%5B10-11%5D%EC%84%9C%EC%9A%B8%EB%A6%AC%EB%A9%A4%EB%B2%84%EC%B9%98%EA%B3%BC.html"
+                        class="w-full h-full border-none"></iframe>
+                </div>
+                <!-- Right: Seoul Uplant Dental -->
+                <div class="flex-1 bg-white rounded-xl overflow-hidden border border-slate-200">
+                    <iframe
+                        src="./보고서/%5B11-12%5D%EC%84%9C%EC%9A%B8%EC%9C%A0%ED%94%8C%EB%9E%80%ED%8A%B8%EC%B9%98%EA%B3%BC.html"
+                        class="w-full h-full border-none"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ad Operation Guide Modal -->
+    <div id="ad-guide-modal-overlay" class="modal-overlay" onclick="closeAdGuideModal(event)">
+        <div class="modal-content p-0 max-w-2xl bg-[#0f111a] border border-amber-500/20 shadow-3xl overflow-hidden"
+            onclick="event.stopPropagation()">
+            <!-- Header -->
+            <div class="p-6 border-b border-white/5 bg-slate-900/50 flex justify-between items-center">
+                <div>
+                    <span class="text-amber-500 font-bold text-[10px] tracking-wider uppercase mb-1 block">Operation
+                        Manual</span>
+                    <h3 class="text-xl font-bold text-white">광고 운영 프로세스 가이드</h3>
+                </div>
+                <button onclick="closeAdGuideModalNow()"
+                    class="text-slate-500 hover:text-white text-2xl">&times;</button>
+            </div>
+
+            <!-- Content -->
+            <div class="p-6 md:p-8 max-h-[70vh] overflow-y-auto">
+                <div class="bg-amber-900/20 border border-amber-500/20 p-4 rounded-xl mb-8 flex items-start gap-3">
+                    <span class="text-lg">📢</span>
+                    <p class="text-amber-200/90 text-xs leading-relaxed font-medium">
+                        모든 광고 매체(네이버, SNS, 구글 등)는 전문적인 성과를 위해 아래와 동일한 절차를 거쳐 체계적으로 운영됩니다.
+                    </p>
+                </div>
+
+                <div
+                    class="relative space-y-8 before:absolute before:inset-0 before:ml-4 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-amber-500 before:via-slate-700 before:to-transparent">
+
+                    <!-- Step 1-6 -->
+                    <div
+                        class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                        <div
+                            class="flex items-center justify-center w-8 h-8 rounded-full border border-slate-700 bg-slate-900 text-amber-500 text-xs font-bold shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 transition-colors group-hover:border-amber-500">
+                            1</div>
+                        <div
+                            class="w-[calc(100%-3rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl bg-slate-800/40 border border-white/5 transition-all group-hover:bg-slate-800/60">
+                            <h4 class="text-white font-bold text-sm mb-1">사진 촬영</h4>
+                            <p class="text-slate-400 text-xs">최적화된 소재를 위한 전문적인 원내 촬영 진행</p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                        <div
+                            class="flex items-center justify-center w-8 h-8 rounded-full border border-slate-700 bg-slate-900 text-amber-500 text-xs font-bold shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 transition-colors group-hover:border-amber-500">
+                            2</div>
+                        <div
+                            class="w-[calc(100%-3rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl bg-slate-800/40 border border-white/5 transition-all group-hover:bg-slate-800/60">
+                            <h4 class="text-white font-bold text-sm mb-1">사진 셀렉 및 보정 작업</h4>
+                            <p class="text-slate-400 text-xs">광고 효과를 극대화할 수 있는 베스트 컷 선정 및 보정</p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                        <div
+                            class="flex items-center justify-center w-8 h-8 rounded-full border border-slate-700 bg-slate-900 text-amber-500 text-xs font-bold shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 transition-colors group-hover:border-amber-500">
+                            3</div>
+                        <div
+                            class="w-[calc(100%-3rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl bg-slate-800/40 border border-white/5 transition-all group-hover:bg-slate-800/60">
+                            <h4 class="text-white font-bold text-sm mb-1">보정본 컨펌</h4>
+                            <p class="text-slate-400 text-xs">사용될 최종 사진에 대한 의료진 최종 확인</p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                        <div
+                            class="flex items-center justify-center w-8 h-8 rounded-full border border-slate-700 bg-slate-900 text-amber-500 text-xs font-bold shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 transition-colors group-hover:border-amber-500">
+                            4</div>
+                        <div
+                            class="w-[calc(100%-3rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl bg-slate-800/40 border border-white/5 transition-all group-hover:bg-slate-800/60">
+                            <h4 class="text-white font-bold text-sm mb-1">의료심의 서류 요청 및 검수</h4>
+                            <p class="text-slate-400 text-xs">필요 서류 안내 및 원활한 심의를 위한 사전 검수</p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                        <div
+                            class="flex items-center justify-center w-8 h-8 rounded-full border border-slate-700 bg-slate-900 text-amber-500 text-xs font-bold shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 transition-colors group-hover:border-amber-500">
+                            5</div>
+                        <div
+                            class="w-[calc(100%-3rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl bg-slate-800/40 border border-white/5 transition-all group-hover:bg-slate-800/60">
+                            <h4 class="text-white font-bold text-sm mb-1">광고 소재 제작</h4>
+                            <p class="text-slate-400 text-xs">매체별 규격에 맞는 고퀄리티 배너 및 문구 제작</p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                        <div
+                            class="flex items-center justify-center w-8 h-8 rounded-full border border-slate-700 bg-slate-900 text-amber-500 text-xs font-bold shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 transition-colors group-hover:border-amber-500">
+                            6</div>
+                        <div
+                            class="w-[calc(100%-3rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl bg-slate-800/40 border border-white/5 transition-all group-hover:bg-slate-800/60">
+                            <h4 class="text-white font-bold text-sm mb-1">광고 소재 컨펌</h4>
+                            <p class="text-slate-400 text-xs">최종 제작된 배너/문구에 대한 디자인 컨펌</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 7: Attention -->
+                    <div
+                        class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                        <div
+                            class="flex items-center justify-center w-8 h-8 rounded-full border border-amber-500 bg-amber-500 text-white text-xs font-bold shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 animate-pulse">
+                            7</div>
+                        <div
+                            class="w-[calc(100%-3rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl bg-amber-900/10 border border-amber-500/30 transition-all group-hover:bg-amber-900/20 shadow-[0_0_15px_-5px_rgba(245,158,11,0.3)]">
+                            <h4 class="text-amber-400 font-bold text-sm mb-2">의료 광고심의 신청</h4>
+                            <div class="space-y-2 text-[11px] text-slate-300">
+                                <p class="flex items-start gap-1.5"><span class="text-amber-500">•</span> <span><b>보통
+                                            건:</b> 2개월 내외 소요</span></p>
+                                <p class="flex items-start gap-1.5"><span class="text-amber-500">•</span> <span><b>영상/광폭
+                                            노출:</b> 6개월 소요 (SNS, 구글 등)</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                        <div
+                            class="flex items-center justify-center w-8 h-8 rounded-full border border-slate-700 bg-slate-900 text-amber-500 text-xs font-bold shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 transition-colors group-hover:border-amber-500">
+                            8</div>
+                        <div
+                            class="w-[calc(100%-3rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl bg-slate-800/40 border border-white/5 transition-all group-hover:bg-slate-800/60">
+                            <h4 class="text-white font-bold text-sm mb-1">심의 완료 후 세팅</h4>
+                            <p class="text-slate-400 text-xs">심의 합격 번호를 포함한 광고 시스템 최종 세팅</p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                        <div
+                            class="flex items-center justify-center w-8 h-8 rounded-full border border-slate-700 bg-slate-900 text-amber-500 text-xs font-bold shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 transition-colors group-hover:border-amber-500">
+                            9</div>
+                        <div
+                            class="w-[calc(100%-3rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl bg-slate-800/40 border border-white/5 transition-all group-hover:bg-slate-800/60">
+                            <h4 class="text-white font-bold text-sm mb-1">각 매체별 검수 절차</h4>
+                            <p class="text-slate-400 text-xs">심의통지서와 세팅 내역 일치 여부 확인 단계 (매체측)</p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                        <div
+                            class="flex items-center justify-center w-8 h-8 rounded-full border border-emerald-500 bg-emerald-500/20 text-emerald-400 text-xs font-bold shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                            10</div>
+                        <div
+                            class="w-[calc(100%-3rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 transition-all">
+                            <h4 class="text-emerald-400 font-bold text-sm mb-1">광고 송출 및 집중 관리</h4>
+                            <p class="text-slate-300 text-xs">실시간 모니터링 및 성과 분석을 통한 지속적 최적화</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="p-4 border-t border-white/5 bg-slate-900/30 flex justify-end">
+                <button onclick="closeAdGuideModalNow()"
+                    class="px-6 py-2 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition-all text-xs font-bold">내용을
+                    확인했습니다</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        if (typeof AOS !== 'undefined') {
+            AOS.init({ duration: 800, once: true });
+        }
+
+        // --- Design Modal ---
+        function openDesignModal() {
+            const overlay = document.getElementById('design-modal-overlay');
+            if (overlay) {
+                overlay.style.display = 'flex';
+                setTimeout(() => overlay.classList.add('show'), 10);
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        function closeDesignModal(e) { if (e.target.id === 'design-modal-overlay') closeDesignModalNow(); }
+        function closeDesignModalNow() {
+            const overlay = document.getElementById('design-modal-overlay');
+            if (overlay) {
+                overlay.classList.remove('show');
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                    document.body.style.overflow = '';
+                }, 300);
+            }
+        }
+
+        // --- Design Timeline Modal ---
+        function openDesignTimeline() {
+            const overlay = document.getElementById('design-timeline-overlay');
+            if (overlay) {
+                overlay.style.display = 'flex';
+                setTimeout(() => overlay.classList.add('show'), 10);
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        function closeDesignTimeline(e) { if (e.target.id === 'design-timeline-overlay') closeDesignTimelineNow(); }
+        function closeDesignTimelineNow() {
+            const overlay = document.getElementById('design-timeline-overlay');
+            if (overlay) {
+                overlay.classList.remove('show');
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                    document.body.style.overflow = '';
+                }, 300);
+            }
+        }
+
+        // --- Report Modal ---
+        function openReportModal() {
+            const overlay = document.getElementById('report-modal-overlay');
+            if (overlay) {
+                overlay.style.display = 'flex';
+                setTimeout(() => overlay.classList.add('show'), 10);
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        function closeReportModal(e) { if (e.target.id === 'report-modal-overlay') closeReportModalNow(); }
+        function closeReportModalNow() {
+            const overlay = document.getElementById('report-modal-overlay');
+            if (overlay) {
+                overlay.classList.remove('show');
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                    document.body.style.overflow = '';
+                }, 300);
+            }
+        }
+
+        // --- Ad Guide Modal ---
+        function openAdGuideModal() {
+            const overlay = document.getElementById('ad-guide-modal-overlay');
+            if (overlay) {
+                overlay.style.display = 'flex';
+                setTimeout(() => overlay.classList.add('show'), 10);
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        function closeAdGuideModal(e) { if (e.target.id === 'ad-guide-modal-overlay') closeAdGuideModalNow(); }
+        function closeAdGuideModalNow() {
+            const overlay = document.getElementById('ad-guide-modal-overlay');
+            if (overlay) {
+                overlay.classList.remove('show');
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                    document.body.style.overflow = '';
+                }, 300);
+            }
+        }
+
+        // --- Tabs ---
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('block');
+            });
+            const target = document.getElementById(tabId);
+            if (target) {
+                target.classList.remove('hidden');
+                target.classList.add('block');
+            }
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('active', 'bg-blue-600', 'text-white');
+                b.classList.add('bg-slate-800', 'text-slate-400');
+            });
+            if (btn) {
+                btn.classList.remove('bg-slate-800', 'text-slate-400');
+                btn.classList.add('active');
+            }
+        }
+
+        // --- Modals ---
+
+
+        function openModal() {
+            const overlay = document.getElementById('modal-overlay');
+            overlay.style.display = 'flex';
+            setTimeout(() => overlay.classList.add('show'), 10);
+            calculateTotal();
+        }
+        function closeModal(e) { if (e.target.id === 'modal-overlay') closeModalNow(); }
+        function closeModalNow() {
+            const overlay = document.getElementById('modal-overlay');
+            overlay.classList.remove('show');
+            setTimeout(() => overlay.style.display = 'none', 300);
+        }
+
+        // --- Logic ---
+        function resetAll() {
+            document.querySelectorAll('input[type="radio"]').forEach(el => {
+                el.checked = false;
+                el.closest('.card-dark').classList.remove('selected');
+            });
+            document.querySelectorAll('.count-num').forEach(el => {
+                el.innerText = '0';
+            });
+            document.querySelectorAll('.option-card').forEach(el => {
+                el.classList.remove('active');
+            });
+            calculateTotal();
+        }
+
+        function selectRadio(element, groupName, price, name) {
+            // 다른 탭의 라디오 해제 로직 포함
+            document.querySelectorAll('input[type="radio"]').forEach(inp => {
+                inp.checked = false;
+                inp.closest('.card-dark').classList.remove('selected');
+            });
+
+            const input = element.querySelector('input');
+            element.classList.add('selected');
+            input.checked = true;
+            input.dataset.price = price;
+            input.dataset.name = name;
+
+            calculateTotal();
+        }
+
+        function updateOptionCount(btn, delta) {
+            const countSpan = btn.parentElement.querySelector('.count-num');
+            let count = parseInt(countSpan.innerText);
+            count += delta;
+            if (count < 0) count = 0;
+            countSpan.innerText = count;
+
+            const card = btn.closest('.option-card');
+            if (count > 0) card.classList.add('active');
+            else card.classList.remove('active');
+
+            calculateTotal();
+        }
+
+        function calculateTotal() {
+            let total = 0;
+            let optionCount = 0;
+            const selectedList = [];
+
+            // 1. Packages (Radio)
+            const radio = document.querySelector('input[type="radio"]:checked');
+            if (radio) {
+                const p = parseInt(radio.dataset.price || 0);
+                const name = radio.dataset.name;
+                total += p;
+
+                let priceStr = p === 0 ? "견적 문의" : p.toLocaleString() + "원";
+                selectedList.push(`[패키지] ${name} (${priceStr})`);
+            }
+
+            // 2. Options (Count)
+            document.querySelectorAll('.option-card').forEach(card => {
+                const count = parseInt(card.querySelector('.count-num').innerText);
+                if (count > 0) {
+                    const name = card.dataset.name;
+                    optionCount += count;
+                    selectedList.push(`[단품] ${name} x ${count}개`);
+                }
+            });
+
+            // UI Update
+            const totalStr = total === 0 && selectedList.some(i => i.includes('패키지')) && optionCount === 0 ? "문의" : total.toLocaleString();
+            document.getElementById('total-price').innerText = totalStr;
+            document.getElementById('option-count').innerText = optionCount;
+            document.getElementById('modal-price').innerText = totalStr;
+
+            const listEl = document.getElementById('selected-list');
+            if (listEl) {
+                listEl.innerHTML = selectedList.length > 0
+                    ? selectedList.map(item => `<li>${item}</li>`).join('')
+                    : '<li class="text-slate-500">선택된 항목이 없습니다.</li>';
+            }
+        }
+
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx9drSsnbn0oR_r2AWgKGnafHIOfXi-JyFqGNWaFlDBrtb3AOITgr02p6qjDLtw7DnouQ/exec";
+
+        function submitConsultation() {
+            const hospitalName = document.getElementById('hospital-name').value.trim();
+            const userName = document.getElementById('user-name').value.trim();
+            const userPhone = document.getElementById('user-phone').value.trim();
+            const remarks = document.getElementById('user-remarks').value.trim();
+
+            if (!hospitalName || !userName || !userPhone) {
+                alert("모든 정보를 입력해주세요.");
+                return;
+            }
+
+            const btn = document.getElementById('submit-btn');
+            const originalText = btn.innerText;
+            btn.disabled = true;
+            btn.innerText = "전송 중...";
+
+            const listItems = document.querySelectorAll('#selected-list li');
+            const selectedListText = Array.from(listItems).map(li => li.innerText).join(', ');
+
+            const payload = {
+                hospitalName: hospitalName,
+                customerName: userName,
+                phone: userPhone,
+                selectedItems: selectedListText,
+                totalPrice: document.getElementById('total-price').innerText,
+                remarks: remarks
+            };
+
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify(payload),
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' }
+            }).then(() => {
+                alert("신청이 완료되었습니다.");
+                closeModalNow();
+                btn.disabled = false;
+                btn.innerText = originalText;
+                document.getElementById('hospital-name').value = '';
+                document.getElementById('user-name').value = '';
+                document.getElementById('user-phone').value = '';
+                document.getElementById('user-remarks').value = '';
+                resetAll();
+            }).catch(err => {
+                console.error(err);
+                alert("전송 실패. 다시 시도해주세요.");
+                btn.disabled = false;
+                btn.innerText = originalText;
+            });
+        }
+
+        function toggleTimeline() {
+            const content = document.getElementById('timeline-content');
+            const icon = document.getElementById('timeline-icon');
+
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                // Small delay to allow display:block to apply before opacity transition
+                setTimeout(() => {
+                    content.classList.remove('opacity-0');
+                    content.classList.add('opacity-100');
+                }, 10);
+                icon.classList.add('rotate-180');
+            } else {
+                content.classList.remove('opacity-100');
+                content.classList.add('opacity-0');
+                icon.classList.remove('rotate-180');
+                setTimeout(() => {
+                    content.classList.add('hidden');
+                }, 300);
+            }
+        }
+
+        // Tooltip Toggle Function
+        function toggleTooltip(element, event) {
+            event.stopPropagation(); // Prevent bubbling
+
+            // Find the specific popup within the clicked element
+            const popup = element.querySelector('.tooltip-popup');
+
+            // Close all other open tooltips first
+            document.querySelectorAll('.tooltip-popup').forEach(p => {
+                if (p !== popup) p.classList.add('hidden');
+            });
+
+            // Toggle current
+            if (popup) {
+                popup.classList.toggle('hidden');
+            }
+        }
+
+        // Close options when clicking outside
+        document.addEventListener('click', function (event) {
+            document.querySelectorAll('.tooltip-popup').forEach(p => {
+                p.classList.add('hidden');
+            });
+        });
+
+        // --- Example Modal (Context7) ---
+        const exampleData = {
+            'strategy': {
+                title: '브랜딩 기획 (진료권 분석)',
+                desc: '단순 지역 검색이 아닌, 실제 내원 환자의 이동 동선과 경쟁 치과의 강점/약점을 매트릭스로 분석합니다. 이를 통해 우리 치과만의 독점적 우위 전략을 도출합니다.',
+                img: 'images/examples/strategy.png'
+            },
+            'story': {
+                title: '스토리텔링 (원장님 철학)',
+                desc: '의료진의 이력을 넘어, 왜 이 지역에서 개원을 결심했는지, 어떤 환자를 어떻게 대하는지에 대한 진심 어린 이야기를 기획하여 환자의 심리적 장벽을 낮춥니다.',
+                img: 'images/examples/story.png'
+            },
+            'seo': {
+                title: 'SEO 전략 (키워드 최적화)',
+                desc: '블로그 상위 노출뿐만 아니라 네이버 플레이스, 지식iN, 외부 커뮤니티 등 잠재 고객이 검색하는 모든 접점에서 브랜드 노출 빈도를 극대화하는 멀티 채널 최적화를 수행합니다.',
+                img: 'images/examples/seo.png'
+            },
+            'place': {
+                title: '플레이스 최적화',
+                desc: '예약 유도 문구, 톡톡 자동 응답, 그리고 실제 방문객의 리뷰 알고리즘을 분석하여 신규 환자가 가장 먼저 접하는 디지털 창구를 강력하게 세팅합니다.',
+                img: 'images/examples/place.png'
+            },
+            'map': {
+                title: '지도 및 내비게이션 등록',
+                desc: '네이버뿐 아니라 카카오맵, 구글맵, T맵, 카카오내비 등 모든 차량 및 도보 이동 경로에서 치과 정보가 정확하게 노출되도록 전 채널 등록을 대행합니다.',
+                img: 'images/examples/map.png'
+            },
+            'imp_post': {
+                title: '임상/정보 포스팅 (월 6건)',
+                desc: '단순한 정보를 넘어 원장님의 진료 철학이 담긴 깊이 있는 의학 콘텐츠를 발행합니다. 전문성을 강조하여 환자의 신뢰도를 높이는 고퀄리티 콘텐츠입니다.',
+                img: 'images/examples/imp_post.png'
+            },
+            'simple_post': {
+                title: '간단 포스팅 (월 5건)',
+                desc: '병원의 일상, 친절한 안내, 공지사항 등 환자들에게 친근하게 다가갈 수 있는 가벼운 콘텐츠를 정기적으로 발행하여 블로그 활성도를 유지합니다.',
+                img: 'images/examples/simple_post.png'
+            },
+            'event': {
+                title: '이벤트/프로모션 기획',
+                desc: '신환 유입 극대화를 위해 시즌별, 진료 과목별 맞춤형 이벤트를 기획하고 블로그 및 플레이스 전면에 배치하여 전환율을 높입니다.',
+                img: 'images/examples/event.png'
+            },
+            'comm': {
+                title: '댓글/서로이웃 관리',
+                desc: '블로그 지수 상승을 위해 유의미한 이웃 활동과 댓글 소통을 대행합니다. 로봇이 아닌 실제 소통을 통해 채널의 신뢰도를 쌓아갑니다.',
+                img: 'images/examples/comm.png'
+            },
+            'risk': {
+                title: '악성 리뷰 대응 가이드',
+                desc: '예기치 못한 부정적 리뷰 발생 시, 감정적 대응이 아닌 법적/마케팅적 가이드라인에 따른 체계적인 대응 프로세스를 제공하여 브랜드 훼방을 최소화합니다.',
+                img: 'images/examples/risk.png'
+            },
+            'report': {
+                title: '월간 성과 리포트',
+                desc: '유입 경로, 검색량 추이, 포스팅 반응도 등 한 달간의 마케팅 지표를 투명하게 공유하여 향후 전략 수정의 근거로 활용합니다.'
+            },
+            'issue': {
+                title: '실시간 이슈 대응',
+                desc: '병원의 로고 변경, 원장님 휴진, 급한 공지 등 긴급한 수정 사항 발생 시 실시간으로 채널에 반영하여 정보의 혼선을 막습니다.'
+            },
+            'place_setting': {
+                title: '플레이스 세팅 시안',
+                desc: '병원 플레이스에 최적화된 고해상도 시각 이미지를 기획합니다. 신뢰감을 주는 색상과 가독성 높은 폰트를 사용하여 방문 예약을 유도합니다.'
+            },
+            'blog_skin': {
+                title: '블로그 스킨',
+                desc: '브랜드 가치를 담은 블로그 스킨을 디자인합니다. PC와 모바일 각각의 레이아웃에 최적화되어 전문성을 강조합니다.'
+            },
+            'promo_setting': {
+                title: '홍보성 세팅 시안',
+                desc: '블로그 및 플레이스 광고에 반영되는 홍보성 이미지 시안입니다. 핵심 소구점을 강조하여 클릭률을 높입니다.'
+            },
+            'talk_setting': {
+                title: '톡톡 세팅 시안',
+                desc: '네이버 톡톡 상담 시 표시되는 메뉴 및 배경 디자인입니다. 환자들의 문의 편의성을 높이고 브랜드 전문성을 전달합니다.'
+            },
+            'signage': {
+                title: '사이니지 디자인',
+                desc: '병원 내외부의 주목도를 높이는 사이니지 디자인입니다. 10장 이상의 다양한 시안을 통해 병원의 아이덴티티를 강화합니다.',
+                img: '디자인예시/사이니지.jpg'
+            },
+            'internal_draft': {
+                title: '원내 시안물',
+                desc: '데스크, 대기실, 진료실 등 주요 공간에 비치되는 안내물 및 게시물 디자인입니다. 원장님 소개부터 각 진료별 안내까지 포함됩니다.',
+                img: '디자인예시/원내 시안물.jpg'
+            },
+            'recruit': {
+                title: '구인공고 디자인',
+                desc: '우수한 인재 영입을 위한 전문적인 구인공고 디자인입니다. 병원의 비전과 근무 환경을 매력적으로 전달합니다.',
+                img: '디자인예시/채용공고.jpg'
+            },
+            'consent': {
+                title: '주의사항 & 동의서',
+                desc: '환자가 반드시 숙지해야 할 내용을 명확하고 이해하기 쉽게 디자인한 서식입니다. 발치, 임플란트, 교정 등 다양한 항목을 제공합니다.',
+                img: '디자인예시/주의사항.jpg'
+            },
+            'event_draft': {
+                title: '이벤트 시안',
+                desc: '시즌별, 이슈별 이벤트를 효과적으로 알릴 수 있는 주목도 높은 디자인입니다.',
+                img: '디자인예시/이벤트.jpg'
+            },
+            'xbanner_design': {
+                title: 'X배너',
+                desc: '오프라인 유동 인구를 타겟으로 한 강력한 시각 이미지의 X배너 디자인입니다.',
+                img: '디자인예시/X배너.jpg'
+            },
+            'case_template': {
+                title: '전/후 케이스 템플릿',
+                desc: '치료 전후 사진을 전문적으로 보여줄 수 있는 통일된 포맷의 템플릿입니다.',
+                img: '디자인예시/전 후 케이스.jpg'
+            }
+        };
+
+        function openExample(type, fallbackTitle) {
+            const data = exampleData[type] || { title: fallbackTitle, desc: '상세 준비 중인 항목입니다.', img: '' };
+            document.getElementById('example-title').innerText = data.title;
+            document.getElementById('example-desc').innerText = data.desc;
+
+            // Image handling (Support up to 2 images)
+            const imgEl = document.getElementById('example-img');
+            const imgEl2 = document.getElementById('example-img-2');
+            const container = document.getElementById('example-img-container');
+
+            imgEl.classList.add('opacity-0');
+            imgEl2.classList.add('opacity-0');
+            imgEl2.classList.add('hidden');
+
+            if (data.img) {
+                imgEl.src = data.img;
+                if (data.img2) {
+                    imgEl2.src = data.img2;
+                    imgEl2.classList.remove('hidden');
+                    // Side-by-side or simple grid if 2 images
+                    imgEl.className = "w-1/2 h-full object-cover object-top opacity-0 transition-opacity duration-500 z-10 px-1";
+                    imgEl2.className = "w-1/2 h-full object-cover object-top opacity-0 transition-opacity duration-500 z-10 px-1";
+                } else {
+                    imgEl.className = "w-full h-full object-cover object-top opacity-0 transition-opacity duration-500 z-10";
+                }
+            } else {
+                imgEl.src = '';
+                imgEl2.src = '';
+            }
+
+            const overlay = document.getElementById('example-modal-overlay');
+            overlay.style.display = 'flex';
+            setTimeout(() => overlay.classList.add('show'), 10);
+        }
+
+        function closeExampleModal(e) { if (e.target.id === 'example-modal-overlay') closeExampleModalNow(); }
+        function closeExampleModalNow() {
+            const overlay = document.getElementById('example-modal-overlay');
+            overlay.classList.remove('show');
+            setTimeout(() => overlay.style.display = 'none', 300);
+        }
+
+
+
+        // Init
+        window.addEventListener('load', () => calculateTotal());
+    </script>
+</body>
+
+</html>
