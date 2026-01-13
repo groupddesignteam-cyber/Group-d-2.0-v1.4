@@ -418,7 +418,7 @@
                     </div>
 
                     <div id="timeline-content"
-                        class="hidden overflow-x-auto pb-2 custom-scrollbar transition-all duration-300">
+                        class="hidden overflow-x-auto pb-2 custom-scrollbar transition-all duration-300 max-h-[60vh] overflow-y-auto">
                         <table class="w-full min-w-[800px] text-xs border-collapse text-slate-300">
                             <thead>
                                 <tr class="text-slate-500 border-b border-white/5 bg-slate-800/20">
@@ -2554,6 +2554,7 @@
         const designTimelineOverlay = document.getElementById('design-timeline-overlay');
 
         function openDesignTimeline() {
+            designTimelineOverlay.style.display = 'flex';
             designTimelineOverlay.classList.remove('hidden');
             setTimeout(() => {
                 designTimelineOverlay.classList.remove('opacity-0');
@@ -2571,6 +2572,7 @@
             designTimelineOverlay.classList.add('opacity-0');
             setTimeout(() => {
                 designTimelineOverlay.classList.add('hidden');
+                designTimelineOverlay.style.display = 'none';
                 document.body.style.overflow = '';
             }, 300);
         }
